@@ -126,7 +126,7 @@ layout: grid-3
 
 ## 🔗 Resources
 
-- [Live Demo / Playground (soon)](https://zolto.app/)
+- [Live Demo / Playground (soon)]([https://uxle.github.io/zolto/])
 - [Full Documentation](https://github.com/uxle/zolto/wiki)
 - [Community & Support](https://github.com/uxle/zolto/discussions)
 
