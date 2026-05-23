@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Luma Studio | Spatial IDE</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="variables.css">
+    <link rel="stylesheet" href="layout.css">
+    <link rel="stylesheet" href="canvas.css">
+</head>
+<body class="mode-edit">
+
+<header class="header">
+    <div class="brand">
+        <i class="fa-solid fa-cube"></i>
+        <span class="brand-text">Luma Studio</span>
+    </div>
+
+    <div class="view-switch">
+        <button class="view-btn active" data-view="edit" aria-label="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+        <button class="view-btn" data-view="preview" aria-label="Preview"><i class="fa-solid fa-eye"></i></button>
+    </div>
+
+    <div class="controls">
+        <button class="icon-btn" id="btn-load" title="Open .lm File">
+            <i class="fa-solid fa-folder-open"></i>
+        </button>
+        <button class="icon-btn" id="btn-save" title="Save .lm File">
+            <i class="fa-solid fa-floppy-disk"></i>
+        </button>
+        
+        <div style="width: 1px; height: 24px; background: var(--color-border); margin: 0 4px;"></div>
+
+        <button class="icon-btn" id="btn-theme" title="Toggle Dark Mode">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+        <button class="icon-btn primary" id="btn-export" title="Export as SVG">
+            <i class="fa-solid fa-vector-square"></i>
+            <span>Export SVG</span>
+        </button>
+    </div>
+</header>
+
+<div class="workspace">
+    <aside class="editor">
+        <div class="editor-header">Source Code (.lm)</div>
+        <textarea id="luma-editor" spellcheck="false"></textarea>
+    </aside>
+    <main class="preview" id="preview-container">
+        <div class="canvas-header">Spatial Runtime</div>
+        
+        <svg id="luma-svg-layer">
+            <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="var(--edge-color)" />
+                </marker>
+            </defs>
+            <g id="svg-paths"></g>
+        </svg>
+
+        <div id="luma-canvas-content"></div>
+    </main>
+</div>
+
+<div id="toast" class="toast"></div>
+<input type="file" id="file-input" style="display: none;" accept=".lm,.txt">
+
+<script src="config.js"></script>
+<script src="utils.js"></script>
+
+<script src="parser.js"></script>
+<script src="renderer.js"></script>
+<script src="svg-router.js"></script>
+
+<script src="app.js"></script>
+
+</body>
+</html>
+
+
