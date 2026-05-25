@@ -116,7 +116,7 @@ layout: grid-3
 
 ## 🛠️ Getting Started
 
-1. **Create a `.zolto` file** using any editor.
+1. **Create a `.zl` file** using any editor.
 2. **Write your Zolto markup** (see samples above).
 3. **Open it in a Zolto-compatible IDE or viewer** (see `/app` and `/docs` in this repo).
 
