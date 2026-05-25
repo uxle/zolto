@@ -601,7 +601,7 @@ Einstein's equation: $E = mc^2$
 ## 🔄 Execution Flow
 
 ```
-User writes .zolto file
+User writes .zl file
         ↓
 Lexical Analyzer (Tokenization)
         ↓
@@ -791,7 +791,7 @@ $$F_{action} = -F_{reaction}$$
 
 ---
 
-**Next**: [Energy & Work](energy.zolto) | [Circular Motion](circular.zolto)
+**Next**: [Energy & Work](energy.zl) | [Circular Motion](circular.zl)
 ```
 
 ---
