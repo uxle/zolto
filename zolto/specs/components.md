@@ -2,8 +2,8 @@
 
 **File:** `zolto/specs/components.md`
 **Version:** 8.1.0 (Infinity Architecture · Component & Design System Edition)
-**Source of truth:** `js/renderer/component-renderer.js` · `js/parser/ast.js` · `zolto/specs/ast.md`
-**Cross-references:** `zolto/specs/syntax.md` · `zolto/specs/renderer.md`
+**Source of truth:** `js/renderer/component-renderer.js` · `js/parser/ast.js` · `zolto/grammar/components.zol`
+**Spec reference:** `zolto/specs/ast.md` · `zolto/specs/syntax.md`
 
 ---
 
@@ -1608,6 +1608,4 @@ theme: dark
 ---
 
 *This is the canonical Component System reference for Zolto v8.1.0.*
-*Source: `zolto/specs/components.md`*
-*Related: `zolto/specs/ast.md` · `zolto/specs/syntax.md` · `zolto/specs/renderer.md`*
-*Grammar: `zolto/grammar/components.zol` · Renderer: `js/renderer/component-renderer.js`*
+*Source: `zolto/specs/components.md` · AST: `zolto/specs/ast.md` · Syntax: `zolto/specs/syntax.md` · Grammar: `zolto/grammar/components.zol` · Renderer: `js/renderer/component-renderer.js`*
