@@ -1,1 +1,847 @@
-<!DOCTYPE html><html><head><title>Zolto</title></head><body><div id='app'></div></body></html>
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-preview-mode="live" data-sidebar="open">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Zolto — A unified visual markup language and live editor. Markdown superset with mathematics, diagrams, charts, vector graphics, spatial layouts, and components." />
+  <meta name="author" content="Zolto" />
+  <meta name="version" content="8.1.0" />
+  <meta name="theme-color" content="#0a0a0f" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="Zolto — Unified Visual Markup" />
+  <meta property="og:description" content="Markdown superset with mathematics, diagrams, charts, vector graphics, spatial layouts, and components." />
+  <meta property="og:url"         content="https://zolto.app" />
+  <meta property="og:image"       content="https://zolto.app/assets/og-image.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="Zolto — Unified Visual Markup" />
+  <meta name="twitter:description" content="Markdown superset with mathematics, diagrams, charts, vector graphics, spatial layouts, and components." />
+  <meta name="twitter:image"       content="https://zolto.app/assets/og-image.png" />
+
+  <title>Zolto</title>
+
+  <!-- Favicon -->
+  <link rel="icon"             type="image/svg+xml"  href="/assets/favicon.svg" />
+  <link rel="icon"             type="image/png"      href="/assets/favicon-32.png" sizes="32x32" />
+  <link rel="icon"             type="image/png"      href="/assets/favicon-16.png" sizes="16x16" />
+  <link rel="apple-touch-icon"                       href="/assets/apple-touch-icon.png" sizes="180x180" />
+  <link rel="manifest"                               href="/manifest.json" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"  href="https://fonts.googleapis.com/css2?family=Inter+Variable:wght@100..900&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" />
+
+  <!-- KaTeX CSS (math rendering) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+        integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5"
+        crossorigin="anonymous" />
+
+  <!-- Prism.js CSS (syntax highlighting in code blocks) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
+
+  <!-- ─────────────────────────────────────────────
+       CSS Load Order:
+       1. base/reset         — box-sizing, margin reset
+       2. base/variables     — all CSS custom property declarations
+       3. base/typography    — font stack, sizes, line heights
+       4. layouts/*          — workspace chrome, editor, preview, sidebar
+       5. components/*       — per-component styles
+       6. themes/*           — active theme token overrides (last — highest priority)
+       ───────────────────────────────────────────── -->
+
+  <!-- Base -->
+  <link rel="stylesheet" href="css/base/reset.css" />
+  <link rel="stylesheet" href="css/base/variables.css" />
+  <link rel="stylesheet" href="css/base/typography.css" />
+
+  <!-- Layouts -->
+  <link rel="stylesheet" href="css/layouts/workspace.css" />
+  <link rel="stylesheet" href="css/layouts/sidebar.css" />
+  <link rel="stylesheet" href="css/layouts/editor.css" />
+  <link rel="stylesheet" href="css/layouts/preview.css" />
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/alert.css" />
+  <link rel="stylesheet" href="css/components/accordion.css" />
+  <link rel="stylesheet" href="css/components/card.css" />
+  <link rel="stylesheet" href="css/components/chart.css" />
+  <link rel="stylesheet" href="css/components/gallery.css" />
+  <link rel="stylesheet" href="css/components/hero.css" />
+  <link rel="stylesheet" href="css/components/tabs.css" />
+  <link rel="stylesheet" href="css/components/timeline.css" />
+
+  <!-- Themes (loaded all, active one controlled by [data-theme] on <html>) -->
+  <link rel="stylesheet" href="css/themes/dark.css" />
+  <link rel="stylesheet" href="css/themes/light.css" />
+  <link rel="stylesheet" href="css/themes/midnight.css" />
+  <link rel="stylesheet" href="css/themes/oled.css" />
+
+  <!-- Critical inline styles — prevent flash of unstyled content -->
+  <style>
+    /* Prevent FOUC before CSS loads */
+    html { background: var(--bg-app, #0a0a0f); }
+
+    /* Hide all route views immediately — router.js shows the correct one */
+    [data-view] { display: none; }
+
+    /* Loading spinner shown until app.js finishes bootstrapping */
+    #zolto-boot {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-app, #0a0a0f);
+      z-index: 9999;
+      transition: opacity 240ms ease, visibility 240ms ease;
+    }
+    #zolto-boot.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .zolto-boot-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .zolto-boot-wordmark {
+      font-family: 'Instrument Serif', Georgia, serif;
+      font-size: 2.5rem;
+      font-style: italic;
+      letter-spacing: -0.02em;
+      color: var(--text-main, #f1f5f9);
+      opacity: 0;
+      animation: zolto-boot-fade 400ms ease 100ms forwards;
+    }
+    .zolto-boot-spinner {
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--border-subtle, rgba(255,255,255,0.1));
+      border-top-color: var(--accent-primary, #6366f1);
+      border-radius: 50%;
+      animation: zolto-boot-spin 600ms linear infinite;
+    }
+    @keyframes zolto-boot-fade {
+      to { opacity: 1; }
+    }
+    @keyframes zolto-boot-spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ─────────────────────────────────
+       Boot screen — hidden by app.js after
+       initial render is complete
+       ───────────────────────────────── -->
+  <div id="zolto-boot" role="status" aria-label="Loading Zolto" aria-live="polite">
+    <div class="zolto-boot-logo">
+      <span class="zolto-boot-wordmark">Zolto</span>
+      <div class="zolto-boot-spinner" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────
+       Application Shell
+       ───────────────────────────────── -->
+  <div id="zolto-app" role="application" aria-label="Zolto Editor">
+
+    <!-- ── Top Bar ── -->
+    <header id="zolto-topbar" class="zolto-topbar" role="banner">
+      <div class="zolto-topbar-left">
+
+        <!-- Sidebar toggle -->
+        <button
+          id="btn-sidebar-toggle"
+          class="zolto-icon-btn"
+          aria-label="Toggle sidebar"
+          aria-expanded="true"
+          aria-controls="zolto-sidebar"
+          data-action="sidebar:toggle"
+        >
+          <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="2" y="2" width="12" height="12" rx="2" />
+            <line x1="6" y1="2" x2="6" y2="14" />
+          </svg>
+        </button>
+
+        <!-- Wordmark -->
+        <a href="#/" class="zolto-wordmark" aria-label="Zolto home">
+          <span class="zolto-wordmark-text">Zolto</span>
+          <span class="zolto-version-badge" aria-label="Version 8.1.0">8.1</span>
+        </a>
+
+        <!-- Document title -->
+        <div class="zolto-doc-title" id="zolto-doc-title">
+          <span
+            id="zolto-doc-title-text"
+            class="zolto-doc-title-text"
+            role="textbox"
+            contenteditable="true"
+            aria-label="Document title"
+            spellcheck="false"
+            data-placeholder="Untitled"
+          ></span>
+          <span class="zolto-doc-dirty-indicator" id="zolto-dirty" aria-label="Unsaved changes" hidden>●</span>
+        </div>
+
+      </div>
+
+      <div class="zolto-topbar-center">
+        <!-- Preview mode switcher -->
+        <div
+          class="zolto-preview-mode-group"
+          role="group"
+          aria-label="Preview mode"
+        >
+          <button
+            class="zolto-mode-btn zolto-mode-active"
+            data-mode="live"
+            aria-pressed="true"
+            aria-label="Live split view"
+            title="Live split view (Ctrl+1)"
+          >
+            <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="1" y="2" width="6" height="12" rx="1" />
+              <rect x="9" y="2" width="6" height="12" rx="1" />
+            </svg>
+          </button>
+          <button
+            class="zolto-mode-btn"
+            data-mode="focus"
+            aria-pressed="false"
+            aria-label="Focus mode (preview only)"
+            title="Focus mode (Ctrl+2)"
+          >
+            <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="2" width="12" height="12" rx="1" />
+            </svg>
+          </button>
+          <button
+            class="zolto-mode-btn"
+            data-mode="split"
+            aria-pressed="false"
+            aria-label="Independent split view"
+            title="Split mode (Ctrl+3)"
+          >
+            <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="1" y="2" width="6" height="12" rx="1" />
+              <line x1="8" y1="2" x2="8" y2="14" stroke-dasharray="2 2" />
+              <rect x="9" y="2" width="6" height="12" rx="1" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="zolto-topbar-right">
+
+        <!-- Search -->
+        <button
+          class="zolto-icon-btn"
+          aria-label="Search documents (Ctrl+F)"
+          title="Search (Ctrl+F)"
+          data-action="search:open"
+        >
+          <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="6.5" cy="6.5" r="4" />
+            <line x1="10" y1="10" x2="14" y2="14" />
+          </svg>
+        </button>
+
+        <!-- Theme picker -->
+        <button
+          class="zolto-icon-btn"
+          id="btn-theme"
+          aria-label="Switch theme"
+          aria-haspopup="listbox"
+          aria-expanded="false"
+          aria-controls="theme-dropdown"
+          data-action="theme:toggle-picker"
+          title="Switch theme"
+        >
+          <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="8" cy="8" r="3" />
+            <line x1="8"  y1="1"  x2="8"  y2="3" />
+            <line x1="8"  y1="13" x2="8"  y2="15" />
+            <line x1="1"  y1="8"  x2="3"  y2="8" />
+            <line x1="13" y1="8"  x2="15" y2="8" />
+            <line x1="3"  y1="3"  x2="4.5" y2="4.5" />
+            <line x1="11.5" y1="11.5" x2="13" y2="13" />
+            <line x1="13" y1="3"  x2="11.5" y2="4.5" />
+            <line x1="4.5" y1="11.5" x2="3" y2="13" />
+          </svg>
+        </button>
+
+        <!-- Theme dropdown (hidden until btn-theme clicked) -->
+        <ul
+          id="theme-dropdown"
+          class="zolto-dropdown"
+          role="listbox"
+          aria-label="Choose theme"
+          hidden
+        >
+          <li role="option" aria-selected="true"  data-theme-id="dark"     class="zolto-dropdown-item zolto-dropdown-active">Dark</li>
+          <li role="option" aria-selected="false" data-theme-id="light"    class="zolto-dropdown-item">Light</li>
+          <li role="option" aria-selected="false" data-theme-id="midnight" class="zolto-dropdown-item">Midnight</li>
+          <li role="option" aria-selected="false" data-theme-id="oled"     class="zolto-dropdown-item">OLED</li>
+        </ul>
+
+        <!-- Export -->
+        <button
+          class="zolto-icon-btn"
+          aria-label="Export document"
+          aria-haspopup="menu"
+          aria-expanded="false"
+          aria-controls="export-menu"
+          data-action="export:toggle-menu"
+          title="Export"
+        >
+          <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 10v3h10v-3" />
+            <line x1="8" y1="1" x2="8" y2="10" />
+            <polyline points="5,7 8,10 11,7" />
+          </svg>
+        </button>
+
+        <!-- Export menu (hidden until export button clicked) -->
+        <ul
+          id="export-menu"
+          class="zolto-dropdown"
+          role="menu"
+          aria-label="Export options"
+          hidden
+        >
+          <li role="menuitem" class="zolto-dropdown-item" data-action="export:html">
+            <span class="zolto-dropdown-icon">⬡</span> Export as HTML
+          </li>
+          <li role="menuitem" class="zolto-dropdown-item" data-action="export:pdf">
+            <span class="zolto-dropdown-icon">⬛</span> Export as PDF
+          </li>
+          <li role="menuitem" class="zolto-dropdown-item" data-action="export:markdown">
+            <span class="zolto-dropdown-icon">↓</span> Export as Markdown
+          </li>
+          <li role="menuitem" class="zolto-dropdown-item" data-action="export:text">
+            <span class="zolto-dropdown-icon">≡</span> Export as Plain Text
+          </li>
+          <li role="separator" class="zolto-dropdown-sep"></li>
+          <li role="menuitem" class="zolto-dropdown-item" data-action="export:json">
+            <span class="zolto-dropdown-icon">{}</span> Export AST as JSON
+          </li>
+        </ul>
+
+        <!-- Settings -->
+        <button
+          class="zolto-icon-btn"
+          aria-label="Settings"
+          title="Settings (Ctrl+,)"
+          data-action="settings:open"
+        >
+          <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="8" cy="8" r="2.5" />
+            <path d="M8 1v2M8 13v2M1 8h2M13 8h2
+                     M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41
+                     M12.95 3.05l-1.41 1.41M4.46 11.54l-1.41 1.41" />
+          </svg>
+        </button>
+
+        <!-- Command palette trigger -->
+        <button
+          class="zolto-cmd-pill"
+          aria-label="Open command palette (Ctrl+K)"
+          title="Command palette (Ctrl+K)"
+          data-action="palette:open"
+        >
+          <kbd>⌘</kbd><kbd>K</kbd>
+        </button>
+
+      </div>
+    </header>
+
+    <!-- ── Main workspace ── -->
+    <div class="zolto-workspace" id="zolto-workspace">
+
+      <!-- ── Sidebar ── -->
+      <aside
+        id="zolto-sidebar"
+        class="zolto-sidebar"
+        aria-label="Document sidebar"
+        aria-hidden="false"
+      >
+        <!-- Sidebar tabs -->
+        <div class="zolto-sidebar-tabs" role="tablist" aria-label="Sidebar panels">
+          <button role="tab" class="zolto-sidebar-tab zolto-sidebar-tab-active"
+                  aria-selected="true" aria-controls="sidebar-files" id="stab-files"
+                  title="Files">
+            <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M3 2h7l3 3v9H3z" />
+              <path d="M10 2v3h3" />
+            </svg>
+          </button>
+          <button role="tab" class="zolto-sidebar-tab"
+                  aria-selected="false" aria-controls="sidebar-outline" id="stab-outline"
+                  title="Outline">
+            <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <line x1="4" y1="4" x2="13" y2="4" />
+              <line x1="6" y1="7" x2="13" y2="7" />
+              <line x1="6" y1="10" x2="13" y2="10" />
+              <line x1="4" y1="13" x2="13" y2="13" />
+              <circle cx="2.5" cy="7"  r="0.8" fill="currentColor" stroke="none" />
+              <circle cx="2.5" cy="10" r="0.8" fill="currentColor" stroke="none" />
+            </svg>
+          </button>
+          <button role="tab" class="zolto-sidebar-tab"
+                  aria-selected="false" aria-controls="sidebar-search" id="stab-search"
+                  title="Search">
+            <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="6.5" cy="6.5" r="4" />
+              <line x1="10" y1="10" x2="14" y2="14" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Files panel -->
+        <div id="sidebar-files" class="zolto-sidebar-panel"
+             role="tabpanel" aria-labelledby="stab-files">
+          <div class="zolto-sidebar-panel-header">
+            <span class="zolto-sidebar-panel-title">Files</span>
+            <button
+              class="zolto-icon-btn zolto-icon-btn-sm"
+              aria-label="New document"
+              title="New document (Ctrl+N)"
+              data-action="doc:new"
+            >
+              <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <line x1="8" y1="3" x2="8" y2="13" />
+                <line x1="3" y1="8" x2="13" y2="8" />
+              </svg>
+            </button>
+          </div>
+          <div class="zolto-file-list" id="zolto-file-list" role="list" aria-label="Documents">
+            <!-- Populated by js/router.js and js/storage.js -->
+          </div>
+        </div>
+
+        <!-- Outline panel -->
+        <div id="sidebar-outline" class="zolto-sidebar-panel zolto-sidebar-panel-hidden"
+             role="tabpanel" aria-labelledby="stab-outline" hidden>
+          <div class="zolto-sidebar-panel-header">
+            <span class="zolto-sidebar-panel-title">Outline</span>
+          </div>
+          <nav
+            class="zolto-outline"
+            id="zolto-outline"
+            aria-label="Document outline"
+          >
+            <!-- Populated by js/preview/preview.js from heading nodes -->
+          </nav>
+        </div>
+
+        <!-- Search panel -->
+        <div id="sidebar-search" class="zolto-sidebar-panel zolto-sidebar-panel-hidden"
+             role="tabpanel" aria-labelledby="stab-search" hidden>
+          <div class="zolto-sidebar-panel-header">
+            <span class="zolto-sidebar-panel-title">Search</span>
+          </div>
+          <div class="zolto-search-box">
+            <label for="sidebar-search-input" class="sr-only">Search documents</label>
+            <input
+              id="sidebar-search-input"
+              type="search"
+              class="zolto-search-input"
+              placeholder="Search across documents…"
+              aria-label="Search all documents"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
+          <div class="zolto-search-results" id="zolto-search-results" role="list" aria-label="Search results">
+            <!-- Populated by search handler in js/state.js -->
+          </div>
+        </div>
+
+        <!-- Sidebar resize handle -->
+        <div
+          class="zolto-sidebar-resize-handle"
+          role="separator"
+          aria-orientation="vertical"
+          aria-label="Resize sidebar"
+          tabindex="0"
+        ></div>
+      </aside>
+
+      <!-- ── Editor + Preview split ── -->
+      <main class="zolto-main" id="zolto-main" role="main">
+
+        <!-- Route: Home (recent documents) -->
+        <div data-view="home" class="zolto-view-home" aria-label="Home" role="region">
+          <div class="zolto-home-inner">
+            <h1 class="zolto-home-title">
+              <span class="zolto-home-wordmark">Zolto</span>
+            </h1>
+            <p class="zolto-home-tagline">Unified visual markup — write, compute, visualise.</p>
+
+            <div class="zolto-home-actions">
+              <button class="zolto-btn zolto-btn-primary" data-action="doc:new">
+                New Document
+              </button>
+              <button class="zolto-btn zolto-btn-ghost" data-action="doc:open-example">
+                Open Example
+              </button>
+            </div>
+
+            <section class="zolto-recent" aria-label="Recent documents">
+              <h2 class="zolto-recent-title">Recent</h2>
+              <div class="zolto-recent-list" id="zolto-recent-list" role="list">
+                <!-- Populated by js/storage.js -->
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- Route: Editor -->
+        <div data-view="editor" class="zolto-view-editor" aria-label="Editor" role="region">
+
+          <!-- Editor pane -->
+          <section
+            class="zolto-editor-pane"
+            id="zolto-editor-pane"
+            aria-label="Source editor"
+          >
+            <!-- Editor toolbar -->
+            <div class="zolto-editor-toolbar" role="toolbar" aria-label="Formatting">
+
+              <div class="zolto-toolbar-group" role="group" aria-label="Text formatting">
+                <button class="zolto-toolbar-btn" aria-label="Bold (Ctrl+B)"     title="Bold (Ctrl+B)"     data-action="format:bold">
+                  <strong>B</strong>
+                </button>
+                <button class="zolto-toolbar-btn" aria-label="Italic (Ctrl+I)"   title="Italic (Ctrl+I)"   data-action="format:italic">
+                  <em>I</em>
+                </button>
+                <button class="zolto-toolbar-btn" aria-label="Code (Ctrl+\`)"    title="Code (Ctrl+\`)"    data-action="format:code">
+                  <code>&lt;/&gt;</code>
+                </button>
+                <button class="zolto-toolbar-btn" aria-label="Link (Ctrl+K)"     title="Link (Ctrl+K)"     data-action="format:link">
+                  <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M6.5 9.5a4 4 0 0 0 5.66 0l1.41-1.41a4 4 0 0 0-5.66-5.66L7 4.34" />
+                    <path d="M9.5 6.5a4 4 0 0 0-5.66 0L2.43 7.91a4 4 0 0 0 5.66 5.66L9 12.66" />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="zolto-toolbar-sep" role="separator"></div>
+
+              <div class="zolto-toolbar-group" role="group" aria-label="Headings">
+                <button class="zolto-toolbar-btn" aria-label="Heading 1" title="Heading 1 (Ctrl+1)" data-action="format:h1">H1</button>
+                <button class="zolto-toolbar-btn" aria-label="Heading 2" title="Heading 2 (Ctrl+2)" data-action="format:h2">H2</button>
+                <button class="zolto-toolbar-btn" aria-label="Heading 3" title="Heading 3 (Ctrl+3)" data-action="format:h3">H3</button>
+              </div>
+
+              <div class="zolto-toolbar-sep" role="separator"></div>
+
+              <div class="zolto-toolbar-group" role="group" aria-label="Insert">
+                <button class="zolto-toolbar-btn" aria-label="Insert math block"    title="Insert math"    data-action="insert:math">∑</button>
+                <button class="zolto-toolbar-btn" aria-label="Insert diagram"       title="Insert diagram" data-action="insert:diagram">
+                  <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="1" y="5" width="5" height="3" rx="1" />
+                    <rect x="10" y="2" width="5" height="3" rx="1" />
+                    <rect x="10" y="8" width="5" height="3" rx="1" />
+                    <line x1="6" y1="6.5" x2="10" y2="3.5" />
+                    <line x1="6" y1="6.5" x2="10" y2="9.5" />
+                  </svg>
+                </button>
+                <button class="zolto-toolbar-btn" aria-label="Insert chart"         title="Insert chart"   data-action="insert:chart">
+                  <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="1" y="9" width="3" height="5" rx="0.5" />
+                    <rect x="6" y="6" width="3" height="8" rx="0.5" />
+                    <rect x="11" y="3" width="3" height="11" rx="0.5" />
+                  </svg>
+                </button>
+                <button class="zolto-toolbar-btn" aria-label="Insert callout"       title="Insert callout" data-action="insert:callout">
+                  <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="8" cy="8" r="6" />
+                    <line x1="8" y1="7" x2="8" y2="11" />
+                    <circle cx="8" cy="5" r="0.8" fill="currentColor" stroke="none" />
+                  </svg>
+                </button>
+                <button class="zolto-toolbar-btn" aria-label="Insert table"         title="Insert table"   data-action="insert:table">
+                  <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <rect x="1" y="2" width="14" height="12" rx="1" />
+                    <line x1="1" y1="6"  x2="15" y2="6"  />
+                    <line x1="6" y1="2"  x2="6"  y2="14" />
+                    <line x1="11" y1="2" x2="11" y2="14" />
+                  </svg>
+                </button>
+              </div>
+
+              <div class="zolto-toolbar-spacer" aria-hidden="true"></div>
+
+              <!-- Word count -->
+              <div class="zolto-word-count" id="zolto-word-count" aria-live="polite" aria-label="Word count">
+                <span id="word-count-value">0</span> words
+              </div>
+
+              <!-- Auto-save indicator -->
+              <div class="zolto-save-status" id="zolto-save-status" aria-live="polite">
+                <span data-status="saved"    class="zolto-save-badge">Saved</span>
+                <span data-status="saving"   class="zolto-save-badge" hidden>Saving…</span>
+                <span data-status="unsaved"  class="zolto-save-badge" hidden>Unsaved</span>
+                <span data-status="error"    class="zolto-save-badge" hidden>Save failed</span>
+              </div>
+
+            </div>
+
+            <!-- The actual contenteditable editor surface -->
+            <div
+              id="zolto-editor"
+              class="zolto-editor"
+              contenteditable="true"
+              role="textbox"
+              aria-multiline="true"
+              aria-label="Document source"
+              aria-placeholder="Start writing Zolto…"
+              spellcheck="false"
+              autocorrect="off"
+              autocapitalize="off"
+              data-gramm="false"
+              data-lt-active="false"
+            ></div>
+
+            <!-- Cursor position display -->
+            <div class="zolto-editor-statusbar" id="zolto-editor-statusbar" aria-live="off">
+              <span class="zolto-cursor-pos" id="zolto-cursor-pos" aria-label="Cursor position">
+                Ln <span id="cursor-line">1</span>, Col <span id="cursor-col">1</span>
+              </span>
+              <span class="zolto-statusbar-sep" aria-hidden="true">·</span>
+              <span class="zolto-lang-label">Zolto</span>
+            </div>
+
+          </section>
+
+          <!-- Editor–Preview resizable divider -->
+          <div
+            class="zolto-split-handle"
+            id="zolto-split-handle"
+            role="separator"
+            aria-orientation="vertical"
+            aria-label="Resize editor and preview"
+            aria-valuenow="50"
+            aria-valuemin="20"
+            aria-valuemax="80"
+            tabindex="0"
+          ></div>
+
+          <!-- Preview pane -->
+          <section
+            class="zolto-preview-pane"
+            id="zolto-preview-pane"
+            aria-label="Rendered preview"
+          >
+            <!-- Preview toolbar -->
+            <div class="zolto-preview-toolbar" role="toolbar" aria-label="Preview controls">
+              <span class="zolto-preview-label">Preview</span>
+              <div class="zolto-toolbar-spacer" aria-hidden="true"></div>
+              <button
+                class="zolto-icon-btn zolto-icon-btn-sm"
+                aria-label="Toggle scroll sync"
+                aria-pressed="true"
+                title="Scroll sync"
+                data-action="preview:toggle-scroll-sync"
+              >
+                <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <line x1="8" y1="1" x2="8" y2="15" />
+                  <polyline points="4,5 8,1 12,5" />
+                  <polyline points="4,11 8,15 12,11" />
+                </svg>
+              </button>
+              <button
+                class="zolto-icon-btn zolto-icon-btn-sm"
+                aria-label="Open preview in new tab"
+                title="Open in new tab"
+                data-action="preview:open-tab"
+              >
+                <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M7 3H3v10h10V9" />
+                  <polyline points="10,2 14,2 14,6" />
+                  <line x1="8" y1="8" x2="14" y2="2" />
+                </svg>
+              </button>
+            </div>
+
+            <!-- Rendered document output -->
+            <div
+              id="zolto-preview"
+              class="zolto-preview"
+              aria-label="Document preview"
+              aria-live="polite"
+              aria-atomic="false"
+              aria-relevant="additions removals"
+            >
+              <!-- Populated and patched by js/preview/live-renderer.js -->
+            </div>
+
+          </section>
+        </div>
+
+        <!-- Route: Settings -->
+        <div data-view="settings" class="zolto-view-settings" aria-label="Settings" role="region" hidden>
+          <div class="zolto-settings-inner">
+            <h1 class="zolto-settings-title">Settings</h1>
+            <div class="zolto-settings-body" id="zolto-settings-body">
+              <!-- Populated by js/settings.js -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Route: Plugins -->
+        <div data-view="plugins" class="zolto-view-plugins" aria-label="Plugin manager" role="region" hidden>
+          <div class="zolto-plugins-inner">
+            <h1 class="zolto-plugins-title">Plugins</h1>
+            <div class="zolto-plugins-body" id="zolto-plugins-body">
+              <!-- Populated by plugins/plugin-manager.js -->
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────
+       Command Palette
+       Mounted outside the app shell so it
+       can overlay everything at z-index 1000
+       ───────────────────────────────── -->
+  <div
+    id="zolto-palette-overlay"
+    class="zolto-palette-overlay"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Command palette"
+    aria-hidden="true"
+    hidden
+  >
+    <div class="zolto-palette" id="zolto-palette">
+      <div class="zolto-palette-input-wrap">
+        <svg class="zolto-palette-search-icon" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="6.5" cy="6.5" r="4" />
+          <line x1="10" y1="10" x2="14" y2="14" />
+        </svg>
+        <label for="zolto-palette-input" class="sr-only">Command search</label>
+        <input
+          id="zolto-palette-input"
+          class="zolto-palette-input"
+          type="text"
+          placeholder="Type a command or search…"
+          autocomplete="off"
+          spellcheck="false"
+          role="combobox"
+          aria-expanded="true"
+          aria-autocomplete="list"
+          aria-controls="zolto-palette-results"
+        />
+        <kbd class="zolto-palette-esc-hint">esc</kbd>
+      </div>
+      <ul
+        id="zolto-palette-results"
+        class="zolto-palette-results"
+        role="listbox"
+        aria-label="Commands"
+      >
+        <!-- Populated by js/editor/command-palette.js -->
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────
+       Autocomplete Popup
+       ───────────────────────────────── -->
+  <div
+    id="zolto-autocomplete"
+    class="zolto-autocomplete"
+    role="listbox"
+    aria-label="Autocomplete suggestions"
+    aria-hidden="true"
+    hidden
+  >
+    <!-- Populated by js/editor/autocomplete.js -->
+  </div>
+
+  <!-- ─────────────────────────────────
+       Toast Notifications
+       ───────────────────────────────── -->
+  <div
+    id="zolto-toasts"
+    class="zolto-toast-region"
+    role="region"
+    aria-label="Notifications"
+    aria-live="polite"
+    aria-atomic="false"
+  >
+    <!-- Injected by js/utils/events.js toast() helper -->
+  </div>
+
+  <!-- ─────────────────────────────────
+       Global Error Overlay
+       Shown when a critical initialisation
+       error occurs before the app loads
+       ───────────────────────────────── -->
+  <div
+    id="zolto-error-overlay"
+    class="zolto-error-overlay"
+    role="alertdialog"
+    aria-modal="true"
+    aria-label="Application error"
+    aria-hidden="true"
+    hidden
+  >
+    <div class="zolto-error-box">
+      <h2 class="zolto-error-title">Something went wrong</h2>
+      <p class="zolto-error-message" id="zolto-error-message"></p>
+      <button class="zolto-btn zolto-btn-primary" data-action="app:reload">Reload</button>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────
+       Screen reader only utility class
+       ───────────────────────────────── -->
+  <style>
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+
+  <!-- ─────────────────────────────────
+       JavaScript — ES Module entry point
+       All other modules imported by app.js
+       ───────────────────────────────── -->
+  <script type="module" src="js/app.js"></script>
+
+  <!-- KaTeX runtime (required for math rendering) -->
+  <script defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
+    integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL369OViuhW1u0fn2209+8J0V5tf00"
+    crossorigin="anonymous">
+  </script>
+
+  <!-- Prism.js (code block syntax highlighting) -->
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+</body>
+</html>
