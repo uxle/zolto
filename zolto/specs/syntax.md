@@ -24,7 +24,7 @@
 14. [Edge Operators](#14-edge-operators)
 15. [Node Shape Syntax](#15-node-shape-syntax)
 16. [Token Operator Precedence](#16-token-operator-precedence)
-17. [Complete Example](#17-complete-example)
+17. [Complete Examples](#17-complete-examples)
 
 ---
 
@@ -32,12 +32,22 @@
 
 Zolto (`.zl`) is a **unified visual markup language** that replaces five separate tools with a single coherent syntax. It is designed to express how humans naturally think — combining prose, mathematics, diagrams, spatial layouts, and interactive components in a single readable file.
 
+### How to learn Zolto in two rules
+
+> **Rule 1 — Everything you know from Markdown works unchanged.**
+> Headings, bold, italic, lists, blockquotes, code blocks, links, images — all standard Markdown is fully supported as-is.
+>
+> **Rule 2 — Everything else uses `@directive … @/directive` blocks.**
+> Math, diagrams, charts, layouts, components, and assessments all follow the same `@keyword … @/keyword` pattern. Once you know the keyword, you know the syntax.
+
+That's it. You can write a complete Zolto document knowing only those two rules. The rest of this reference is a lookup table for what keywords exist and what they accept.
+
 ### Design Goals
 
 | Goal | Principle |
 |------|-----------|
 | **Human-readable** | Source is as readable as Markdown without a renderer |
-| **Zero escape hell** | No backslash forests, no angle-bracket noise |
+| **No escape hell** | Currency (`$10`), brackets (`[item]`), and angle brackets work naturally |
 | **Domain-complete** | One language covers all content types — nothing lives outside |
 | **Education-first** | MCQ, flashcard, quiz, interactive math are first-class features |
 | **V8-optimised** | Parser produces monomorphic AST nodes; renderer never de-opts |
@@ -45,13 +55,43 @@ Zolto (`.zl`) is a **unified visual markup language** that replaces five separat
 ### Six Capability Domains
 
 ```
-Domain 1  ── Rich Markdown & Typography
-Domain 2  ── LaTeX-level Mathematics
-Domain 3  ── Mermaid-level Diagramming
-Domain 4  ── Native SVG & Vector Graphics
-Domain 5  ── Spatial Layout System
-Domain 6  ── Component & Template System
+Domain 1  ── Rich Markdown & Typography   (standard Markdown + admonitions, tabs, cards)
+Domain 2  ── LaTeX-level Mathematics      (@math, inline $…$, plots, interactive sliders)
+Domain 3  ── Mermaid-level Diagramming    (@diagram, @timeline, spatial graph blocks)
+Domain 4  ── Native SVG & Vector Graphics (@vector, shapes, layers, artboards)
+Domain 5  ── Spatial Layout System        (@grid, @flex, @canvas, @presentation, @split)
+Domain 6  ── Component & Template System  (@component, @template, @macro, @animate)
 ```
+
+### A complete Zolto document in 10 lines
+
+```zolto
+---
+title: Quick Demo
+---
+
+# Newton's Second Law
+
+The net force equals mass times acceleration: $F = ma$.
+
+@math name="Newton's Second Law"
+  \mathbf{F} = m\mathbf{a}
+@/math
+
+[tip] Always draw a free-body diagram before solving force problems. [/tip]
+```
+
+That single file uses Markdown (heading, paragraph), inline math, a block math equation, and an admonition — three of the six domains — with zero setup.
+
+### Learning path
+
+| If you want to… | Go to… |
+|----------------|--------|
+| See the full language in one document | §17.1 Beginner Quick-Start |
+| Look up a specific syntax | §4–§11 domain sections |
+| Find a directive keyword | §13 Directive Reference |
+| Understand how it compiles | `zolto/specs/ast.md` |
+| Build custom components | `zolto/specs/components.md` |
 
 ---
 
@@ -146,6 +186,8 @@ Blank lines (lines containing only whitespace) act as paragraph separators. Mult
 
 ## 4. Domain 1 — Rich Text & Typography
 
+> **Zolto is a strict superset of Markdown.** Every `.md` file is a valid `.zl` file. If you already know Markdown, you already know Domain 1 — skip straight to §5 (Math) if you like.
+
 ### 4.1 Headings
 
 ```zolto
@@ -224,7 +266,7 @@ Supported callout types: `NOTE` `TIP` `INFO` `WARNING` `DANGER` `CAUTION` `IMPOR
 
 ### 4.6 Admonition Blocks (Zolto Native)
 
-Short bracket syntax for common callout types:
+The bracket syntax is the fastest way to add visual callouts. The type name is both the opening and closing tag — no attributes needed for the most common cases.
 
 ```zolto
 [important]
@@ -253,6 +295,8 @@ If $F_{net} = 0$, then $\mathbf{a} = 0$.
 ```
 
 **All types:** `important` `tip` `warning` `info` `note` `success` `danger` `example` `definition` `theorem` `proof`
+
+> **Tip:** If you want a custom title, use the `:::` fenced form (see §4.7). The bracket form uses the type name as the title automatically.
 
 ---
 
@@ -508,6 +552,14 @@ Explicitly left-aligned text.
 ## 5. Domain 2 — Mathematics
 
 Zolto uses a LaTeX-compatible math syntax with a cleaner, less-noisy command set.
+
+**Standard operators are always typed naturally** — `+`, `-`, `*`, `/`, `=`, `%`, `()`, `[]`, `{}`, `<>` are never special characters inside `$…$` or `@math` blocks. Only `\commands` for advanced constructs (fractions, roots, Greek letters, integrals) require the backslash prefix.
+
+```
+Simple:  $F = ma$                 ← just type it
+Roots:   $\sqrt{b^2 - 4ac}$      ← \command when you need special rendering
+Fracs:   $\frac{-b}{2a}$         ← only when displaying a fraction visually
+```
 
 ### 5.1 Inline Math
 
@@ -1832,6 +1884,21 @@ Override design tokens for a component tree:
 @/mcq
 ```
 
+> **Alternative verbose form** — easier to read for complex questions with long option text:
+>
+> ```zolto
+> @mcq
+>   question: "Which of the following best describes Newton's First Law?"
+>   options:
+>     - text: "Force equals mass times acceleration."
+>     - text: "Every object remains at rest or in uniform motion unless acted on by a net force." correct=true
+>     - text: "For every action there is an equal and opposite reaction."
+>     - text: "Momentum is always conserved."
+>   explanation: "The First Law defines inertia."
+>   difficulty: medium
+> @/mcq
+> ```
+
 ### 11.2 MCQ (Multiple Correct Answers)
 
 ```zolto
@@ -1951,6 +2018,18 @@ Quiz attributes: `time_limit` (seconds, e.g. `900` = 15 min · `0` = no limit) �
   difficulty: medium
 @/flashcard
 ```
+
+> **Spaced repetition fields** — add `confidence` to track study progress:
+>
+> ```zolto
+> @flashcard
+>   front: What is the SI unit of force?
+>   back: Newton (N) = kg·m/s²
+>   tags: [units]
+>   difficulty: easy
+>   confidence: again    // again | hard | good | easy
+> @/flashcard
+> ```
 
 ---
 
@@ -2287,9 +2366,101 @@ The tokenizer resolves ambiguous syntax by applying these rules in order:
 
 ---
 
-## 17. Complete Example
+## 17. Complete Examples
 
-The following `.zl` document demonstrates all six domains in a single realistic study note.
+### 17.1 Beginner Quick-Start
+
+This compact example uses only the two fundamental rules: Markdown for text, `@directives` for everything else. A new Zolto author can write this on their first day.
+
+```zolto
+---
+title: Newton's Laws of Motion
+author: Dr. A. Kumar
+---
+
+# Newton's Laws of Motion
+*Classical Mechanics · Chapter 3*
+
+[important]
+Newton's three laws form the entire foundation of classical mechanics.
+[/important]
+
+---
+
+## 1 — Law of Inertia
+
+**Definition**: An object at rest stays at rest, unless acted upon by a net external force.
+
+@math name="Condition for Inertia"
+  F_{net} = 0 \implies a = 0
+@/math
+
+[tip]
+Think of a ball on a perfectly frictionless surface!
+[/tip]
+
+@diagram sequence title="Inertia in Action"
+  Object -> Table: Rests
+  External -> Object: Net force applied
+  Object -> Path: Accelerates
+@/diagram
+
+---
+
+## 2 — Law of Acceleration
+
+@math name="Newton's Second Law"
+  F = ma
+@/math
+
+@chart line title="Acceleration vs Force (m = 10 kg)"
+  x: [0, 50, 100]
+  y: [0, 5,  10]
+  xlabel: "Force (N)"
+  ylabel: "Acceleration (m/s²)"
+@/chart
+
+---
+
+## Summary
+
+@grid cols=3
+  @card variant=outline
+    **Law 1 · Inertia**
+    Objects resist changes in motion.
+  @/card
+  @card variant=outline
+    **Law 2 · F = ma**
+    Net force causes acceleration.
+  @/card
+  @card variant=outline
+    **Law 3 · Reaction**
+    Every force has an equal opposite.
+  @/card
+@/grid
+
+---
+
+## Practice Quiz
+
+@quiz title="Quick Check" time_limit=300 passing=70
+  @mcq
+    question: "A 5 kg object experiences a 20 N net force. What is its acceleration?"
+    A: "1 m/s²"
+    B: "2 m/s²"
+    C: "4 m/s²" [correct]
+    D: "100 m/s²"
+    explanation: "a = F/m = 20/5 = 4 m/s²"
+    difficulty: medium
+  @/mcq
+@/quiz
+```
+
+---
+
+### 17.2 Full Production Example
+
+The following `.zl` document demonstrates all six domains in a single comprehensive study note.
 
 ```zolto
 ---

@@ -2,8 +2,8 @@
 
 **File:** `zolto/specs/components.md`
 **Version:** 8.1.0 (Infinity Architecture · Component & Design System Edition)
-**Source of truth:** `js/renderer/component-renderer.js` · `js/parser/ast.js` · `zolto/grammar/components.zol`
-**Spec reference:** `zolto/specs/ast.md` · `zolto/specs/syntax.md`
+**Source of truth:** `js/renderer/component-renderer.js` · `js/parser/ast.js` · `zolto/specs/ast.md`
+**Cross-references:** `zolto/specs/syntax.md` · `zolto/specs/renderer.md`
 
 ---
 
@@ -27,49 +27,51 @@
 16. [Runtime Injection](#16-runtime-injection)
 17. [Built-in Component Reference](#17-built-in-component-reference)
 18. [Design System Integration](#18-design-system-integration)
-19. [Complete Examples](#19-complete-examples)
+19. [Complete Examples](#19-complete-examples) — Quick-start · Study notes · Dashboard · Interactive formula
 
 ---
 
 ## 1. What Is the Component System?
 
-The Zolto Component System lets you build **reusable content blocks** — anything from a simple styled card to a full multi-panel dashboard widget — using nothing but `.zl` syntax. Components are defined once and used anywhere in the same document or across imported files.
+The Zolto Component System lets you build **reusable content blocks** — anything from a simple styled card to a full multi-panel dashboard widget — using nothing but `.zl` syntax.
 
-```
- ┌──────────────────────────────────────────────────┐
- │  Document source                                 │
- │                                                  │
- │  @component UserCard name="" role="Member"       │
- │    ### {name}                                    │
- │    Role: **{role}**                              │
- │  @/component                                     │
- │                                                  │
- │  <UserCard name="Alice" role="Admin" />          │
- │  <UserCard name="Bob"   role="Editor" />         │
- └──────────────────────────────────────────────────┘
-              │
-              ▼  ComponentRenderer
- ┌──────────────────────────────────────────────────┐
- │  <div class="zolto-component zolto-cmp-UserCard">│
- │    <h3>Alice</h3><p>Role: <strong>Admin</strong> │
- │  </div>                                          │
- │  <div class="zolto-component zolto-cmp-UserCard">│
- │    <h3>Bob</h3><p>Role: <strong>Editor</strong>  │
- │  </div>                                          │
- └──────────────────────────────────────────────────┘
+### How it works in two steps
+
+> **Step 1 — Define a blueprint** using `@component`:
+> Declare a name, default prop values, and a template body. This is your component's "mould".
+>
+> **Step 2 — Stamp out copies** using `<ComponentName prop="value">`:
+> Every time you write the PascalCase tag, the renderer clones the blueprint and fills in your props.
+
+```zolto
+// Step 1: Define once
+@component UserCard name="" role="Member"
+  ### {name}
+  Role: **{role}**
+@/component
+
+// Step 2: Use anywhere
+<UserCard name="Alice" role="Admin" />
+<UserCard name="Bob"   role="Editor" />
+<UserCard name="Carol" role="Viewer" />
 ```
 
-### What components can contain
+Rendered output for each tag:
+```html
+<div class="zolto-component zolto-cmp-UserCard">
+  <h3>Alice</h3><p>Role: <strong>Admin</strong></p>
+</div>
+```
 
-Components can contain any valid Zolto content — prose, math equations, diagrams, charts, other components, layout blocks, assessments. There are no restrictions on nesting.
+Components are defined once and used anywhere in the same document or across imported files. They can contain any valid Zolto content — prose, math, diagrams, charts, other components, layouts, assessments.
 
 ### What components cannot do
 
-- Components cannot execute arbitrary JavaScript at definition time (they are declarative)
-- Components cannot access the DOM directly from their definition body
-- Component names must start with an uppercase letter (`UserCard`, not `usercard`)
-- Maximum nesting depth is 32 levels (error `C001` beyond this)
-- Recursive component definitions are forbidden (error `C002`)
+- Execute arbitrary JavaScript at definition time (they are declarative)
+- Access the DOM directly from their definition body
+- Use names that start with lowercase (`usercard` is invalid — use `UserCard`)
+- Nest deeper than 32 levels (error `C001`)
+- Define themselves recursively (error `C002`)
 
 ---
 
@@ -119,7 +121,22 @@ Components can contain any valid Zolto content — prose, math equations, diagra
 
 ## 3. Built-in Components
 
-Zolto ships with a library of **30 built-in system components** that are always available without any `@component` definition. They cover the most common UI patterns in documentation, education, and technical writing.
+Zolto ships with **30 built-in system components** that are always available — no `@component` definition needed. Just write the tag and it works.
+
+```zolto
+// No setup required — these just work:
+@card variant=primary
+  Content here.
+@/card
+
+@badge tone=success shape=pill ✓ Verified
+
+@alert type=warning title="Watch Out"
+  This action cannot be undone.
+@/alert
+
+@progress value=72 label="Module completion" showValue=true
+```
 
 ### 3.1 Layout & Structure
 
@@ -193,6 +210,8 @@ A component definition uses `@component` followed by the component name and defa
   // Reference props with {propName}
 @/component
 ```
+
+> **Mental model:** The attributes you write on the `@component` line are the **default props** — the values used when a caller doesn't provide that attribute. A caller overrides them by passing a different value: `<ComponentName prop1="override">`.
 
 ### Rules
 
@@ -341,35 +360,37 @@ Boolean props can be set without a value (presence = `true`):
 
 ### 6.1 Default slot
 
-Every component implicitly has a `default` slot. Any children not inside a named `@slot` block go there automatically.
+Every component implicitly has a `default` slot. **Any children not wrapped in a named `@slot` block go there automatically** — you never need to explicitly target it.
 
 ```zolto
 <MyCard title="Hello">
   This paragraph is in the default slot.
-
   And so is this one.
+  Even this @math block: $F = ma$
 </MyCard>
 ```
 
+Think of it as: *whatever you put inside the component tags, unless you wrap it in a named slot, ends up in the body of the component.*
+
 ### 6.2 Named slots — definition
 
-In the component definition, use `@slot` to mark where each named slot is injected:
+In the component definition, `@slot name="…" … @/slot` marks **where** that named slot's content is injected, and the body inside it is the **fallback** (shown when the caller doesn't fill that slot).
 
 ```zolto
 @component ArticleLayout
   @slot header
-    // Article header — title, author, date
+    // ← This fallback renders if caller provides no header slot
   @/slot
 
   <article class="article-body">
     @slot default
-      // Article body — filled by caller
+      // ← Caller's default/body content goes here
     @/slot
   </article>
 
   @slot footer
     ---
-    // Article footer — tags, related links
+    // ← Footer fallback
   @/slot
 @/component
 ```
@@ -623,14 +644,15 @@ theme: dark
 
 ### 9.2 Scoped theme block
 
-Apply token overrides to a specific block or component tree:
+Apply token overrides to a specific block or component tree. The tokens only affect elements rendered inside the tagged block — nothing outside it changes.
 
 ```zolto
 @theme name="physics-palette"
-  --accent-primary: #0ea5e9
-  --card-bg: rgba(14, 165, 233, 0.05)
-  --card-border: rgba(14, 165, 233, 0.3)
-  --heading-color: #7dd3fc
+  --accent-primary: #0ea5e9;
+  --card-bg: rgba(14, 165, 233, 0.05);
+  --card-border: rgba(14, 165, 233, 0.3);
+  --heading-color: #7dd3fc;
+  --radius-md: 12px;
 @/theme
 
 @grid cols=3 theme="physics-palette"
@@ -648,6 +670,8 @@ Apply token overrides to a specific block or component tree:
   @/card
 @/grid
 ```
+
+> **How it works:** `@theme` defines a named token set. Pass `theme="name"` to any layout block or component to apply that token set as CSS custom properties scoped to that element's subtree. Multiple named themes can coexist in the same document.
 
 ### 9.3 Token naming convention
 
@@ -839,15 +863,34 @@ Apply via the `animate` prop on any component or built-in block:
 
 ### 12.3 Staggered entrance animations
 
-Use `animate-stagger` with a delay interval to animate multiple children in sequence:
+Use `animate-stagger` on any grid or flex container to animate multiple children in sequence with a fixed delay between each:
 
 ```zolto
+// Grid: each card appears 60ms after the previous
 @grid cols=3 animate-stagger="fadeSlideUp" stagger-delay=60ms
-  @card ...@/card
-  @card ...@/card
-  @card ...@/card
+  @card
+    ## Mechanics
+    Classical motion and forces.
+  @/card
+  @card
+    ## Thermodynamics
+    Heat, entropy, and cycles.
+  @/card
+  @card
+    ## Electromagnetism
+    Fields, currents, and waves.
+  @/card
+@/grid
+
+// Apply to custom components too
+@grid cols=3 animate-stagger="scaleIn" stagger-delay=80ms
+  <ConceptCard term="Inertia" />
+  <ConceptCard term="Momentum" />
+  <ConceptCard term="Acceleration" />
 @/grid
 ```
+
+The renderer injects `animation-delay: N×stagger-delay` on each child element automatically — no per-child configuration needed.
 
 ### 12.4 Animation AST nodes
 
@@ -1387,6 +1430,59 @@ A design system is a `.zl` file containing component definitions, theme tokens, 
 
 ## 19. Complete Examples
 
+### 19.0 Beginner Quick-Start
+
+This is the minimum viable component document — defining one component, using it three times, with a scoped theme. New users can copy this as a starting point.
+
+```zolto
+---
+title: Physics Concepts
+theme: dark
+---
+
+// ── 1. Define a component ──────────────────────────────────────────────
+
+@component ConceptCard term="" symbol="" tone="default"
+  @card tone={tone} variant=outline
+    **{term}**
+    {#if symbol}
+    @badge tone=muted size=sm {symbol}
+    {/if}
+
+    @slot default
+      // Body goes here — caller fills this in
+    @/slot
+  @/card
+@/component
+
+// ── 2. Define a theme ─────────────────────────────────────────────────
+
+@theme name="physics"
+  --accent-primary: #0ea5e9;
+  --card-bg: rgba(14, 165, 233, 0.05);
+@/theme
+
+// ── 3. Write the document ─────────────────────────────────────────────
+
+# Newton's Laws — Key Concepts
+
+@grid cols=3 gap=1.5rem theme="physics" animate-stagger="fadeSlideUp" stagger-delay=60ms
+  <ConceptCard term="Inertia" symbol="I" tone=primary>
+    Resistance of an object to changes in its state of motion.
+  </ConceptCard>
+
+  <ConceptCard term="Net Force" symbol="F_net">
+    The vector sum of all forces acting on an object. $F_{net} = \sum F$
+  </ConceptCard>
+
+  <ConceptCard term="Momentum" symbol="p = mv" tone=success>
+    Mass times velocity. Conserved in isolated systems.
+  </ConceptCard>
+@/grid
+```
+
+---
+
 ### 19.1 Reusable study notes template
 
 ```zolto
@@ -1607,5 +1703,103 @@ theme: dark
 
 ---
 
+### 19.3 Interactive Formula Explorer
+
+Drawn from the HFE's tab-based formula/proof pattern — a component that exposes both an interactive calculator and a mathematical proof in separate tabs.
+
+```zolto
+---
+title: Interactive Physics Reference
+theme: dark
+---
+
+// ── Component: tabbed formula with calculator + proof ─────────────────
+
+@component FormulaExplorer name="" latex="" from="" proof=""
+  @tabs variant=underline
+    @tab label="Formula"
+      @math name="{name}"
+        {latex}
+      @/math
+    @/tab
+
+    @tab label="Calculator"
+      @slot calculator
+        // Caller injects interactive sliders here
+      @/slot
+    @/tab
+
+    @tab label="Derivation"
+      Starting from $\{from}$:
+
+      @slot derivation
+        // Step-by-step working
+      @/slot
+    @/tab
+
+    @tab label="Proof"
+      @slot proof
+        // Formal proof body
+      @/slot
+    @/tab
+  @/tabs
+@/component
+
+// ── Document ──────────────────────────────────────────────────────────
+
+# Newton's Laws — Interactive Reference
+
+## Law 2: F = ma
+
+<FormulaExplorer
+  name="Newton's Second Law"
+  latex="\mathbf{F} = m\mathbf{a}"
+  from="p = mv">
+
+  @slot calculator
+    @interactive
+      slider name="mass"  min=1   max=100 default=10 label="Mass (kg)"
+      slider name="force" min=0   max=500 default=50 label="Net Force (N)"
+      output: $a = \frac{F}{m} = \frac{force}{mass}\,\text{m/s}^2$
+    @/interactive
+  @/slot
+
+  @slot derivation
+    By definition of force as rate of change of momentum:
+
+    @math env=align
+      \mathbf{F} &= \frac{d\mathbf{p}}{dt} \\
+                 &= m\frac{d\mathbf{v}}{dt} \\
+                 &= m\mathbf{a}
+    @/math
+  @/slot
+
+  @slot proof
+    Assume constant mass. From $\mathbf{F} = \frac{d\mathbf{p}}{dt}$ and $\mathbf{p} = m\mathbf{v}$:
+
+    $\mathbf{F} = m\frac{d\mathbf{v}}{dt} = m\mathbf{a}$ $\blacksquare$
+  @/slot
+</FormulaExplorer>
+
+---
+
+## Self-Assessment
+
+@quiz title="Chapter Check" time_limit=900 passing=70
+  @mcq
+    question: "Which law defines inertia?"
+    A: "Newton's First Law" [correct]
+    B: "Newton's Second Law"
+    C: "Newton's Third Law"
+    explanation: "The First Law states objects resist changes in motion."
+    difficulty: easy
+  @/mcq
+@/quiz
+```
+
+---
+
 *This is the canonical Component System reference for Zolto v8.1.0.*
-*Source: `zolto/specs/components.md` · AST: `zolto/specs/ast.md` · Syntax: `zolto/specs/syntax.md` · Grammar: `zolto/grammar/components.zol` · Renderer: `js/renderer/component-renderer.js`*
+*Source: `zolto/specs/components.md`*
+*Related: `zolto/specs/ast.md` · `zolto/specs/syntax.md` · `zolto/specs/renderer.md`*
+*Grammar: `zolto/grammar/components.zol` · Renderer: `js/renderer/component-renderer.js`*
