@@ -116,40 +116,135 @@ You're already writing Zolto — it's just Markdown with superpowers.
 ```
 zolto/
 │
-├── index.html                  ← Application entry point
+├── index.html
 ├── README.md
 ├── LICENSE
 ├── package.json
 │
-├── css/                        ← All stylesheets (see §12)
-│   ├── base/                   ← Reset, typography, CSS custom properties
-│   ├── layouts/                ← Editor, preview, sidebar, workspace chrome
-│   ├── components/             ← Per-component styles (card, tabs, chart, …)
-│   └── themes/                 ← light / dark / midnight / oled
-│
-├── js/                         ← All JavaScript source
-│   ├── app.js                  ← Application bootstrap
-│   ├── router.js               ← Client-side routing
-│   ├── state.js                ← Global reactive state
-│   ├── storage.js              ← Persistence (IndexedDB / localStorage)
-│   ├── settings.js             ← User settings management
+├── css/
+│   ├── base/
+│   │   ├── reset.css
+│   │   ├── typography.css
+│   │   └── variables.css
 │   │
-│   ├── editor/                 ← Source editor (see §5)
-│   ├── preview/                ← Live preview + virtual DOM (see §7)
-│   ├── parser/                 ← Tokenizer → Lexer → Parser → AST (see §6)
-│   ├── renderer/               ← AST → HTML/SVG (see §7)
-│   ├── components/             ← Runtime JS for interactive components
-│   ├── export/                 ← HTML / PDF / Markdown / JSON export (see §10)
-│   └── utils/                  ← Shared utilities
+│   ├── layouts/
+│   │   ├── editor.css
+│   │   ├── preview.css
+│   │   ├── sidebar.css
+│   │   └── workspace.css
+│   │
+│   ├── components/
+│   │   ├── card.css
+│   │   ├── alert.css
+│   │   ├── tabs.css
+│   │   ├── accordion.css
+│   │   ├── timeline.css
+│   │   ├── hero.css
+│   │   ├── gallery.css
+│   │   └── chart.css
+│   │
+│   └── themes/
+│       ├── light.css
+│       ├── dark.css
+│       ├── midnight.css
+│       └── oled.css
+│
+├── js/
+│   ├── app.js
+│   ├── router.js
+│   ├── state.js
+│   ├── storage.js
+│   ├── settings.js
+│   │
+│   ├── editor/
+│   │   ├── editor.js
+│   │   ├── cursor.js
+│   │   ├── selection.js
+│   │   ├── shortcuts.js
+│   │   ├── autocomplete.js
+│   │   ├── syntax-highlighter.js
+│   │   └── command-palette.js
+│   │
+│   ├── preview/
+│   │   ├── preview.js
+│   │   ├── virtual-dom.js
+│   │   └── live-renderer.js
+│   │
+│   ├── parser/
+│   │   ├── tokenizer.js
+│   │   ├── lexer.js
+│   │   ├── parser.js
+│   │   ├── ast.js
+│   │   ├── validator.js
+│   │   └── transformer.js
+│   │
+│   ├── renderer/
+│   │   ├── renderer.js
+│   │   ├── html-renderer.js
+│   │   ├── component-renderer.js
+│   │   ├── math-renderer.js
+│   │   └── diagram-renderer.js
+│   │
+│   ├── components/
+│   │   ├── card.js
+│   │   ├── alert.js
+│   │   ├── tabs.js
+│   │   ├── accordion.js
+│   │   ├── timeline.js
+│   │   ├── gallery.js
+│   │   ├── chart.js
+│   │   └── hero.js
+│   │
+│   ├── export/
+│   │   ├── html-export.js
+│   │   ├── pdf-export.js
+│   │   ├── markdown-export.js
+│   │   ├── text-export.js
+│   │   └── json-export.js
+│   │
+│   └── utils/
+│       ├── debounce.js
+│       ├── events.js
+│       ├── dom.js
+│       ├── logger.js
+│       └── helpers.js
 │
 ├── zolto/
-│   ├── grammar/                ← Formal grammar rules (.zol files)
-│   ├── specs/                  ← Language specifications (see §14)
-│   └── examples/               ← Sample .zol documents
+│   ├── grammar/
+│   │   ├── blocks.zl
+│   │   ├── inline.zl
+│   │   ├── math.zl
+│   │   └── components.zl
+│   │
+│   ├── specs/
+│   │   ├── syntax.md
+│   │   ├── ast.md
+│   │   ├── renderer.md
+│   │   └── components.md
+│   │
+│   └── examples/
+│       ├── basic.zl
+│       ├── dashboard.zl
+│       ├── presentation.zl
+│       ├── notes.zl
+│       └── documentation.zl
 │
-├── plugins/                    ← Plugin system (see §11)
-├── tests/                      ← Test suites (see §13)
-└── docs/                       ← Architecture, roadmap, changelog
+├── plugins/
+│   ├── plugin-manager.js
+│   ├── api.js
+│   └── builtins/
+│
+├── tests/
+│   ├── parser/
+│   ├── renderer/
+│   ├── editor/
+│   └── export/
+│
+└── docs/
+    ├── roadmap.md
+    ├── architecture.md
+    ├── contributing.md
+    └── changelog.md
 ```
 
 ---
