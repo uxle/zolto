@@ -34,8 +34,8 @@ Zolto is built on **two rules**:
 > **Rule 1 — Everything you know from Markdown works unchanged.**
 > Headings, bold, italic, lists, blockquotes, code blocks, links, images — all standard Markdown is fully supported as-is.
 >
-> **Rule 2 — Everything else uses `@directive … @/directive` blocks.**
-> Math, diagrams, charts, layouts, components, and assessments all follow the same `@keyword … @/keyword` pattern.
+> **Rule 2 — Everything beyond Markdown uses standard HTML-style `<Tags>`.**
+> Math, diagrams, charts, layouts, components, and assessments all use the same familiar `<Tag attr="value">…</Tag>` pattern you already know from HTML and JSX.
 
 That's it. A complete Zolto document in 10 lines:
 
@@ -46,25 +46,27 @@ title: Quick Demo
 
 # Newton's Second Law
 
-The net force equals mass times acceleration: $F = ma$.
+The net force equals mass times acceleration: <m>F = ma</m>.
 
-@math name="Newton's Second Law"
+<math name="Newton's Second Law">
   \mathbf{F} = m\mathbf{a}
-@/math
+</math>
 
-[tip] Always draw a free-body diagram before solving force problems. [/tip]
+<tip>Always draw a free-body diagram before solving force problems.</tip>
 ```
+
+No new syntax to memorise. If you have written a line of HTML or JSX, you already know how to use every feature in Zolto.
 
 ### Six Capability Domains
 
 | Domain | What it covers |
 |--------|----------------|
-| **1 — Rich Markdown & Typography** | Standard Markdown + admonitions, tabs, cards, callouts, steps, accordions |
-| **2 — LaTeX-level Mathematics** | `@math`, inline `$…$`, multi-line environments, function plots, interactive sliders |
-| **3 — Mermaid-level Diagramming** | Flowchart, sequence, state machine, ER, mindmap, Gantt, timeline, kanban, circuit, atom, and more |
-| **4 — Native SVG & Vector Graphics** | `@vector` scenes, layers, artboards, connectors, camera |
-| **5 — Spatial Layout System** | `@grid`, `@flex`, `@canvas`, `@whiteboard`, `@presentation`, `@split`, `@panel` |
-| **6 — Component & Template System** | `@component`, `@template`, `@macro`, `@animate`, slots, props, variants, themes |
+| **1 — Rich Markdown & Typography** | Standard Markdown + `<tip>`, `<card>`, `<tabs>`, `<steps>`, `<accordion>` |
+| **2 — LaTeX-level Mathematics** | `<math>`, inline `<m>…</m>`, multi-line environments, function plots, interactive sliders |
+| **3 — Mermaid-level Diagramming** | `<diagram type="flowchart">` — flowchart, sequence, state, ER, mindmap, Gantt, kanban, and more |
+| **4 — Native SVG & Vector Graphics** | `<vector>` scenes, layers, artboards, connectors, camera |
+| **5 — Spatial Layout System** | `<grid>`, `<flex>`, `<canvas>`, `<whiteboard>`, `<presentation>`, `<split>`, `<panel>` |
+| **6 — Component & Template System** | `<define>`, `<slot>`, `<macro>`, `<animate>`, props, variants, themes |
 
 ---
 
@@ -98,16 +100,16 @@ theme: dark
 
 # Hello, Zolto
 
-This is **bold**, this is *italic*, and this is $E = mc^2$.
+This is **bold**, this is *italic*, and this is <m>E = mc^2</m>.
 
-[tip]
-You're already writing Zolto — it's just Markdown with superpowers.
-[/tip]
+<tip>You're already writing Zolto — it's just Markdown with superpowers.</tip>
 
-@math name="Einstein's Energy"
+<math name="Einstein's Energy">
   E = mc^2
-@/math
+</math>
 ```
+
+No special characters clash with normal writing. The price of a coffee ($5.00) and the speed of light (<m>c = 3 \times 10^8</m> m/s) coexist without conflict.
 
 ---
 
@@ -276,100 +278,116 @@ This document covers {$subject} for {$year}.
 ### Imports
 
 ```zolto
-@import "shared/components.zl"
-@import "shared/theme.zl" as theme
+<import src="shared/components.zl" />
+<import src="shared/theme.zl" as="theme" />
 ```
 
 ### Inline syntax
 
 ```zolto
 **bold**   *italic*   ***bold-italic***   ~~strike~~   ==highlight==
-^super^    ~sub~      `code`              $math$
+^super^    ~sub~      `code`
+<m>inline math</m>
 {red coloured text}   {primary themed text}
 [link text](url)      ![alt](image.png)
 @mention   #hashtag   :emoji:   {$variable}
 ```
 
-### Block directives (Domain 2–6)
+`<m>...</m>` is the inline math tag. Dollar signs in your text are always plain text — write prices, variable names, or spreadsheet formulas without any escaping.
 
-Every non-Markdown feature follows the same pattern:
+### Block Tags (Domains 2–6)
+
+Every non-Markdown feature is a paired or self-closing tag with HTML-style attributes:
 
 ```zolto
-@keyword [attributes]
+<TagName attr="value" booleanFlag>
   content
-@/keyword
+</TagName>
 ```
 
-See `zolto/specs/syntax.md` for the complete directive reference, or jump to the relevant domain section in this README.
-
-### Admonitions (fastest callout syntax)
+Self-closing for empty/void elements:
 
 ```zolto
-[tip] Draw a free-body diagram first. [/tip]
-[warning] Do not confuse mass with weight. [/warning]
-[important] This is the key equation. [/important]
+<import src="file.zl" />
+<hr />
 ```
 
-All types: `note` `tip` `info` `warning` `danger` `caution` `important` `success` `check` `bug` `example` `quote` `abstract` `todo` `question` `failure` `seealso` `summary` `hint` `attention` `definition` `theorem`
+### Callouts & Admonitions
+
+```zolto
+<tip>Draw a free-body diagram first.</tip>
+<warning>Do not confuse mass with weight.</warning>
+<important>This is the key equation.</important>
+```
+
+Multi-line with a title:
+
+```zolto
+<warning title="Common Mistake">
+  Students often confuse **mass** (kg) with **weight** (N).
+  Weight is a force: <m>W = mg</m>.
+</warning>
+```
+
+All callout types: `note` `tip` `info` `warning` `danger` `caution` `important` `success` `check` `bug` `example` `quote` `abstract` `todo` `question` `failure` `seealso` `summary` `hint` `attention` `definition` `theorem`
 
 ### Mathematics
 
 ```zolto
-Inline: $F = ma$
+Inline: <m>F = ma</m>
 
 Block:
-@math name="Newton's Second Law" label="eq:f=ma"
+<math name="Newton's Second Law" label="eq:f=ma">
   \mathbf{F} = m\mathbf{a}
-@/math
+</math>
 
-Aligned:
-@math env=align
+Aligned system:
+<math env="align">
   F &= ma \\
   W &= F \cdot d \\
   P &= \frac{W}{t}
-@/math
+</math>
 
 Function plot:
-@math plot name="Quadratic Curve"
-  function: "y = x^2 - 4x + 3"
-  xrange: [-1, 5]
-  grid: true
-@/math
+<math type="plot" name="Quadratic Curve" xrange="[-1, 5]" grid>
+  y = x^2 - 4x + 3
+</math>
 ```
+
+Because math uses `<m>` and `<math>`, dollar signs are never interpreted as math delimiters. Write prices, currency, and financial data freely anywhere in your document.
 
 ### Diagrams
 
 ```zolto
-@diagram flowchart dir=LR
+<diagram type="flowchart" dir="LR">
   [Start] --> (Decision)
   (Decision) --"Yes"--> [Process A] +success
   (Decision) --"No"-->  [Process B] +danger
-@/diagram
+</diagram>
 
-@diagram sequence
+<diagram type="sequence">
   User -> App: Login request
   App -> DB: Validate credentials
   DB --> App: OK
   App --> User: Access token
-@/diagram
+</diagram>
 ```
 
-All diagram types: `flowchart` `sequence` `state` `erd` `mindmap` `gantt` `timeline` `network` `architecture` `dependency` `tree` `pipeline` `kanban` `geometry` `circuit` `atom` `grammar-tree` `chemistry`
+The `type` attribute selects the diagram engine — the same HTML-attribute convention you use everywhere else. All diagram types: `flowchart` `sequence` `state` `erd` `mindmap` `gantt` `timeline` `network` `architecture` `dependency` `tree` `pipeline` `kanban` `geometry` `circuit` `atom` `grammar-tree` `chemistry`
 
 ### Charts
 
 ```zolto
-@chart pie title="Energy Distribution"
-  "Kinetic":   45
-  "Potential": 35
-  "Thermal":   20
-@/chart
+<chart type="pie" title="Energy Distribution">
+  Kinetic:   45
+  Potential: 35
+  Thermal:   20
+</chart>
 
-@chart line title="Acceleration vs Time"
+<chart type="line" title="Acceleration vs Time" smooth>
   x: [0, 1, 2, 3, 4]
   y: [0, 9.8, 19.6, 29.4, 39.2]
-  smooth: true
-@/chart
+</chart>
 ```
 
 All chart types: `pie` `donut` `bar` `line` `area` `scatter` `radar` `gauge` `waterfall` `heatmap` `sankey` `funnel` `treemap` `bubble` `polar` `quadrant`
@@ -377,53 +395,45 @@ All chart types: `pie` `donut` `bar` `line` `area` `scatter` `radar` `gauge` `wa
 ### Layouts
 
 ```zolto
-@grid cols=3 gap=1.5rem
-  @card variant=outline
-    **Law 1** — Inertia
-  @/card
-  @card variant=outline
-    **Law 2** — $F = ma$
-  @/card
-  @card variant=outline
-    **Law 3** — Action & Reaction
-  @/card
-@/grid
+<grid cols="3" gap="1.5rem">
+  <card variant="outline">**Law 1** — Inertia</card>
+  <card variant="outline">**Law 2** — <m>F = ma</m></card>
+  <card variant="outline">**Law 3** — Action & Reaction</card>
+</grid>
 
-@presentation theme=dark
-  @slide layout=title
+<presentation theme="dark">
+  <slide layout="title">
     # Introduction to Quantum Mechanics
-  @/slide
-  @slide layout=two-col
+  </slide>
+  <slide layout="two-col">
     ## Wave-Particle Duality
-    ::: col
-    Particles exhibit wave properties.
-    :::
-    ::: col
-    @diagram flowchart
-      [Wave] <--> [Particle]
-    @/diagram
-    :::
-  @/slide
-@/presentation
+    <col>Particles exhibit wave properties.</col>
+    <col>
+      <diagram type="flowchart">
+        [Wave] <--> [Particle]
+      </diagram>
+    </col>
+  </slide>
+</presentation>
 ```
 
-### Assessment blocks
+All layout tags: `<grid>` `<flex>` `<canvas>` `<whiteboard>` `<presentation>` `<split>` `<panel>` `<tabs>` `<accordion>` `<steps>` `<card>` `<hero>`
+
+### Assessment Blocks
 
 ```zolto
-@mcq
-  question: "A 5 kg object experiences 20 N net force. Acceleration?"
-  A: "1 m/s²"
-  B: "4 m/s²" [correct]
-  C: "100 m/s²"
-  explanation: "a = F/m = 20/5 = 4 m/s²"
-  difficulty: medium
-@/mcq
+<mcq difficulty="medium">
+  <question>A 5 kg object experiences 20 N net force. Acceleration?</question>
+  <option>1 m/s²</option>
+  <option correct>4 m/s²</option>
+  <option>100 m/s²</option>
+  <explanation>a = F/m = 20/5 = 4 m/s²</explanation>
+</mcq>
 
-@flashcard
-  front: What is Newton's First Law?
-  back:  Objects resist changes in their state of motion (inertia).
-  tags: [physics, mechanics]
-@/flashcard
+<flashcard tags="physics mechanics">
+  <front>What is Newton's First Law?</front>
+  <back>Objects resist changes in their state of motion (inertia).</back>
+</flashcard>
 ```
 
 ---
@@ -438,7 +448,7 @@ Source: `js/editor/`
 | `cursor.js` | Cursor position, line/column reporting, programmatic cursor movement |
 | `selection.js` | Text selection, range queries, multi-cursor support |
 | `shortcuts.js` | Keyboard shortcut registry — bold, italic, heading insert, etc. |
-| `autocomplete.js` | Directive completion, prop name hints, component name suggestions |
+| `autocomplete.js` | Tag completion, attribute name hints, component name suggestions |
 | `syntax-highlighter.js` | Token-based syntax colouring in the editor surface |
 | `command-palette.js` | `Cmd/Ctrl+K` command palette — file actions, insert commands, theme switch |
 
@@ -455,7 +465,7 @@ Source (.zl text)
       │
   tokenizer.js    →  Token stream + InlineFlags bitmask
       │
-  lexer.js        →  Token classification, keyword recognition
+  lexer.js        →  Token classification, tag recognition
       │
   parser.js       →  Document AST  (uses ASTFactory from ast.js only)
       │
@@ -482,7 +492,7 @@ Source (.zl text)
 import { ZoltoParser }      from './js/parser/parser.js';
 import { ZoltoTransformer } from './js/parser/transformer.js';
 
-const source = '# Hello\n\nThis is $F = ma$.';
+const source = '# Hello\n\nThe net force is <m>F = ma</m>.';
 const parser      = new ZoltoParser();
 const transformer = new ZoltoTransformer();
 
@@ -516,7 +526,7 @@ Source: `js/renderer/` and `js/preview/`
 | `renderer.js` | `ZoltoRenderer` — main entry, dispatches all node types |
 | `html-renderer.js` | Domain 1 nodes (Markdown, typography, tables, lists) |
 | `math-renderer.js` | `MathBlock` / `MathInline` → KaTeX MathML/SVG + function plots |
-| `diagram-renderer.js` | All `@diagram` types → SVG (Dagre layout, force-directed, radial) |
+| `diagram-renderer.js` | All `<diagram>` types → SVG (Dagre layout, force-directed, radial) |
 | `component-renderer.js` | `ComponentUse` → HTML (slot injection, prop merging, variant classes) |
 | `preview/preview.js` | Preview pane controller — mounts renderer output into the DOM |
 | `preview/virtual-dom.js` | Virtual DOM differ — patches only changed nodes on re-render |
@@ -539,8 +549,8 @@ document.getElementById('preview').innerHTML = html;
 |------|---------------|----------|
 | **Static** | `renderer.render(doc)` | Server-side render, initial page load |
 | **Live** | `renderer.renderToCanvas(doc, el)` | Live editor — patches DOM incrementally |
-| **Lazy** | `@component … render=lazy` | Heavy diagrams rendered on scroll intersection |
-| **Streaming** | `@component … render=streaming` | Large documents — shell first, content progressively |
+| **Lazy** | `<Component render="lazy">` | Heavy diagrams rendered on scroll intersection |
+| **Streaming** | `<Component render="streaming">` | Large documents — shell first, content progressively |
 
 ### Extending the renderer
 
@@ -571,15 +581,15 @@ Source: `js/parser/transformer.js` (registry) · `js/renderer/component-renderer
 ### Define a component
 
 ```zolto
-@component StatCard title="" value="" trend="neutral"
-  @card variant=outline
+<define name="StatCard" props="title value trend='neutral'">
+  <card variant="outline">
     **{title}**
     # {value}
     {#if trend == "up"}
       {success ↑ Trending up}
     {/if}
-  @/card
-@/component
+  </card>
+</define>
 ```
 
 ### Use it
@@ -590,17 +600,19 @@ Source: `js/parser/transformer.js` (registry) · `js/renderer/component-renderer
 <StatCard title="Churn"   value="2.4%"     trend="down" />
 ```
 
+The `value="$124,000"` prop works without any escaping — dollar signs in attribute values are always plain text.
+
 ### Slots
 
 ```zolto
-@component FeatureCard title="" icon=""
-  @slot header
+<define name="FeatureCard" props="title icon">
+  <slot name="header">
     ### {title}
-  @/slot
-  @slot default
-    // Caller fills this.
-  @/slot
-@/component
+  </slot>
+  <slot>
+    <!-- Default slot — caller fills this -->
+  </slot>
+</define>
 
 <FeatureCard title="Fast Rendering" icon="zap">
   Renders 10,000 nodes in under 16 ms.
@@ -622,13 +634,13 @@ ZoltoComponentRuntime.clear();
 ### Macros
 
 ```zolto
-@macro formula(name, expr)
-  @math name="{name}"
+<macro name="formula" params="name, expr">
+  <math name="{name}">
     {expr}
-  @/math
-@/macro
+  </math>
+</macro>
 
-@formula("Newton's Second Law", "F = ma")
+<formula name="Newton's Second Law" expr="F = ma" />
 ```
 
 Full component system reference: see `zolto/specs/components.md`.
@@ -659,24 +671,25 @@ theme: dark
 ### Override tokens for a document
 
 ```zolto
---accent-primary: #6366f1
---font-sans: "Inter Variable", system-ui, sans-serif
---radius-md: 12px
+---
+tokens:
+  --accent-primary: "#6366f1"
+  --font-sans: "Inter Variable, system-ui, sans-serif"
+  --radius-md: "12px"
+---
 ```
 
 ### Scoped theme block
 
 ```zolto
-@theme name="physics-palette"
+<theme name="physics-palette">
   --accent-primary: #0ea5e9;
   --card-bg: rgba(14, 165, 233, 0.05);
-@/theme
+</theme>
 
-@grid cols=3 theme="physics-palette"
-  @card
-    ## Mechanics
-  @/card
-@/grid
+<grid cols="3" theme="physics-palette">
+  <card>## Mechanics</card>
+</grid>
 ```
 
 ### Token categories
@@ -800,7 +813,7 @@ css/
     └── oled.css         ← OLED theme token overrides
 ```
 
-All component styles use CSS custom properties defined in `variables.css`. Themes override only the tokens — never component rules directly. This means swapping themes at runtime requires only toggling a `data-theme` attribute on `<html>`.
+All component styles use CSS custom properties defined in `variables.css`. Themes override only the tokens — never component rules directly. Swapping themes at runtime requires only toggling a `data-theme` attribute on `<html>`:
 
 ```js
 document.documentElement.setAttribute('data-theme', 'dark');
@@ -845,7 +858,7 @@ Source: `zolto/specs/` and `docs/`
 
 | File | Contents |
 |------|----------|
-| `zolto/specs/syntax.md` | Complete Zolto language syntax reference — all directives, operators, inline syntax, token precedence, examples |
+| `zolto/specs/syntax.md` | Complete Zolto language syntax reference — all tags, attributes, inline syntax, token precedence, examples |
 | `zolto/specs/ast.md` | AST node type definitions, `ASTFactory` method list, `InlineParser`, `MathASTBuilder`, ID generation, developer JSON examples |
 | `zolto/specs/renderer.md` | HTML/SVG output specification for every node type, CSS class reference, theming, render modes, extension API |
 | `zolto/specs/components.md` | Component system — definition, props, slots, variants, themes, templates, macros, animations, registry API |
@@ -858,21 +871,21 @@ Source: `zolto/specs/` and `docs/`
 
 ```
 zolto/grammar/
-├── blocks.zol      ← Block-level grammar rules
-├── inline.zol      ← Inline grammar rules
-├── math.zol        ← Math block grammar
-└── components.zol  ← Component syntax grammar
+├── blocks.zl      ← Block-level tag grammar rules
+├── inline.zl      ← Inline tag grammar rules
+├── math.zl        ← Math tag grammar
+└── components.zl  ← Component tag syntax grammar
 ```
 
 ### Example documents
 
 ```
 zolto/examples/
-├── basic.zol           ← Beginner quick-start (all six domains)
-├── dashboard.zol       ← Metrics dashboard with charts and components
-├── presentation.zol    ← Multi-slide presentation
-├── notes.zol           ← Study notes with math, MCQ, and flashcards
-└── documentation.zol   ← API documentation with code blocks and tables
+├── basic.zl           ← Beginner quick-start (all six domains)
+├── dashboard.zl       ← Metrics dashboard with charts and components
+├── presentation.zl    ← Multi-slide presentation
+├── notes.zl           ← Study notes with math, MCQ, and flashcards
+└── documentation.zl   ← API documentation with code blocks and tables
 ```
 
 ---
@@ -884,7 +897,7 @@ See `docs/contributing.md` for the full guide. Key points:
 - **Node creation:** always use `ASTFactory` — never plain objects.
 - **CSS:** all colours and spacing via CSS custom properties — no hardcoded values.
 - **Renderer output:** update `zolto/specs/renderer.md` when changing HTML output.
-- **New directives:** add grammar rule to `zolto/grammar/blocks.zol`, AST node to `ast.js`, renderer to `renderer.js`, and spec entry to `syntax.md`.
+- **New tags:** add grammar rule to `zolto/grammar/blocks.zl`, AST node to `ast.js`, renderer to `renderer.js`, and spec entry to `syntax.md`.
 - **Tests:** every parser and renderer change requires a snapshot test.
 
 ```bash

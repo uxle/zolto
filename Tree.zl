@@ -1,131 +1,112 @@
-zolto/
-│
-├── index.html
-├── README.md
-├── LICENSE
-├── package.json
-│
-├── css/
-│   ├── base/
-│   │   ├── reset.css
-│   │   ├── typography.css
-│   │   └── variables.css
-│   │
-│   ├── layouts/
-│   │   ├── editor.css
-│   │   ├── preview.css
-│   │   ├── sidebar.css
-│   │   └── workspace.css
-│   │
-│   ├── components/
-│   │   ├── card.css
-│   │   ├── alert.css
-│   │   ├── tabs.css
-│   │   ├── accordion.css
-│   │   ├── timeline.css
-│   │   ├── hero.css
-│   │   ├── gallery.css
-│   │   └── chart.css
-│   │
-│   └── themes/
-│       ├── light.css
-│       ├── dark.css
-│       ├── midnight.css
-│       └── oled.css
-│
-├── js/
-│   ├── app.js
-│   ├── router.js
-│   ├── state.js
-│   ├── storage.js
-│   ├── settings.js
-│   │
-│   ├── editor/
-│   │   ├── editor.js
-│   │   ├── cursor.js
-│   │   ├── selection.js
-│   │   ├── shortcuts.js
-│   │   ├── autocomplete.js
-│   │   ├── syntax-highlighter.js
-│   │   └── command-palette.js
-│   │
-│   ├── preview/
-│   │   ├── preview.js
-│   │   ├── virtual-dom.js
-│   │   └── live-renderer.js
-│   │
-│   ├── parser/
-│   │   ├── tokenizer.js
-│   │   ├── lexer.js
-│   │   ├── parser.js
-│   │   ├── ast.js
-│   │   ├── validator.js
-│   │   └── transformer.js
-│   │
-│   ├── renderer/
-│   │   ├── renderer.js
-│   │   ├── html-renderer.js
-│   │   ├── component-renderer.js
-│   │   ├── math-renderer.js
-│   │   └── diagram-renderer.js
-│   │
-│   ├── components/
-│   │   ├── card.js
-│   │   ├── alert.js
-│   │   ├── tabs.js
-│   │   ├── accordion.js
-│   │   ├── timeline.js
-│   │   ├── gallery.js
-│   │   ├── chart.js
-│   │   └── hero.js
-│   │
-│   ├── export/
-│   │   ├── html-export.js
-│   │   ├── pdf-export.js
-│   │   ├── markdown-export.js
-│   │   ├── text-export.js
-│   │   └── json-export.js
-│   │
-│   └── utils/
-│       ├── debounce.js
-│       ├── events.js
-│       ├── dom.js
-│       ├── logger.js
-│       └── helpers.js
-│
-├── zolto/
-│   ├── grammar/
-│   │   ├── blocks.zl
-│   │   ├── inline.zl
-│   │   ├── math.zl
-│   │   └── components.zl
-│   │
-│   ├── specs/
-│   │   ├── syntax.md
-│   │   ├── ast.md
-│   │   ├── renderer.md
-│   │   └── components.md
-│   │
-│   └── examples/
-│       ├── basic.zl
-│       ├── dashboard.zl
-│       ├── presentation.zl
-│       ├── notes.zl
-│       └── documentation.zl
-│
-├── plugins/
-│   ├── plugin-manager.js
-│   ├── api.js
-│   └── builtins/
-│
-├── tests/
-│   ├── parser/
-│   ├── renderer/
-│   ├── editor/
-│   └── export/
-│
-└── docs/
-    ├── roadmap.md
-    ├── architecture.md
-    ├── contributing.md
-    └── changelog.md
+zolto/ # Core Framework
+  index.html # Main entry
+  README.md
+  LICENSE
+  package.json
+  css/ # Styling architecture
+    base/
+      reset.css
+      typography.css
+      variables.css
+    layouts/
+      editor.css
+      preview.css
+      sidebar.css
+      workspace.css
+    components/
+      card.css
+      alert.css
+      tabs.css
+      accordion.css
+      timeline.css
+      hero.css
+      gallery.css
+      chart.css
+    themes/
+      light.css
+      dark.css
+      midnight.css
+      oled.css
+  js/ # Logic & Modules
+    app.js
+    router.js
+    state.js
+    storage.js
+    settings.js
+    editor/
+      editor.js
+      cursor.js
+      selection.js
+      shortcuts.js
+      autocomplete.js
+      syntax-highlighter.js
+      command-palette.js
+    preview/
+      preview.js
+      virtual-dom.js
+      live-renderer.js
+    parser/
+      tokenizer.js
+      lexer.js
+      parser.js
+      ast.js
+      validator.js
+      transformer.js
+    renderer/
+      renderer.js
+      html-renderer.js
+      component-renderer.js
+      math-renderer.js
+      diagram-renderer.js
+    components/
+      card.js
+      alert.js
+      tabs.js
+      accordion.js
+      timeline.js
+      gallery.js
+      chart.js
+      hero.js
+    export/
+      html-export.js
+      pdf-export.js
+      markdown-export.js
+      text-export.js
+      json-export.js
+    utils/
+      debounce.js
+      events.js
+      dom.js
+      logger.js
+      helpers.js
+  zolto/ # Language Grammar
+    grammar/
+      blocks.zl
+      inline.zl
+      math.zl
+      components.zl
+    specs/
+      syntax.md
+      ast.md
+      renderer.md
+      components.md
+    examples/
+      basic.zl
+      dashboard.zl
+      presentation.zl
+      notes.zl
+      documentation.zl
+  plugins/
+    plugin-manager.js
+    api.js
+    builtins/
+  tests/
+    parser/
+    renderer/
+    editor/
+    export/
+  docs/ # Documentation
+    roadmap.md
+    architecture.md
+    contributing.md
+    changelog.md
