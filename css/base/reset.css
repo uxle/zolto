@@ -1,0 +1,572 @@
+/* ============================================================
+   css/base/reset.css
+   Zolto v8.1.0 — Base Reset
+   ============================================================
+   Purpose:
+   - Normalise browser defaults to a consistent baseline
+   - Establish box-sizing, spacing, and rendering model
+   - No visual styling — zero colours, fonts, or sizes
+   - All values here are absolute (no CSS custom properties)
+     because this sheet loads before variables.css
+   ============================================================ */
+
+
+/* ─────────────────────────────────────────────────────────────
+   1. Box Model
+   ───────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   2. Root & Document
+   ───────────────────────────────────────────────────────────── */
+
+html {
+  /* Prevent font size inflation on mobile */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+
+  /* Smooth scrolling — respects prefers-reduced-motion below */
+  scroll-behavior: smooth;
+
+  /* Tab size for <pre> blocks */
+  tab-size: 2;
+  -moz-tab-size: 2;
+
+  /* Subpixel rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-smooth: always;
+
+  /* Text rendering quality */
+  text-rendering: optimizeLegibility;
+
+  /* Prevent horizontal scroll from misuse */
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100dvh;
+  line-height: 1.5;
+
+  /* Prevent layout shift from scrollbar appearance */
+  overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   3. Typography Elements
+   ───────────────────────────────────────────────────────────── */
+
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+p {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+small {
+  font-size: 80%;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub { bottom: -0.25em; }
+sup { top: -0.5em; }
+
+abbr[title] {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+mark {
+  background-color: transparent;
+  color: inherit;
+}
+
+del {
+  text-decoration: line-through;
+}
+
+ins {
+  text-decoration: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote::before,
+blockquote::after,
+q::before,
+q::after {
+  content: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   4. Monospace / Code
+   ───────────────────────────────────────────────────────────── */
+
+code,
+kbd,
+samp,
+pre {
+  font-family: monospace;
+  font-size: 1em;
+}
+
+pre {
+  overflow: auto;
+  white-space: pre;
+}
+
+code {
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   5. Lists
+   ───────────────────────────────────────────────────────────── */
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* Restore list style only for prose content — applied by
+   renderer classes (.zolto-list), not global elements */
+
+
+/* ─────────────────────────────────────────────────────────────
+   6. Tables
+   ───────────────────────────────────────────────────────────── */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  text-indent: 0;
+  caption-side: bottom;
+}
+
+th {
+  font-weight: inherit;
+  text-align: inherit;
+  text-align: -webkit-match-parent;
+}
+
+thead,
+tbody,
+tfoot,
+tr,
+td,
+th {
+  border-color: inherit;
+  border-style: solid;
+  border-width: 0;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   7. Forms & Interactive Elements
+   ───────────────────────────────────────────────────────────── */
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  background: none;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Remove inner border and padding in Firefox */
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+textarea {
+  resize: vertical;
+  overflow: auto;
+  vertical-align: top;
+}
+
+select {
+  word-wrap: normal;
+}
+
+fieldset {
+  border: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   8. Media & Embedded Content
+   ───────────────────────────────────────────────────────────── */
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+  vertical-align: middle;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Prevent SVG overflow in older browsers */
+svg:not([overflow="visible"]) {
+  overflow: hidden;
+}
+
+/* Remove the gap between audio, canvas, iframes, images and
+   the bottom of their containers */
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+  vertical-align: middle;
+}
+
+iframe {
+  border: 0;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   9. Details & Summary
+   ───────────────────────────────────────────────────────────── */
+
+details {
+  display: block;
+}
+
+summary {
+  display: list-item;
+  cursor: pointer;
+  list-style: none;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary::marker {
+  display: none;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   10. Misc HTML Elements
+   ───────────────────────────────────────────────────────────── */
+
+hr {
+  border: 0;
+  height: 0;
+  overflow: visible;
+}
+
+address {
+  font-style: inherit;
+}
+
+cite {
+  font-style: inherit;
+}
+
+dialog {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  max-width: 100%;
+  max-height: 100%;
+  padding: 0;
+}
+
+template {
+  display: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* Preserve `hidden` on details/summary */
+details[hidden] {
+  display: none !important;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   11. Scrollbars
+   ───────────────────────────────────────────────────────────── */
+
+/* Webkit scrollbar baseline — styled further in variables.css
+   using CSS custom properties once loaded */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.5);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(128, 128, 128, 0.3) transparent;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   12. Focus — Remove default, restore for keyboard navigation
+   ───────────────────────────────────────────────────────────── */
+
+/* Remove default focus styles — custom focus rings applied in
+   variables.css via --focus-ring */
+:focus {
+  outline: none;
+}
+
+/* Restore focus ring for keyboard-only navigation */
+:focus-visible {
+  outline: 2px solid rgba(99, 102, 241, 0.8);
+  outline-offset: 2px;
+}
+
+/* Skip focus ring on mouse click */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   13. Selection
+   ───────────────────────────────────────────────────────────── */
+
+::selection {
+  background: rgba(99, 102, 241, 0.25);
+  color: inherit;
+}
+
+::-moz-selection {
+  background: rgba(99, 102, 241, 0.25);
+  color: inherit;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   14. Reduced Motion
+   ───────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   15. Print — baseline reset only
+   ───────────────────────────────────────────────────────────── */
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    background: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  pre {
+    white-space: pre-wrap !important;
+  }
+
+  pre,
+  blockquote {
+    page-break-inside: avoid;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   16. Contenteditable (editor surface)
+   ───────────────────────────────────────────────────────────── */
+
+[contenteditable] {
+  /* Prevent browser from adding extra markup on paste */
+  -webkit-user-modify: read-write-plaintext-only;
+
+  /* No extra outline */
+  outline: none;
+
+  /* Correct cursor */
+  cursor: text;
+
+  /* Consistent white-space handling */
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Suppress browser-generated "editable" UI */
+[contenteditable]:empty::before {
+  pointer-events: none;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   17. Drag and Drop
+   ───────────────────────────────────────────────────────────── */
+
+[draggable="true"] {
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   18. ARIA Hidden
+   ───────────────────────────────────────────────────────────── */
+
+[aria-hidden="true"] {
+  pointer-events: none;
+}
