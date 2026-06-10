@@ -1,0 +1,693 @@
+/* ============================================================
+   css/components/chart.css
+   Zolto v8.1.0 — Chart & Data Visualisation Components
+   ============================================================
+   Purpose:
+   - .zolto-chart figure wrapper and all chart types
+   - SVG element styling (axes, gridlines, bars, arcs, lines)
+   - Chart legend, tooltip, empty state
+   - Colour series tokens (series-0 through series-9)
+   - All values via CSS custom properties from variables.css
+   ============================================================ */
+
+
+/* ─────────────────────────────────────────────────────────────
+   1. Chart Series Colour Tokens
+      Defined here so chart SVG elements can reference them
+      via CSS variables rather than hardcoded fills
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --series-0: var(--intent-primary);        /* #6366f1 indigo */
+  --series-1: var(--intent-success);        /* #22c55e green  */
+  --series-2: var(--intent-warning);        /* #f59e0b amber  */
+  --series-3: var(--intent-danger);         /* #ef4444 red    */
+  --series-4: var(--intent-info);           /* #0ea5e9 sky    */
+  --series-5: var(--accent-secondary);      /* #8b5cf6 violet */
+  --series-6: var(--accent-tertiary);       /* #ec4899 pink   */
+  --series-7: #14b8a6;                      /* teal            */
+  --series-8: #f97316;                      /* orange          */
+  --series-9: #a3e635;                      /* lime            */
+
+  /* Series with opacity — used for area fills */
+  --series-0-fill: rgba(99, 102, 241, 0.15);
+  --series-1-fill: rgba(34, 197, 94,  0.15);
+  --series-2-fill: rgba(245, 158, 11, 0.15);
+  --series-3-fill: rgba(239, 68, 68,  0.15);
+  --series-4-fill: rgba(14, 165, 233, 0.15);
+  --series-5-fill: rgba(139, 92, 246, 0.15);
+  --series-6-fill: rgba(236, 72, 153, 0.15);
+  --series-7-fill: rgba(20, 184, 166, 0.15);
+  --series-8-fill: rgba(249, 115, 22, 0.15);
+  --series-9-fill: rgba(163, 230, 53, 0.15);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   2. Chart Figure Wrapper
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-chart {
+  position:      relative;
+  border:        1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background:    var(--diagram-bg);
+  padding:       var(--space-5);
+  overflow:      hidden;
+  margin-bottom: var(--prose-block-gap);
+}
+
+.zolto-chart-title {
+  font-size:     var(--text-sm);
+  font-weight:   var(--weight-semibold);
+  color:         var(--text-main);
+  margin-bottom: var(--space-4);
+  text-align:    center;
+  line-height:   var(--leading-snug);
+}
+
+.zolto-chart-subtitle {
+  font-size:    var(--text-xs);
+  color:        var(--text-mute);
+  text-align:   center;
+  margin-top:   calc(-1 * var(--space-2));
+  margin-bottom: var(--space-4);
+}
+
+.zolto-chart-svg {
+  display:    block;
+  width:      100%;
+  height:     auto;
+  overflow:   visible;
+  user-select: none;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   3. SVG Base — Common Elements Across All Chart Types
+   ───────────────────────────────────────────────────────────── */
+
+/* Axes */
+.zolto-chart .zolto-axis-x,
+.zolto-chart .zolto-axis-y {
+  stroke:       var(--border-normal);
+  stroke-width: 1;
+  fill:         none;
+}
+
+/* Grid lines */
+.zolto-chart .zolto-grid-line {
+  stroke:           var(--diagram-grid-color);
+  stroke-width:     1;
+  stroke-dasharray: 3 3;
+  fill:             none;
+}
+
+.zolto-chart .zolto-grid-line-solid {
+  stroke:       var(--border-faint);
+  stroke-width: 1;
+  fill:         none;
+}
+
+/* Axis tick labels */
+.zolto-chart .zolto-tick-label {
+  font-family: var(--font-sans);
+  font-size:   11px;
+  fill:        var(--diagram-label-text);
+}
+
+/* Axis title labels */
+.zolto-chart .zolto-axis-title {
+  font-family: var(--font-sans);
+  font-size:   11px;
+  font-weight: 600;
+  fill:        var(--text-mute);
+}
+
+/* Data labels (values shown on/near data points) */
+.zolto-chart .zolto-data-label {
+  font-family:  var(--font-sans);
+  font-size:    11px;
+  font-weight:  600;
+  fill:         var(--text-main);
+  text-anchor:  middle;
+  dominant-baseline: auto;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   4. Bar Chart
+   ───────────────────────────────────────────────────────────── */
+
+/* Bar rects */
+.zolto-chart .zolto-bar {
+  fill:       var(--series-0);
+  rx:         var(--radius-sm);
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.zolto-chart .zolto-bar:hover {
+  opacity: 0.8;
+  cursor:  pointer;
+}
+
+/* Multi-series bar colours */
+.zolto-chart .zolto-bar.s0 { fill: var(--series-0); }
+.zolto-chart .zolto-bar.s1 { fill: var(--series-1); }
+.zolto-chart .zolto-bar.s2 { fill: var(--series-2); }
+.zolto-chart .zolto-bar.s3 { fill: var(--series-3); }
+.zolto-chart .zolto-bar.s4 { fill: var(--series-4); }
+.zolto-chart .zolto-bar.s5 { fill: var(--series-5); }
+.zolto-chart .zolto-bar.s6 { fill: var(--series-6); }
+
+/* Waterfall positive/negative bars */
+.zolto-chart .zolto-bar-positive { fill: var(--intent-success); }
+.zolto-chart .zolto-bar-negative { fill: var(--intent-danger);  }
+.zolto-chart .zolto-bar-total    { fill: var(--intent-neutral); }
+
+/* Stacked bar segment separator */
+.zolto-chart .zolto-bar-stack-sep {
+  stroke:       var(--bg-canvas);
+  stroke-width: 1;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   5. Line & Area Chart
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-chart .zolto-line {
+  fill:             none;
+  stroke:           var(--series-0);
+  stroke-width:     2;
+  stroke-linejoin:  round;
+  stroke-linecap:   round;
+  transition:       opacity var(--duration-fast) var(--ease-out);
+}
+
+.zolto-chart .zolto-line.s0 { stroke: var(--series-0); }
+.zolto-chart .zolto-line.s1 { stroke: var(--series-1); }
+.zolto-chart .zolto-line.s2 { stroke: var(--series-2); }
+.zolto-chart .zolto-line.s3 { stroke: var(--series-3); }
+.zolto-chart .zolto-line.s4 { stroke: var(--series-4); }
+.zolto-chart .zolto-line.s5 { stroke: var(--series-5); }
+
+.zolto-chart .zolto-line:hover {
+  stroke-width: 3;
+}
+
+/* Area fill below line */
+.zolto-chart .zolto-area {
+  stroke:      none;
+  opacity:     0.7;
+}
+
+.zolto-chart .zolto-area.s0 { fill: var(--series-0-fill); }
+.zolto-chart .zolto-area.s1 { fill: var(--series-1-fill); }
+.zolto-chart .zolto-area.s2 { fill: var(--series-2-fill); }
+.zolto-chart .zolto-area.s3 { fill: var(--series-3-fill); }
+.zolto-chart .zolto-area.s4 { fill: var(--series-4-fill); }
+.zolto-chart .zolto-area.s5 { fill: var(--series-5-fill); }
+
+/* Data point dots on line */
+.zolto-chart .zolto-point {
+  transition: r var(--duration-fast) var(--ease-out),
+              opacity var(--duration-fast) var(--ease-out);
+  cursor: pointer;
+}
+
+.zolto-chart .zolto-point:hover {
+  r: 5;
+}
+
+.zolto-chart .zolto-point.s0 { fill: var(--series-0); stroke: var(--bg-canvas); stroke-width: 2; }
+.zolto-chart .zolto-point.s1 { fill: var(--series-1); stroke: var(--bg-canvas); stroke-width: 2; }
+.zolto-chart .zolto-point.s2 { fill: var(--series-2); stroke: var(--bg-canvas); stroke-width: 2; }
+.zolto-chart .zolto-point.s3 { fill: var(--series-3); stroke: var(--bg-canvas); stroke-width: 2; }
+
+/* Reference / trend line */
+.zolto-chart .zolto-trend-line {
+  fill:             none;
+  stroke:           var(--text-faint);
+  stroke-width:     1;
+  stroke-dasharray: 4 4;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   6. Pie & Donut Chart
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-chart .zolto-arc {
+  transition: transform var(--duration-fast) var(--ease-out),
+              opacity   var(--duration-fast) var(--ease-out);
+  cursor:     pointer;
+  transform-origin: center;
+}
+
+.zolto-chart .zolto-arc:hover {
+  transform: scale(1.03);
+  opacity:   0.9;
+}
+
+.zolto-chart .zolto-arc.s0 { fill: var(--series-0); }
+.zolto-chart .zolto-arc.s1 { fill: var(--series-1); }
+.zolto-chart .zolto-arc.s2 { fill: var(--series-2); }
+.zolto-chart .zolto-arc.s3 { fill: var(--series-3); }
+.zolto-chart .zolto-arc.s4 { fill: var(--series-4); }
+.zolto-chart .zolto-arc.s5 { fill: var(--series-5); }
+.zolto-chart .zolto-arc.s6 { fill: var(--series-6); }
+.zolto-chart .zolto-arc.s7 { fill: var(--series-7); }
+.zolto-chart .zolto-arc.s8 { fill: var(--series-8); }
+.zolto-chart .zolto-arc.s9 { fill: var(--series-9); }
+
+/* Arc separator ring */
+.zolto-chart .zolto-arc-sep {
+  stroke:       var(--bg-canvas);
+  stroke-width: 2;
+  fill:         none;
+  pointer-events: none;
+}
+
+/* Donut centre label */
+.zolto-chart .zolto-donut-value {
+  font-family:     var(--font-sans);
+  font-size:       22px;
+  font-weight:     700;
+  fill:            var(--text-heading);
+  text-anchor:     middle;
+  dominant-baseline: middle;
+}
+
+.zolto-chart .zolto-donut-label {
+  font-family:     var(--font-sans);
+  font-size:       11px;
+  fill:            var(--text-mute);
+  text-anchor:     middle;
+  dominant-baseline: middle;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   7. Scatter & Bubble Chart
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-chart .zolto-bubble,
+.zolto-chart .zolto-scatter-point {
+  opacity:    0.8;
+  transition: opacity   var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+  cursor:     pointer;
+  transform-origin: center;
+}
+
+.zolto-chart .zolto-bubble:hover,
+.zolto-chart .zolto-scatter-point:hover {
+  opacity:   1;
+  transform: scale(1.1);
+}
+
+.zolto-chart .zolto-bubble.s0,
+.zolto-chart .zolto-scatter-point.s0 { fill: var(--series-0); }
+.zolto-chart .zolto-bubble.s1,
+.zolto-chart .zolto-scatter-point.s1 { fill: var(--series-1); }
+.zolto-chart .zolto-bubble.s2,
+.zolto-chart .zolto-scatter-point.s2 { fill: var(--series-2); }
+.zolto-chart .zolto-bubble.s3,
+.zolto-chart .zolto-scatter-point.s3 { fill: var(--series-3); }
+
+
+/* ─────────────────────────────────────────────────────────────
+   8. Radar Chart
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-chart .zolto-radar-grid-ring {
+  fill:         none;
+  stroke:       var(--diagram-grid-color);
+  stroke-width: 1;
+}
+
+.zolto-chart .zolto-radar-axis-line {
+  stroke:       var(--border-faint);
+  stroke-width: 1;
+}
+
+.zolto-chart .zolto-radar-area {
+  fill-opacity:   0.2;
+  stroke-width:   2;
+  stroke-linejoin: round;
+}
+
+.zolto-chart .zolto-radar-area.s0 { fill: var(--series-0); stroke: var(--series-0); }
+.zolto-chart .zolto-radar-area.s1 { fill: var(--series-1); stroke: var(--series-1); }
+.zolto-chart .zolto-radar-area.s2 { fill: var(--series-2); stroke: var(--series-2); }
+
+.zolto-chart .zolto-radar-label {
+  font-family: var(--font-sans);
+  font-size:   11px;
+  fill:        var(--text-mute);
+  text-anchor: middle;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   9. Heatmap
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-chart .zolto-heatmap-cell {
+  rx:         var(--radius-sm);
+  transition: opacity var(--duration-fast) var(--ease-out);
+  cursor:     pointer;
+}
+
+.zolto-chart .zolto-heatmap-cell:hover {
+  opacity: 0.8;
+  stroke:  var(--text-main);
+  stroke-width: 1.5;
+}
+
+/* Colour scale — renderer sets fill via inline style */
+.zolto-chart .zolto-heatmap-axis-label {
+  font-family: var(--font-sans);
+  font-size:   10px;
+  fill:        var(--text-faint);
+}
+
+/* Colour legend bar */
+.zolto-chart .zolto-heatmap-legend-text {
+  font-family: var(--font-sans);
+  font-size:   10px;
+  fill:        var(--text-faint);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   10. Gauge Chart
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-chart .zolto-gauge-track {
+  fill:   none;
+  stroke: var(--bg-surface-2);
+}
+
+.zolto-chart .zolto-gauge-fill {
+  fill:             none;
+  stroke:           var(--series-0);
+  stroke-linecap:   round;
+  transition:       stroke-dashoffset var(--duration-slow) var(--ease-out);
+}
+
+.zolto-chart .zolto-gauge-needle {
+  stroke:       var(--text-mute);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition:   transform var(--duration-slow) var(--ease-out);
+  transform-origin: bottom center;
+}
+
+.zolto-chart .zolto-gauge-value {
+  font-family:     var(--font-sans);
+  font-size:       24px;
+  font-weight:     700;
+  fill:            var(--text-heading);
+  text-anchor:     middle;
+  dominant-baseline: middle;
+}
+
+.zolto-chart .zolto-gauge-min,
+.zolto-chart .zolto-gauge-max {
+  font-family: var(--font-sans);
+  font-size:   10px;
+  fill:        var(--text-faint);
+}
+
+/* Coloured zone bands (e.g. red zone for high values) */
+.zolto-chart .zolto-gauge-zone-safe    { stroke: var(--intent-success); opacity: 0.25; }
+.zolto-chart .zolto-gauge-zone-caution { stroke: var(--intent-warning); opacity: 0.25; }
+.zolto-chart .zolto-gauge-zone-danger  { stroke: var(--intent-danger);  opacity: 0.25; }
+
+
+/* ─────────────────────────────────────────────────────────────
+   11. Sankey / Flow Chart
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-chart .zolto-sankey-node {
+  cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.zolto-chart .zolto-sankey-node:hover {
+  opacity: 0.85;
+}
+
+.zolto-chart .zolto-sankey-link {
+  fill:       none;
+  opacity:    0.35;
+  transition: opacity var(--duration-fast) var(--ease-out);
+  cursor:     pointer;
+}
+
+.zolto-chart .zolto-sankey-link:hover {
+  opacity: 0.6;
+}
+
+.zolto-chart .zolto-sankey-label {
+  font-family: var(--font-sans);
+  font-size:   11px;
+  fill:        var(--text-mute);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   12. Treemap
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-chart .zolto-treemap-cell {
+  stroke:       var(--bg-canvas);
+  stroke-width: 2;
+  cursor:       pointer;
+  transition:   opacity var(--duration-fast) var(--ease-out);
+}
+
+.zolto-chart .zolto-treemap-cell:hover {
+  opacity: 0.85;
+}
+
+.zolto-chart .zolto-treemap-label {
+  font-family:     var(--font-sans);
+  font-size:       11px;
+  font-weight:     600;
+  fill:            rgba(255, 255, 255, 0.9);
+  text-anchor:     middle;
+  dominant-baseline: middle;
+  pointer-events:  none;
+}
+
+.zolto-chart .zolto-treemap-value {
+  font-family:     var(--font-sans);
+  font-size:       10px;
+  fill:            rgba(255, 255, 255, 0.6);
+  text-anchor:     middle;
+  dominant-baseline: middle;
+  pointer-events:  none;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   13. Chart Tooltip
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-chart-tooltip {
+  position:      fixed;
+  z-index:       var(--z-tooltip);
+  pointer-events: none;
+  background:    var(--tooltip-bg);
+  border:        1px solid var(--border-normal);
+  border-radius: var(--tooltip-radius);
+  box-shadow:    var(--tooltip-shadow);
+  padding:       var(--space-2) var(--space-3);
+  font-size:     var(--text-xs);
+  color:         var(--tooltip-text);
+  max-width:     200px;
+  opacity:       0;
+  transition:    opacity var(--duration-fast) var(--ease-out);
+  white-space:   nowrap;
+}
+
+.zolto-chart-tooltip.visible {
+  opacity: 1;
+}
+
+.zolto-chart-tooltip-title {
+  font-weight:   var(--weight-semibold);
+  margin-bottom: var(--space-1);
+  color:         var(--text-main);
+  white-space:   nowrap;
+}
+
+.zolto-chart-tooltip-row {
+  display:     flex;
+  align-items: center;
+  gap:         var(--space-2);
+}
+
+.zolto-chart-tooltip-swatch {
+  width:         8px;
+  height:        8px;
+  border-radius: var(--radius-sm);
+  flex-shrink:   0;
+}
+
+.zolto-chart-tooltip-label {
+  flex:  1;
+  color: var(--text-mute);
+}
+
+.zolto-chart-tooltip-value {
+  font-weight:     var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  color:           var(--text-main);
+}
+
+/* Crosshair line shown on line/area charts */
+.zolto-chart .zolto-crosshair {
+  stroke:       var(--border-normal);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+  pointer-events: none;
+  opacity:      0;
+  transition:   opacity var(--duration-fast) var(--ease-out);
+}
+
+.zolto-chart:hover .zolto-crosshair {
+  opacity: 1;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   14. Chart Legend
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-chart-legend {
+  display:         flex;
+  flex-wrap:       wrap;
+  gap:             var(--space-3) var(--space-5);
+  justify-content: center;
+  margin-top:      var(--space-4);
+  padding-top:     var(--space-3);
+  border-top:      1px solid var(--border-faint);
+}
+
+.zolto-chart-legend-item {
+  display:     flex;
+  align-items: center;
+  gap:         var(--space-1-5);
+  cursor:      pointer;
+  transition:  opacity var(--duration-fast) var(--ease-out);
+  user-select: none;
+}
+
+.zolto-chart-legend-item:hover {
+  opacity: 0.75;
+}
+
+.zolto-chart-legend-item.muted {
+  opacity: 0.35;
+}
+
+.zolto-chart-legend-swatch {
+  width:         10px;
+  height:        10px;
+  border-radius: var(--radius-sm);
+  flex-shrink:   0;
+}
+
+/* Line chart legend uses a line + dot */
+.zolto-chart-legend-line {
+  width:    24px;
+  height:   2px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.zolto-chart-legend-line::after {
+  content:       '';
+  position:      absolute;
+  top:           50%;
+  left:          50%;
+  transform:     translate(-50%, -50%);
+  width:         6px;
+  height:        6px;
+  border-radius: var(--radius-full);
+  background:    inherit;
+}
+
+.zolto-chart-legend-label {
+  font-size: var(--text-xs);
+  color:     var(--text-mute);
+  white-space: nowrap;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   15. Empty & Loading States
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-chart-empty {
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  justify-content: center;
+  min-height:      160px;
+  gap:             var(--space-3);
+  color:           var(--text-faint);
+  font-size:       var(--text-sm);
+}
+
+.zolto-chart-empty-icon {
+  font-size: 2rem;
+  opacity:   0.4;
+}
+
+.zolto-chart-loading {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  min-height:      160px;
+}
+
+.zolto-chart-loading-spinner {
+  width:         32px;
+  height:        32px;
+  border:        3px solid var(--border-subtle);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation:     zolto-spin 600ms linear infinite;
+}
+
+@keyframes zolto-spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   16. Responsive
+   ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .zolto-chart {
+    padding: var(--space-3);
+  }
+
+  .zolto-chart-legend {
+    gap: var(--space-2) var(--space-3);
+  }
+
+  .zolto-chart .zolto-tick-label {
+    font-size: 9px;
+  }
+
+  .zolto-chart .zolto-data-label {
+    font-size: 9px;
+  }
+}
