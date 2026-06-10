@@ -1,0 +1,592 @@
+/* ============================================================
+   css/layouts/editor.css
+   Zolto v8.1.0 — Source Editor Layout & Styles
+   ============================================================
+   Purpose:
+   - Editor pane chrome (toolbar, surface, statusbar)
+   - Contenteditable editor surface
+   - Syntax highlighting spans (injected by syntax-highlighter.js)
+   - Inline autocomplete & bracket matching
+   - Editor-specific scrolling and overflow
+   - All values via CSS custom properties from variables.css
+   ============================================================ */
+
+
+/* ─────────────────────────────────────────────────────────────
+   1. Editor Pane Shell
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-editor-pane {
+  display:        flex;
+  flex-direction: column;
+  flex:           1;
+  min-width:      var(--editor-min-width);
+  overflow:       hidden;
+  background:     var(--editor-bg);
+  border-right:   1px solid var(--border-subtle);
+  position:       relative;
+}
+
+/* When preview mode is "focus" — editor pane hidden */
+[data-preview-mode="focus"] .zolto-editor-pane {
+  display: none;
+}
+
+/* When preview mode is "focus" — preview takes full width */
+[data-preview-mode="focus"] .zolto-split-handle {
+  display: none;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   2. Editor Toolbar
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-editor-toolbar {
+  display:      flex;
+  align-items:  center;
+  gap:          var(--space-0-5);
+  height:       var(--toolbar-height);
+  min-height:   var(--toolbar-height);
+  flex-shrink:  0;
+  padding:      0 var(--space-3);
+  background:   var(--toolbar-bg);
+  border-bottom: 1px solid var(--toolbar-border);
+  overflow-x:   auto;
+  overflow-y:   hidden;
+  scrollbar-width: none;
+}
+
+.zolto-editor-toolbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Toolbar group — clusters related buttons */
+.zolto-toolbar-group {
+  display:     flex;
+  align-items: center;
+  gap:         var(--space-0-5);
+  flex-shrink: 0;
+}
+
+/* Vertical separator between groups */
+.zolto-toolbar-sep {
+  width:      1px;
+  height:     18px;
+  background: var(--border-subtle);
+  flex-shrink: 0;
+  margin:     0 var(--space-1);
+}
+
+/* Spacer pushes right-side items to the end */
+.zolto-toolbar-spacer {
+  flex: 1;
+}
+
+/* Toolbar button */
+.zolto-toolbar-btn {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  min-width:       var(--toolbar-btn-size);
+  height:          var(--toolbar-btn-size);
+  padding:         0 var(--space-1-5);
+  font-size:       var(--text-sm);
+  font-family:     var(--font-sans);
+  font-weight:     var(--weight-medium);
+  color:           var(--toolbar-btn-text);
+  background:      transparent;
+  border-radius:   var(--toolbar-btn-radius);
+  flex-shrink:     0;
+  transition:      background var(--duration-fast) var(--ease-out),
+                   color      var(--duration-fast) var(--ease-out);
+  white-space:     nowrap;
+}
+
+.zolto-toolbar-btn svg {
+  width:  14px;
+  height: 14px;
+}
+
+.zolto-toolbar-btn:hover {
+  background: var(--toolbar-btn-hover-bg);
+  color:      var(--toolbar-btn-hover-text);
+}
+
+.zolto-toolbar-btn.active,
+.zolto-toolbar-btn[aria-pressed="true"] {
+  background: var(--toolbar-btn-active-bg);
+  color:      var(--toolbar-btn-active-text);
+}
+
+.zolto-toolbar-btn:disabled {
+  opacity:        0.4;
+  cursor:         not-allowed;
+  pointer-events: none;
+}
+
+/* Word count */
+.zolto-word-count {
+  font-size:   var(--text-xs);
+  color:       var(--text-faint);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding:     0 var(--space-2);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Save status */
+.zolto-save-status {
+  flex-shrink: 0;
+  padding:     0 var(--space-1);
+}
+
+.zolto-save-badge {
+  font-size:     var(--text-xs);
+  padding:       var(--space-0-5) var(--space-2);
+  border-radius: var(--radius-full);
+  white-space:   nowrap;
+}
+
+.zolto-save-badge[data-status="saved"] {
+  color: var(--text-faint);
+}
+
+.zolto-save-badge[data-status="saving"] {
+  color:      var(--intent-info-text);
+  background: var(--intent-info-bg);
+}
+
+.zolto-save-badge[data-status="unsaved"] {
+  color:      var(--intent-warning-text);
+  background: var(--intent-warning-bg);
+}
+
+.zolto-save-badge[data-status="error"] {
+  color:      var(--intent-danger-text);
+  background: var(--intent-danger-bg);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   3. Editor Surface (contenteditable)
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-editor {
+  flex:           1;
+  overflow-y:     auto;
+  overflow-x:     hidden;
+  padding:        var(--editor-padding-y) var(--editor-padding-x);
+  font-family:    var(--editor-font);
+  font-size:      var(--editor-font-size);
+  line-height:    var(--editor-line-height);
+  color:          var(--editor-text);
+  background:     var(--editor-bg);
+  caret-color:    var(--editor-caret);
+  white-space:    pre-wrap;
+  overflow-wrap:  break-word;
+  word-break:     break-word;
+  tab-size:       2;
+  -moz-tab-size:  2;
+  outline:        none;
+  min-height:     100%;
+
+  /* Smooth cursor movement */
+  cursor: text;
+}
+
+/* Placeholder shown when editor is empty */
+.zolto-editor:empty::before {
+  content:        "Start writing Zolto…";
+  color:          var(--text-faint);
+  pointer-events: none;
+  user-select:    none;
+  font-style:     italic;
+}
+
+/* Current line highlight — applied by cursor.js via JS class */
+.zolto-editor .zolto-current-line {
+  background:    var(--editor-line-hl);
+  border-radius: var(--radius-sm);
+  margin:        0 calc(-1 * var(--editor-padding-x));
+  padding:       0 var(--editor-padding-x);
+  display:       block;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   4. Syntax Highlighting Spans
+      Injected by js/editor/syntax-highlighter.js as inline
+      <span data-t="..."> wrapping token text
+   ───────────────────────────────────────────────────────────── */
+
+/* Markdown headings */
+.zolto-editor [data-t="heading-1"]  { color: var(--editor-heading); font-size: 1.3em; font-weight: var(--weight-bold); }
+.zolto-editor [data-t="heading-2"]  { color: var(--editor-heading); font-size: 1.2em; font-weight: var(--weight-semibold); }
+.zolto-editor [data-t="heading-3"]  { color: var(--editor-heading); font-size: 1.1em; font-weight: var(--weight-semibold); }
+.zolto-editor [data-t="heading-4"],
+.zolto-editor [data-t="heading-5"],
+.zolto-editor [data-t="heading-6"]  { color: var(--editor-heading); font-weight: var(--weight-medium); }
+.zolto-editor [data-t="heading-marker"] { color: var(--editor-comment); }
+
+/* Inline formatting */
+.zolto-editor [data-t="bold"]       { color: var(--editor-bold); font-weight: var(--weight-semibold); }
+.zolto-editor [data-t="italic"]     { color: var(--editor-italic); font-style: italic; }
+.zolto-editor [data-t="strike"]     { color: var(--editor-comment); text-decoration: line-through; }
+.zolto-editor [data-t="highlight"]  { background: rgba(250, 204, 21, 0.15); border-radius: 2px; }
+.zolto-editor [data-t="code-inline"] {
+  color:         var(--editor-code);
+  background:    rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  padding:       0.05em 0.3em;
+  font-size:     0.92em;
+}
+
+/* Inline markers (**, *, ~~, ==, etc.) */
+.zolto-editor [data-t="marker"]     { color: var(--editor-comment); opacity: 0.7; }
+
+/* Links */
+.zolto-editor [data-t="link-text"]  { color: var(--editor-link); }
+.zolto-editor [data-t="link-url"]   { color: var(--editor-comment); font-size: 0.9em; }
+.zolto-editor [data-t="link-punct"] { color: var(--editor-comment); opacity: 0.6; }
+
+/* Tags */
+.zolto-editor [data-t="tag-open"],
+.zolto-editor [data-t="tag-close"]  { color: var(--editor-keyword); font-weight: var(--weight-medium); }
+.zolto-editor [data-t="tag-name"]   { color: var(--editor-directive); font-weight: var(--weight-medium); }
+.zolto-editor [data-t="tag-punct"]  { color: var(--editor-comment); }
+.zolto-editor [data-t="attr-name"]  { color: var(--editor-number); }
+.zolto-editor [data-t="attr-value"] { color: var(--editor-string); }
+.zolto-editor [data-t="attr-eq"]    { color: var(--editor-comment); }
+
+/* Math */
+.zolto-editor [data-t="math-inline"] { color: var(--editor-math); }
+.zolto-editor [data-t="math-block"]  { color: var(--editor-math); }
+.zolto-editor [data-t="math-marker"] { color: var(--editor-directive-close); font-weight: var(--weight-medium); }
+
+/* Comments */
+.zolto-editor [data-t="comment"]    { color: var(--editor-comment); font-style: italic; }
+
+/* Variables */
+.zolto-editor [data-t="variable"]   { color: var(--editor-number); }
+.zolto-editor [data-t="var-brace"]  { color: var(--editor-comment); }
+
+/* Frontmatter */
+.zolto-editor [data-t="frontmatter-fence"] { color: var(--editor-directive); font-weight: var(--weight-bold); }
+.zolto-editor [data-t="frontmatter-key"]   { color: var(--editor-number); }
+.zolto-editor [data-t="frontmatter-val"]   { color: var(--editor-string); }
+.zolto-editor [data-t="frontmatter-colon"] { color: var(--editor-comment); }
+
+/* Block quote */
+.zolto-editor [data-t="blockquote-marker"] { color: var(--accent-primary); font-weight: var(--weight-medium); }
+
+/* Lists */
+.zolto-editor [data-t="list-bullet"]  { color: var(--editor-keyword); }
+.zolto-editor [data-t="list-number"]  { color: var(--editor-number); }
+
+/* Code block */
+.zolto-editor [data-t="code-fence"]   { color: var(--editor-directive); }
+.zolto-editor [data-t="code-lang"]    { color: var(--editor-number); }
+.zolto-editor [data-t="code-content"] { color: var(--editor-code); }
+
+/* Errors */
+.zolto-editor [data-t="error"] {
+  color:                  var(--text-error);
+  text-decoration:        underline wavy var(--intent-danger);
+  text-decoration-skip-ink: none;
+}
+
+/* Mentions & hashtags */
+.zolto-editor [data-t="mention"] { color: var(--accent-primary); }
+.zolto-editor [data-t="hashtag"] { color: var(--text-mute); }
+
+
+/* ─────────────────────────────────────────────────────────────
+   5. Bracket Matching
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-editor .zolto-bracket-match {
+  background:    rgba(99, 102, 241, 0.18);
+  border-radius: 2px;
+  outline:       1px solid rgba(99, 102, 241, 0.4);
+}
+
+.zolto-editor .zolto-bracket-error {
+  background:    rgba(239, 68, 68, 0.15);
+  border-radius: 2px;
+  outline:       1px solid rgba(239, 68, 68, 0.4);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   6. Selection
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-editor ::selection {
+  background: var(--editor-selection);
+  color:      inherit;
+}
+
+.zolto-editor ::-moz-selection {
+  background: var(--editor-selection);
+  color:      inherit;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   7. Code Blocks Inside Editor
+      Visually distinct from surrounding markdown
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-editor .zolto-editor-code-block {
+  display:       block;
+  background:    var(--bg-code);
+  border:        1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding:       var(--space-0-5) var(--space-2);
+  margin:        var(--space-1) 0;
+  font-family:   var(--font-mono);
+  font-size:     0.95em;
+  color:         var(--editor-code);
+}
+
+.zolto-editor .zolto-editor-math-block {
+  display:       block;
+  background:    rgba(249, 168, 212, 0.05);
+  border-left:   2px solid var(--editor-math);
+  padding-left:  var(--space-3);
+  margin:        var(--space-1) 0;
+  color:         var(--editor-math);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   8. Editor Statusbar
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-editor-statusbar {
+  display:      flex;
+  align-items:  center;
+  gap:          var(--space-3);
+  height:       var(--statusbar-height);
+  min-height:   var(--statusbar-height);
+  flex-shrink:  0;
+  padding:      0 var(--editor-padding-x);
+  background:   var(--toolbar-bg);
+  border-top:   1px solid var(--toolbar-border);
+  font-family:  var(--font-mono);
+  font-size:    var(--text-xs);
+  color:        var(--text-faint);
+  user-select:  none;
+  overflow:     hidden;
+}
+
+.zolto-cursor-pos {
+  white-space:     nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.zolto-statusbar-sep {
+  opacity: 0.4;
+}
+
+.zolto-lang-label {
+  color:       var(--accent-primary);
+  opacity:     0.7;
+  font-weight: var(--weight-medium);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   9. Editor ↔ Preview Split Handle
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-split-handle {
+  width:      var(--split-handle-width);
+  flex-shrink: 0;
+  background: var(--split-handle-bg);
+  cursor:     col-resize;
+  position:   relative;
+  transition: background var(--duration-fast) var(--ease-out),
+              width      var(--duration-fast) var(--ease-out);
+  z-index:    var(--z-raised);
+}
+
+.zolto-split-handle::after {
+  content:          '';
+  position:         absolute;
+  top:              50%;
+  left:             50%;
+  transform:        translate(-50%, -50%);
+  width:            2px;
+  height:           32px;
+  background:       var(--border-normal);
+  border-radius:    var(--radius-full);
+  opacity:          0;
+  transition:       opacity var(--duration-fast) var(--ease-out);
+}
+
+.zolto-split-handle:hover {
+  background: transparent;
+  width:      var(--split-handle-hover-width);
+}
+
+.zolto-split-handle:hover::after {
+  opacity: 1;
+}
+
+.zolto-split-handle.dragging {
+  background: var(--accent-primary);
+  opacity:    0.4;
+  width:      var(--split-handle-hover-width);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   10. Diff / Line Decorations
+       Applied when diff mode or version comparison is active
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-editor .zolto-line-add {
+  background:    var(--syntax-line-add);
+  border-left:   2px solid var(--intent-success);
+  margin-left:   calc(-1 * var(--editor-padding-x));
+  padding-left:  calc(var(--editor-padding-x) - 2px);
+  display:       block;
+}
+
+.zolto-editor .zolto-line-del {
+  background:    var(--syntax-line-del);
+  border-left:   2px solid var(--intent-danger);
+  margin-left:   calc(-1 * var(--editor-padding-x));
+  padding-left:  calc(var(--editor-padding-x) - 2px);
+  display:       block;
+  text-decoration: line-through;
+  opacity:       0.6;
+}
+
+.zolto-editor .zolto-line-hl {
+  background:  var(--syntax-line-hl);
+  border-left: 2px solid var(--accent-primary);
+  margin-left: calc(-1 * var(--editor-padding-x));
+  padding-left: calc(var(--editor-padding-x) - 2px);
+  display:     block;
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   11. Find & Replace Bar
+   ───────────────────────────────────────────────────────────── */
+
+.zolto-find-bar {
+  position:      absolute;
+  top:           var(--space-2);
+  right:         var(--space-3);
+  z-index:       var(--z-raised);
+  display:       flex;
+  align-items:   center;
+  gap:           var(--space-2);
+  background:    var(--bg-surface);
+  border:        1px solid var(--border-normal);
+  border-radius: var(--radius-md);
+  box-shadow:    var(--shadow-md);
+  padding:       var(--space-1-5) var(--space-2);
+  animation:     zolto-find-in var(--duration-normal) var(--ease-spring) forwards;
+}
+
+@keyframes zolto-find-in {
+  from {
+    opacity:   0;
+    transform: translateY(calc(-1 * var(--space-2)));
+  }
+  to {
+    opacity:   1;
+    transform: translateY(0);
+  }
+}
+
+.zolto-find-bar[hidden] {
+  display: none;
+}
+
+.zolto-find-input {
+  width:         180px;
+  font-size:     var(--text-sm);
+  font-family:   var(--font-mono);
+  color:         var(--text-main);
+  background:    var(--bg-input);
+  border:        1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding:       var(--space-1) var(--space-2-5);
+  outline:       none;
+  transition:    border-color var(--duration-fast) var(--ease-out);
+}
+
+.zolto-find-input:focus {
+  border-color: var(--border-focus);
+}
+
+.zolto-find-count {
+  font-size:   var(--text-xs);
+  color:       var(--text-faint);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  min-width:   3ch;
+  text-align:  center;
+}
+
+.zolto-find-btn {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  width:           24px;
+  height:          24px;
+  border-radius:   var(--radius-sm);
+  color:           var(--text-mute);
+  font-size:       var(--text-sm);
+  transition:      background var(--duration-fast) var(--ease-out),
+                   color      var(--duration-fast) var(--ease-out);
+}
+
+.zolto-find-btn:hover {
+  background: var(--bg-surface-2);
+  color:      var(--text-main);
+}
+
+.zolto-find-sep {
+  width:      1px;
+  height:     16px;
+  background: var(--border-subtle);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   12. Responsive
+   ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .zolto-editor {
+    padding: var(--space-4) var(--space-4);
+    font-size: 15px;
+  }
+
+  /* Hide some toolbar buttons on small screens */
+  .zolto-toolbar-group:last-of-type .zolto-toolbar-btn:nth-child(n+4) {
+    display: none;
+  }
+
+  .zolto-editor-statusbar {
+    padding: 0 var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  /* Single pane on phone — editor or preview, not split */
+  .zolto-split-handle {
+    display: none;
+  }
+
+  .zolto-editor {
+    font-size: 16px; /* Prevent zoom on focus in iOS */
+  }
+}
