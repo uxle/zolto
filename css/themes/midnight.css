@@ -1,0 +1,329 @@
+/* ============================================================
+   css/themes/midnight.css
+   Zolto v8.1.0 — Midnight Theme Token Overrides
+   ============================================================
+   Purpose:
+   - Override CSS custom properties for the Midnight theme
+   - Applied when <html data-theme="midnight">
+   - Deep navy palette — darker and cooler than Dark theme
+   - High-contrast cyan/sky accent instead of indigo
+   - Richer blue-tinted surfaces
+   - Only [data-theme] selectors — no component rules
+   ============================================================ */
+
+[data-theme="midnight"] {
+
+  /* ── Accent — sky/cyan instead of indigo ── */
+  --accent-primary:          #0ea5e9;
+  --accent-primary-hover:    #38bdf8;
+  --accent-primary-active:   #0284c7;
+  --accent-primary-subtle:   rgba(14, 165, 233, 0.12);
+  --accent-primary-border:   rgba(14, 165, 233, 0.30);
+
+  --accent-secondary:        #6366f1;
+  --accent-secondary-hover:  #818cf8;
+  --accent-secondary-subtle: rgba(99, 102, 241, 0.12);
+
+  --accent-tertiary:         #a78bfa;
+  --accent-tertiary-hover:   #c4b5fd;
+  --accent-tertiary-subtle:  rgba(167, 139, 250, 0.12);
+
+  /* ── Background — deep navy blue ── */
+  --bg-app:       #020617;
+  --bg-canvas:    #060d1f;
+  --bg-panel:     #0a1228;
+  --bg-surface:   #0f1a35;
+  --bg-surface-2: #152040;
+  --bg-surface-3: #1c2a50;
+  --bg-overlay:   rgba(2, 6, 23, 0.78);
+  --bg-tooltip:   #1c2a50;
+  --bg-dropdown:  #0f1a35;
+  --bg-input:     #0a1228;
+  --bg-code:      #030810;
+  --bg-selection: rgba(14, 165, 233, 0.20);
+
+  /* ── Surface ── */
+  --surface-0:          #060d1f;
+  --surface-1:          #0f1a35;
+  --surface-2:          #152040;
+  --surface-3:          #1c2a50;
+  --surface-glass:      rgba(15, 26, 53, 0.78);
+  --surface-glass-blur: 14px;
+
+  /* ── Text ── */
+  --text-main:       #e2e8f0;
+  --text-mute:       #7dd3fc;
+  --text-faint:      #38556b;
+  --text-invert:     #020617;
+  --text-link:       #38bdf8;
+  --text-link-hover: #7dd3fc;
+  --text-code:       #bae6fd;
+  --text-heading:    #f0f9ff;
+  --text-accent:     #0ea5e9;
+  --text-error:      #fca5a5;
+  --text-success:    #86efac;
+  --text-warning:    #fcd34d;
+
+  /* ── Border — blue-tinted ── */
+  --border-faint:   rgba(14, 165, 233, 0.05);
+  --border-subtle:  rgba(14, 165, 233, 0.09);
+  --border-normal:  rgba(14, 165, 233, 0.15);
+  --border-heavy:   rgba(14, 165, 233, 0.26);
+  --border-accent:  rgba(14, 165, 233, 0.40);
+  --border-focus:   #0ea5e9;
+  --border-error:   rgba(239, 68, 68, 0.45);
+  --border-success: rgba(34, 197, 94, 0.35);
+  --border-warning: rgba(245, 158, 11, 0.35);
+
+  /* ── Intent ── */
+  --intent-primary:        #0ea5e9;
+  --intent-primary-bg:     rgba(14, 165, 233, 0.10);
+  --intent-primary-border: rgba(14, 165, 233, 0.28);
+  --intent-primary-text:   #7dd3fc;
+
+  --intent-success:        #22c55e;
+  --intent-success-bg:     rgba(34, 197, 94, 0.10);
+  --intent-success-border: rgba(34, 197, 94, 0.28);
+  --intent-success-text:   #86efac;
+
+  --intent-warning:        #f59e0b;
+  --intent-warning-bg:     rgba(245, 158, 11, 0.10);
+  --intent-warning-border: rgba(245, 158, 11, 0.28);
+  --intent-warning-text:   #fcd34d;
+
+  --intent-danger:         #ef4444;
+  --intent-danger-bg:      rgba(239, 68, 68, 0.10);
+  --intent-danger-border:  rgba(239, 68, 68, 0.28);
+  --intent-danger-text:    #fca5a5;
+
+  --intent-info:           #38bdf8;
+  --intent-info-bg:        rgba(56, 189, 248, 0.10);
+  --intent-info-border:    rgba(56, 189, 248, 0.28);
+  --intent-info-text:      #7dd3fc;
+
+  --intent-neutral:        #475569;
+  --intent-neutral-bg:     rgba(71, 85, 105, 0.12);
+  --intent-neutral-border: rgba(71, 85, 105, 0.28);
+  --intent-neutral-text:   #94a3b8;
+
+  /* ── Syntax highlighting — midnight-tuned ── */
+  --syntax-bg:          #030810;
+  --syntax-text:        #bae6fd;
+  --syntax-comment:     #38556b;
+  --syntax-keyword:     #38bdf8;
+  --syntax-string:      #86efac;
+  --syntax-number:      #fcd34d;
+  --syntax-function:    #7dd3fc;
+  --syntax-class:       #c4b5fd;
+  --syntax-operator:    #e2e8f0;
+  --syntax-punctuation: #7dd3fc;
+  --syntax-property:    #93c5fd;
+  --syntax-constant:    #fca5a5;
+  --syntax-variable:    #bae6fd;
+  --syntax-tag:         #38bdf8;
+  --syntax-attr:        #fcd34d;
+  --syntax-line-hl:     rgba(14, 165, 233, 0.10);
+  --syntax-line-add:    rgba(34, 197, 94,  0.10);
+  --syntax-line-del:    rgba(239, 68, 68,  0.10);
+
+  /* ── Scrollbar ── */
+  --scrollbar-thumb:       rgba(14, 165, 233, 0.18);
+  --scrollbar-thumb-hover: rgba(14, 165, 233, 0.32);
+
+  /* ── Focus ── */
+  --focus-ring-color: #0ea5e9;
+
+  /* ── Topbar ── */
+  --topbar-bg:     rgba(2, 6, 23, 0.94);
+  --topbar-border: rgba(14, 165, 233, 0.09);
+
+  /* ── Shadows — deeper, blue-tinted ── */
+  --shadow-xs:  0 1px 2px rgba(2, 6, 23, 0.40);
+  --shadow-sm:
+    0 1px 3px  rgba(2, 6, 23, 0.45),
+    0 1px 2px  rgba(2, 6, 23, 0.35);
+  --shadow-md:
+    0 4px 6px  rgba(2, 6, 23, 0.45),
+    0 2px 4px  rgba(2, 6, 23, 0.35);
+  --shadow-lg:
+    0 10px 15px rgba(2, 6, 23, 0.50),
+    0 4px  6px  rgba(2, 6, 23, 0.35);
+  --shadow-xl:
+    0 20px 25px rgba(2, 6, 23, 0.55),
+    0 8px  10px rgba(2, 6, 23, 0.40);
+  --shadow-2xl:   0 25px 50px rgba(2, 6, 23, 0.70);
+  --shadow-inset: inset 0 2px 4px rgba(2, 6, 23, 0.40);
+
+  --shadow-glow-primary: 0 0 24px rgba(14, 165, 233, 0.45);
+  --shadow-glow-success: 0 0 20px rgba(34, 197, 94,  0.30);
+  --shadow-glow-danger:  0 0 20px rgba(239, 68, 68,  0.30);
+  --shadow-glow-warning: 0 0 20px rgba(245, 158, 11, 0.30);
+
+  --shadow-node:
+    0 2px 8px  rgba(2, 6, 23, 0.50),
+    0 1px 3px  rgba(2, 6, 23, 0.35);
+  --shadow-node-hover:
+    0 4px 16px rgba(2, 6, 23, 0.60),
+    0 2px 6px  rgba(2, 6, 23, 0.40);
+
+  /* ── Diagram ── */
+  --diagram-bg:          #060d1f;
+  --diagram-grid-color:  rgba(14, 165, 233, 0.04);
+  --diagram-node-bg:     #0f1a35;
+  --diagram-node-border: rgba(14, 165, 233, 0.14);
+  --diagram-node-text:   #e2e8f0;
+  --diagram-edge-color:  rgba(14, 165, 233, 0.28);
+  --diagram-arrow-color: rgba(14, 165, 233, 0.28);
+  --diagram-label-bg:    #0f1a35;
+  --diagram-label-text:  #7dd3fc;
+
+  /* ── Math ── */
+  --math-block-bg:      rgba(15, 26, 53, 0.70);
+  --math-block-border:  rgba(14, 165, 233, 0.12);
+  --math-title-text:    #7dd3fc;
+  --math-number-text:   #38556b;
+  --math-plot-bg:       #030810;
+  --math-plot-axis:     rgba(14, 165, 233, 0.22);
+  --math-plot-grid:     rgba(14, 165, 233, 0.05);
+  --math-plot-curve-0:  #0ea5e9;
+  --math-plot-curve-1:  #22c55e;
+  --math-plot-curve-2:  #f59e0b;
+  --math-plot-curve-3:  #ef4444;
+  --math-plot-axis-text: #38556b;
+
+  /* ── Card ── */
+  --card-bg:          #0f1a35;
+  --card-border:      rgba(14, 165, 233, 0.10);
+  --card-shadow:      0 1px 3px rgba(2, 6, 23, 0.45), 0 1px 2px rgba(2, 6, 23, 0.30);
+  --card-hover-bg:    #152040;
+  --card-hover-shadow: 0 4px 12px rgba(2, 6, 23, 0.55), 0 2px 4px rgba(2, 6, 23, 0.35);
+  --card-title-text:  #f0f9ff;
+  --card-body-text:   #e2e8f0;
+
+  /* ── Code block ── */
+  --code-block-bg:         #030810;
+  --code-block-border:     rgba(14, 165, 233, 0.10);
+  --code-block-header-bg:  rgba(14, 165, 233, 0.04);
+  --code-block-lang-text:  #38556b;
+
+  /* ── Editor ── */
+  --editor-bg:            #060d1f;
+  --editor-text:          #e2e8f0;
+  --editor-caret:         #0ea5e9;
+  --editor-selection:     rgba(14, 165, 233, 0.20);
+  --editor-line-hl:       rgba(14, 165, 233, 0.04);
+  --editor-gutter-text:   #38556b;
+  --editor-heading:       #f0f9ff;
+  --editor-directive:     #38bdf8;
+  --editor-directive-close: #0ea5e9;
+  --editor-string:        #86efac;
+  --editor-number:        #fcd34d;
+  --editor-math:          #c4b5fd;
+  --editor-comment:       #38556b;
+  --editor-keyword:       #38bdf8;
+  --editor-bold:          #f0f9ff;
+  --editor-italic:        #bae6fd;
+  --editor-code:          #bae6fd;
+  --editor-link:          #7dd3fc;
+  --editor-error:         #fca5a5;
+
+  /* ── Preview ── */
+  --preview-bg:               #060d1f;
+  --preview-text:             #e2e8f0;
+  --preview-text-mute:        #7dd3fc;
+  --preview-link:             #38bdf8;
+  --preview-link-hover:       #7dd3fc;
+  --preview-heading:          #f0f9ff;
+  --preview-code-bg:          #030810;
+  --preview-code-text:        #bae6fd;
+  --preview-blockquote-border: #0ea5e9;
+  --preview-hr:               rgba(14, 165, 233, 0.10);
+  --preview-table-border:     rgba(14, 165, 233, 0.10);
+  --preview-table-header-bg:  #0f1a35;
+  --preview-table-stripe:     rgba(14, 165, 233, 0.025);
+
+  /* ── Sidebar ── */
+  --sidebar-bg:           #0a1228;
+  --sidebar-border:       rgba(14, 165, 233, 0.07);
+  --sidebar-text:         #38556b;
+  --sidebar-text-active:  #e2e8f0;
+  --sidebar-hover-bg:     rgba(14, 165, 233, 0.05);
+  --sidebar-active-bg:    rgba(14, 165, 233, 0.08);
+  --sidebar-active-border: #0ea5e9;
+
+  /* ── Toolbar ── */
+  --toolbar-bg:               #0a1228;
+  --toolbar-border:           rgba(14, 165, 233, 0.07);
+  --toolbar-btn-text:         #38556b;
+  --toolbar-btn-hover-bg:     rgba(14, 165, 233, 0.07);
+  --toolbar-btn-hover-text:   #e2e8f0;
+  --toolbar-btn-active-bg:    rgba(14, 165, 233, 0.12);
+  --toolbar-btn-active-text:  #0ea5e9;
+
+  /* ── Tabs ── */
+  --tabs-border:            rgba(14, 165, 233, 0.10);
+  --tabs-tab-text:          #38556b;
+  --tabs-tab-active-text:   #e2e8f0;
+  --tabs-tab-active-border: #0ea5e9;
+  --tabs-tab-hover-bg:      rgba(14, 165, 233, 0.06);
+
+  /* ── Accordion ── */
+  --accordion-border:          rgba(14, 165, 233, 0.10);
+  --accordion-header-text:     #e2e8f0;
+  --accordion-header-hover-bg: rgba(14, 165, 233, 0.05);
+  --accordion-body-text:       #e2e8f0;
+  --accordion-icon-color:      #38556b;
+
+  /* ── Steps ── */
+  --steps-marker-bg:     rgba(14, 165, 233, 0.10);
+  --steps-marker-border: rgba(14, 165, 233, 0.28);
+  --steps-marker-text:   #0ea5e9;
+  --steps-connector:     rgba(14, 165, 233, 0.12);
+  --steps-title-text:    #f0f9ff;
+  --steps-body-text:     #e2e8f0;
+
+  /* ── Footnotes ── */
+  --footnote-border:   rgba(14, 165, 233, 0.10);
+  --footnote-text:     #7dd3fc;
+  --footnote-ref-text: #0ea5e9;
+
+  /* ── Palette ── */
+  --palette-bg:               #0f1a35;
+  --palette-border:           rgba(14, 165, 233, 0.18);
+  --palette-shadow:
+    0 25px 50px rgba(2, 6, 23, 0.70),
+    0 0 0 1px rgba(14, 165, 233, 0.08);
+  --palette-input-text:       #e2e8f0;
+  --palette-placeholder:      #38556b;
+  --palette-item-text:        #7dd3fc;
+  --palette-item-hover-bg:    rgba(14, 165, 233, 0.08);
+  --palette-item-active-bg:   rgba(14, 165, 233, 0.14);
+  --palette-item-active-text: #f0f9ff;
+
+  /* ── Dropdown ── */
+  --dropdown-bg:             #0f1a35;
+  --dropdown-border:         rgba(14, 165, 233, 0.15);
+  --dropdown-shadow:
+    0 10px 15px rgba(2, 6, 23, 0.55),
+    0 4px  6px  rgba(2, 6, 23, 0.40);
+  --dropdown-item-text:      #7dd3fc;
+  --dropdown-item-hover-bg:  rgba(14, 165, 233, 0.08);
+  --dropdown-item-hover-text: #e2e8f0;
+  --dropdown-sep:            rgba(14, 165, 233, 0.08);
+
+  /* ── Tooltip ── */
+  --tooltip-bg:   #1c2a50;
+  --tooltip-text: #e2e8f0;
+
+  /* ── Toast ── */
+  --toast-bg:     #0f1a35;
+  --toast-border: rgba(14, 165, 233, 0.14);
+  --toast-shadow:
+    0 20px 25px rgba(2, 6, 23, 0.65),
+    0 8px  10px rgba(2, 6, 23, 0.45);
+  --toast-text:   #e2e8f0;
+
+  /* ── Split handle ── */
+  --split-handle-bg:       rgba(14, 165, 233, 0.06);
+  --split-handle-hover-bg: #0ea5e9;
+}

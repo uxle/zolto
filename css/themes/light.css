@@ -1,0 +1,323 @@
+/* ============================================================
+   css/themes/light.css
+   Zolto v8.1.0 — Light Theme Token Overrides
+   ============================================================
+   Purpose:
+   - Override CSS custom properties for the Light theme
+   - Applied when <html data-theme="light">
+   - Only [data-theme] selectors — no component rules
+   - All colours optimised for legibility on white/off-white
+   ============================================================ */
+
+[data-theme="light"] {
+
+  /* ── Accent ── */
+  --accent-primary:          #4f46e5;
+  --accent-primary-hover:    #4338ca;
+  --accent-primary-active:   #3730a3;
+  --accent-primary-subtle:   rgba(79, 70, 229, 0.08);
+  --accent-primary-border:   rgba(79, 70, 229, 0.25);
+
+  --accent-secondary:        #7c3aed;
+  --accent-secondary-hover:  #6d28d9;
+  --accent-secondary-subtle: rgba(124, 58, 237, 0.08);
+
+  --accent-tertiary:         #db2777;
+  --accent-tertiary-hover:   #be185d;
+  --accent-tertiary-subtle:  rgba(219, 39, 119, 0.08);
+
+  /* ── Background ── */
+  --bg-app:       #f8fafc;
+  --bg-canvas:    #ffffff;
+  --bg-panel:     #f1f5f9;
+  --bg-surface:   #ffffff;
+  --bg-surface-2: #f1f5f9;
+  --bg-surface-3: #e2e8f0;
+  --bg-overlay:   rgba(15, 23, 42, 0.50);
+  --bg-tooltip:   #1e293b;
+  --bg-dropdown:  #ffffff;
+  --bg-input:     #ffffff;
+  --bg-code:      #f8fafc;
+  --bg-selection: rgba(79, 70, 229, 0.15);
+
+  /* ── Surface ── */
+  --surface-0:          #ffffff;
+  --surface-1:          #f8fafc;
+  --surface-2:          #f1f5f9;
+  --surface-3:          #e2e8f0;
+  --surface-glass:      rgba(255, 255, 255, 0.80);
+  --surface-glass-blur: 12px;
+
+  /* ── Text ── */
+  --text-main:       #0f172a;
+  --text-mute:       #475569;
+  --text-faint:      #94a3b8;
+  --text-invert:     #f8fafc;
+  --text-link:       #4f46e5;
+  --text-link-hover: #4338ca;
+  --text-code:       #1e293b;
+  --text-heading:    #0f172a;
+  --text-accent:     #4f46e5;
+  --text-error:      #dc2626;
+  --text-success:    #16a34a;
+  --text-warning:    #d97706;
+
+  /* ── Border ── */
+  --border-faint:   rgba(15, 23, 42, 0.05);
+  --border-subtle:  rgba(15, 23, 42, 0.09);
+  --border-normal:  rgba(15, 23, 42, 0.14);
+  --border-heavy:   rgba(15, 23, 42, 0.22);
+  --border-accent:  rgba(79, 70, 229, 0.30);
+  --border-focus:   #4f46e5;
+  --border-error:   rgba(220, 38, 38, 0.45);
+  --border-success: rgba(22, 163, 74, 0.40);
+  --border-warning: rgba(217, 119, 6, 0.40);
+
+  /* ── Intent ── */
+  --intent-primary:        #4f46e5;
+  --intent-primary-bg:     rgba(79, 70, 229, 0.07);
+  --intent-primary-border: rgba(79, 70, 229, 0.22);
+  --intent-primary-text:   #4338ca;
+
+  --intent-success:        #16a34a;
+  --intent-success-bg:     rgba(22, 163, 74, 0.07);
+  --intent-success-border: rgba(22, 163, 74, 0.25);
+  --intent-success-text:   #15803d;
+
+  --intent-warning:        #d97706;
+  --intent-warning-bg:     rgba(217, 119, 6, 0.07);
+  --intent-warning-border: rgba(217, 119, 6, 0.25);
+  --intent-warning-text:   #b45309;
+
+  --intent-danger:         #dc2626;
+  --intent-danger-bg:      rgba(220, 38, 38, 0.07);
+  --intent-danger-border:  rgba(220, 38, 38, 0.25);
+  --intent-danger-text:    #b91c1c;
+
+  --intent-info:           #0284c7;
+  --intent-info-bg:        rgba(2, 132, 199, 0.07);
+  --intent-info-border:    rgba(2, 132, 199, 0.25);
+  --intent-info-text:      #0369a1;
+
+  --intent-neutral:        #64748b;
+  --intent-neutral-bg:     rgba(100, 116, 139, 0.07);
+  --intent-neutral-border: rgba(100, 116, 139, 0.25);
+  --intent-neutral-text:   #475569;
+
+  /* ── Syntax highlighting ── */
+  --syntax-bg:          #f8fafc;
+  --syntax-text:        #1e293b;
+  --syntax-comment:     #94a3b8;
+  --syntax-keyword:     #4f46e5;
+  --syntax-string:      #15803d;
+  --syntax-number:      #b45309;
+  --syntax-function:    #0369a1;
+  --syntax-class:       #be185d;
+  --syntax-operator:    #0f172a;
+  --syntax-punctuation: #475569;
+  --syntax-property:    #4338ca;
+  --syntax-constant:    #b91c1c;
+  --syntax-variable:    #1e293b;
+  --syntax-tag:         #4f46e5;
+  --syntax-attr:        #b45309;
+  --syntax-line-hl:     rgba(79, 70, 229, 0.08);
+  --syntax-line-add:    rgba(22, 163, 74,  0.10);
+  --syntax-line-del:    rgba(220, 38, 38,  0.10);
+
+  /* ── Scrollbar ── */
+  --scrollbar-thumb:       rgba(15, 23, 42, 0.14);
+  --scrollbar-thumb-hover: rgba(15, 23, 42, 0.26);
+
+  /* ── Focus ── */
+  --focus-ring-color: #4f46e5;
+
+  /* ── Topbar ── */
+  --topbar-bg:     rgba(248, 250, 252, 0.92);
+  --topbar-border: rgba(15, 23, 42, 0.08);
+
+  /* ── Shadow overrides — lighter for light backgrounds ── */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-sm:
+    0 1px 3px  rgba(15, 23, 42, 0.08),
+    0 1px 2px  rgba(15, 23, 42, 0.06);
+  --shadow-md:
+    0 4px 6px  rgba(15, 23, 42, 0.07),
+    0 2px 4px  rgba(15, 23, 42, 0.06);
+  --shadow-lg:
+    0 10px 15px rgba(15, 23, 42, 0.08),
+    0 4px  6px  rgba(15, 23, 42, 0.06);
+  --shadow-xl:
+    0 20px 25px rgba(15, 23, 42, 0.10),
+    0 8px  10px rgba(15, 23, 42, 0.06);
+  --shadow-2xl:   0 25px 50px rgba(15, 23, 42, 0.18);
+  --shadow-inset: inset 0 2px 4px rgba(15, 23, 42, 0.06);
+
+  --shadow-glow-primary: 0 0 20px rgba(79, 70, 229, 0.25);
+  --shadow-glow-success: 0 0 20px rgba(22, 163, 74,  0.20);
+  --shadow-glow-danger:  0 0 20px rgba(220, 38, 38,  0.20);
+  --shadow-glow-warning: 0 0 20px rgba(217, 119, 6,  0.20);
+
+  --shadow-node:
+    0 2px 8px  rgba(15, 23, 42, 0.10),
+    0 1px 3px  rgba(15, 23, 42, 0.08);
+  --shadow-node-hover:
+    0 4px 16px rgba(15, 23, 42, 0.14),
+    0 2px 6px  rgba(15, 23, 42, 0.10);
+
+  /* ── Diagram ── */
+  --diagram-bg:         #ffffff;
+  --diagram-grid-color: rgba(15, 23, 42, 0.04);
+  --diagram-node-bg:    #f8fafc;
+  --diagram-node-border: rgba(15, 23, 42, 0.12);
+  --diagram-node-text:  #0f172a;
+  --diagram-edge-color: rgba(15, 23, 42, 0.25);
+  --diagram-arrow-color: rgba(15, 23, 42, 0.25);
+  --diagram-label-bg:   #ffffff;
+  --diagram-label-text: #475569;
+
+  /* ── Math ── */
+  --math-block-bg:     rgba(248, 250, 252, 0.8);
+  --math-block-border: rgba(15, 23, 42, 0.08);
+  --math-title-text:   #475569;
+  --math-number-text:  #94a3b8;
+  --math-plot-bg:      #f8fafc;
+  --math-plot-axis:    rgba(15, 23, 42, 0.20);
+  --math-plot-grid:    rgba(15, 23, 42, 0.05);
+  --math-plot-axis-text: #94a3b8;
+
+  /* ── Card ── */
+  --card-bg:          #ffffff;
+  --card-border:      rgba(15, 23, 42, 0.09);
+  --card-shadow:      0 1px 3px rgba(15, 23, 42, 0.08), 0 1px 2px rgba(15, 23, 42, 0.05);
+  --card-hover-bg:    #f8fafc;
+  --card-hover-shadow: 0 4px 6px rgba(15, 23, 42, 0.07), 0 2px 4px rgba(15, 23, 42, 0.05);
+  --card-title-text:  #0f172a;
+  --card-body-text:   #0f172a;
+
+  /* ── Code block ── */
+  --code-block-bg:         #f8fafc;
+  --code-block-border:     rgba(15, 23, 42, 0.09);
+  --code-block-header-bg:  rgba(15, 23, 42, 0.03);
+  --code-block-lang-text:  #94a3b8;
+
+  /* ── Editor ── */
+  --editor-bg:           #ffffff;
+  --editor-text:         #0f172a;
+  --editor-caret:        #4f46e5;
+  --editor-selection:    rgba(79, 70, 229, 0.15);
+  --editor-line-hl:      rgba(15, 23, 42, 0.025);
+  --editor-gutter-text:  #94a3b8;
+  --editor-heading:      #0f172a;
+  --editor-directive:    #4f46e5;
+  --editor-directive-close: #4338ca;
+  --editor-string:       #15803d;
+  --editor-number:       #b45309;
+  --editor-math:         #be185d;
+  --editor-comment:      #94a3b8;
+  --editor-keyword:      #4f46e5;
+  --editor-bold:         #0f172a;
+  --editor-italic:       #1e293b;
+  --editor-code:         #1e293b;
+  --editor-link:         #0369a1;
+  --editor-error:        #dc2626;
+
+  /* ── Preview ── */
+  --preview-bg:               #ffffff;
+  --preview-text:             #0f172a;
+  --preview-text-mute:        #475569;
+  --preview-link:             #4f46e5;
+  --preview-link-hover:       #4338ca;
+  --preview-heading:          #0f172a;
+  --preview-code-bg:          #f8fafc;
+  --preview-code-text:        #1e293b;
+  --preview-blockquote-border: #4f46e5;
+  --preview-hr:               rgba(15, 23, 42, 0.10);
+  --preview-table-border:     rgba(15, 23, 42, 0.09);
+  --preview-table-header-bg:  #f1f5f9;
+  --preview-table-stripe:     rgba(15, 23, 42, 0.02);
+
+  /* ── Sidebar ── */
+  --sidebar-bg:          #f1f5f9;
+  --sidebar-border:      rgba(15, 23, 42, 0.08);
+  --sidebar-text:        #64748b;
+  --sidebar-text-active: #0f172a;
+  --sidebar-hover-bg:    rgba(15, 23, 42, 0.04);
+  --sidebar-active-bg:   rgba(15, 23, 42, 0.07);
+  --sidebar-active-border: #4f46e5;
+
+  /* ── Toolbar ── */
+  --toolbar-bg:               #f1f5f9;
+  --toolbar-border:           rgba(15, 23, 42, 0.08);
+  --toolbar-btn-text:         #64748b;
+  --toolbar-btn-hover-bg:     rgba(15, 23, 42, 0.06);
+  --toolbar-btn-hover-text:   #0f172a;
+  --toolbar-btn-active-bg:    rgba(79, 70, 229, 0.08);
+  --toolbar-btn-active-text:  #4f46e5;
+
+  /* ── Tabs ── */
+  --tabs-border:             rgba(15, 23, 42, 0.09);
+  --tabs-tab-text:           #64748b;
+  --tabs-tab-active-text:    #0f172a;
+  --tabs-tab-active-border:  #4f46e5;
+  --tabs-tab-hover-bg:       rgba(15, 23, 42, 0.04);
+
+  /* ── Accordion ── */
+  --accordion-border:         rgba(15, 23, 42, 0.09);
+  --accordion-header-text:    #0f172a;
+  --accordion-header-hover-bg: rgba(15, 23, 42, 0.03);
+  --accordion-body-text:      #0f172a;
+  --accordion-icon-color:     #94a3b8;
+
+  /* ── Steps ── */
+  --steps-marker-bg:     rgba(79, 70, 229, 0.08);
+  --steps-marker-border: rgba(79, 70, 229, 0.25);
+  --steps-marker-text:   #4f46e5;
+  --steps-connector:     rgba(15, 23, 42, 0.10);
+  --steps-title-text:    #0f172a;
+  --steps-body-text:     #0f172a;
+
+  /* ── Footnotes ── */
+  --footnote-border: rgba(15, 23, 42, 0.08);
+  --footnote-text:   #475569;
+  --footnote-ref-text: #4f46e5;
+
+  /* ── Palette ── */
+  --palette-bg:              #ffffff;
+  --palette-border:          rgba(15, 23, 42, 0.12);
+  --palette-shadow:
+    0 25px 50px rgba(15, 23, 42, 0.22),
+    0 0 0 1px rgba(15, 23, 42, 0.06);
+  --palette-input-text:      #0f172a;
+  --palette-placeholder:     #94a3b8;
+  --palette-item-text:       #475569;
+  --palette-item-hover-bg:   rgba(15, 23, 42, 0.05);
+  --palette-item-active-bg:  rgba(79, 70, 229, 0.07);
+  --palette-item-active-text: #0f172a;
+
+  /* ── Dropdown ── */
+  --dropdown-bg:             #ffffff;
+  --dropdown-border:         rgba(15, 23, 42, 0.10);
+  --dropdown-shadow:
+    0 10px 15px rgba(15, 23, 42, 0.08),
+    0 4px  6px  rgba(15, 23, 42, 0.06);
+  --dropdown-item-text:      #475569;
+  --dropdown-item-hover-bg:  rgba(15, 23, 42, 0.05);
+  --dropdown-item-hover-text: #0f172a;
+  --dropdown-sep:            rgba(15, 23, 42, 0.08);
+
+  /* ── Tooltip ── */
+  --tooltip-bg:   #1e293b;
+  --tooltip-text: #f1f5f9;
+
+  /* ── Toast ── */
+  --toast-bg:     #ffffff;
+  --toast-border: rgba(15, 23, 42, 0.10);
+  --toast-shadow:
+    0 20px 25px rgba(15, 23, 42, 0.14),
+    0 8px  10px rgba(15, 23, 42, 0.08);
+  --toast-text:   #0f172a;
+
+  /* ── Split handle ── */
+  --split-handle-bg:       rgba(15, 23, 42, 0.06);
+  --split-handle-hover-bg: #4f46e5;
+}

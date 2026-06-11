@@ -1,0 +1,332 @@
+/* ============================================================
+   css/themes/oled.css
+   Zolto v8.1.0 — OLED Theme Token Overrides
+   ============================================================
+   Purpose:
+   - Override CSS custom properties for the OLED theme
+   - Applied when <html data-theme="oled">
+   - Pure black backgrounds — saves power on OLED/AMOLED screens
+   - Maximum contrast — no dark grey softening, true #000000
+   - Vivid accent colours pop against true black
+   - Only [data-theme] selectors — no component rules
+   ============================================================ */
+
+[data-theme="oled"] {
+
+  /* ── Accent — vivid purple for max pop on black ── */
+  --accent-primary:          #7c3aed;
+  --accent-primary-hover:    #8b5cf6;
+  --accent-primary-active:   #6d28d9;
+  --accent-primary-subtle:   rgba(124, 58, 237, 0.14);
+  --accent-primary-border:   rgba(124, 58, 237, 0.38);
+
+  --accent-secondary:        #ec4899;
+  --accent-secondary-hover:  #f472b6;
+  --accent-secondary-subtle: rgba(236, 72, 153, 0.14);
+
+  --accent-tertiary:         #06b6d4;
+  --accent-tertiary-hover:   #22d3ee;
+  --accent-tertiary-subtle:  rgba(6, 182, 212, 0.14);
+
+  /* ── Background — true black ── */
+  --bg-app:       #000000;
+  --bg-canvas:    #000000;
+  --bg-panel:     #050505;
+  --bg-surface:   #0a0a0a;
+  --bg-surface-2: #111111;
+  --bg-surface-3: #1a1a1a;
+  --bg-overlay:   rgba(0, 0, 0, 0.85);
+  --bg-tooltip:   #1a1a1a;
+  --bg-dropdown:  #0a0a0a;
+  --bg-input:     #050505;
+  --bg-code:      #000000;
+  --bg-selection: rgba(124, 58, 237, 0.22);
+
+  /* ── Surface ── */
+  --surface-0:          #000000;
+  --surface-1:          #0a0a0a;
+  --surface-2:          #111111;
+  --surface-3:          #1a1a1a;
+  --surface-glass:      rgba(10, 10, 10, 0.85);
+  --surface-glass-blur: 16px;
+
+  /* ── Text — high contrast on black ── */
+  --text-main:       #ffffff;
+  --text-mute:       #a3a3a3;
+  --text-faint:      #404040;
+  --text-invert:     #000000;
+  --text-link:       #a78bfa;
+  --text-link-hover: #c4b5fd;
+  --text-code:       #e5e5e5;
+  --text-heading:    #ffffff;
+  --text-accent:     #7c3aed;
+  --text-error:      #f87171;
+  --text-success:    #4ade80;
+  --text-warning:    #facc15;
+
+  /* ── Border — pure white-on-black ── */
+  --border-faint:   rgba(255, 255, 255, 0.04);
+  --border-subtle:  rgba(255, 255, 255, 0.08);
+  --border-normal:  rgba(255, 255, 255, 0.14);
+  --border-heavy:   rgba(255, 255, 255, 0.24);
+  --border-accent:  rgba(124, 58, 237, 0.45);
+  --border-focus:   #7c3aed;
+  --border-error:   rgba(248, 113, 113, 0.50);
+  --border-success: rgba(74, 222, 128, 0.40);
+  --border-warning: rgba(250, 204, 21, 0.40);
+
+  /* ── Intent — vivid on black for max legibility ── */
+  --intent-primary:        #7c3aed;
+  --intent-primary-bg:     rgba(124, 58, 237, 0.12);
+  --intent-primary-border: rgba(124, 58, 237, 0.32);
+  --intent-primary-text:   #c4b5fd;
+
+  --intent-success:        #16a34a;
+  --intent-success-bg:     rgba(22, 163, 74, 0.12);
+  --intent-success-border: rgba(22, 163, 74, 0.32);
+  --intent-success-text:   #4ade80;
+
+  --intent-warning:        #ca8a04;
+  --intent-warning-bg:     rgba(202, 138, 4, 0.12);
+  --intent-warning-border: rgba(202, 138, 4, 0.32);
+  --intent-warning-text:   #facc15;
+
+  --intent-danger:         #dc2626;
+  --intent-danger-bg:      rgba(220, 38, 38, 0.12);
+  --intent-danger-border:  rgba(220, 38, 38, 0.32);
+  --intent-danger-text:    #f87171;
+
+  --intent-info:           #0891b2;
+  --intent-info-bg:        rgba(8, 145, 178, 0.12);
+  --intent-info-border:    rgba(8, 145, 178, 0.32);
+  --intent-info-text:      #22d3ee;
+
+  --intent-neutral:        #525252;
+  --intent-neutral-bg:     rgba(82, 82, 82, 0.12);
+  --intent-neutral-border: rgba(82, 82, 82, 0.32);
+  --intent-neutral-text:   #a3a3a3;
+
+  /* ── Syntax — vivid colours for OLED contrast ── */
+  --syntax-bg:          #000000;
+  --syntax-text:        #e5e5e5;
+  --syntax-comment:     #404040;
+  --syntax-keyword:     #a78bfa;
+  --syntax-string:      #4ade80;
+  --syntax-number:      #facc15;
+  --syntax-function:    #22d3ee;
+  --syntax-class:       #f472b6;
+  --syntax-operator:    #ffffff;
+  --syntax-punctuation: #a3a3a3;
+  --syntax-property:    #c4b5fd;
+  --syntax-constant:    #f87171;
+  --syntax-variable:    #e5e5e5;
+  --syntax-tag:         #a78bfa;
+  --syntax-attr:        #facc15;
+  --syntax-line-hl:     rgba(124, 58, 237, 0.10);
+  --syntax-line-add:    rgba(74, 222, 128,  0.10);
+  --syntax-line-del:    rgba(248, 113, 113, 0.10);
+
+  /* ── Scrollbar — thin on black ── */
+  --scrollbar-width:       4px;
+  --scrollbar-thumb:       rgba(255, 255, 255, 0.14);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.28);
+
+  /* ── Focus ── */
+  --focus-ring-color: #7c3aed;
+
+  /* ── Topbar — pure black with no blur ── */
+  --topbar-bg:               #000000;
+  --topbar-border:           rgba(255, 255, 255, 0.06);
+  --topbar-backdrop-blur:    0px;
+
+  /* ── Shadows — on pure black, deep shadows unneeded ── */
+  --shadow-xs:  0 1px 2px rgba(0, 0, 0, 0.80);
+  --shadow-sm:
+    0 1px 3px  rgba(0, 0, 0, 0.80),
+    0 0   1px  rgba(255, 255, 255, 0.04);
+  --shadow-md:
+    0 4px 6px  rgba(0, 0, 0, 0.80),
+    0 0   1px  rgba(255, 255, 255, 0.05);
+  --shadow-lg:
+    0 10px 15px rgba(0, 0, 0, 0.80),
+    0 0    1px  rgba(255, 255, 255, 0.05);
+  --shadow-xl:
+    0 20px 25px rgba(0, 0, 0, 0.80),
+    0 0    1px  rgba(255, 255, 255, 0.06);
+  --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.90);
+  --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+
+  /* Vivid glows stand out strongly on true black */
+  --shadow-glow-primary: 0 0 28px rgba(124, 58, 237, 0.55);
+  --shadow-glow-success: 0 0 24px rgba(74, 222, 128, 0.40);
+  --shadow-glow-danger:  0 0 24px rgba(248, 113, 113, 0.40);
+  --shadow-glow-warning: 0 0 24px rgba(250, 204, 21, 0.40);
+
+  --shadow-node:
+    0 2px 8px rgba(0, 0, 0, 0.80),
+    0 0   1px rgba(255, 255, 255, 0.06);
+  --shadow-node-hover:
+    0 4px 16px rgba(0, 0, 0, 0.90),
+    0 0   1px  rgba(255, 255, 255, 0.08);
+
+  /* ── Diagram ── */
+  --diagram-bg:          #000000;
+  --diagram-grid-color:  rgba(255, 255, 255, 0.03);
+  --diagram-node-bg:     #0a0a0a;
+  --diagram-node-border: rgba(255, 255, 255, 0.10);
+  --diagram-node-text:   #ffffff;
+  --diagram-edge-color:  rgba(255, 255, 255, 0.20);
+  --diagram-arrow-color: rgba(255, 255, 255, 0.20);
+  --diagram-label-bg:    #0a0a0a;
+  --diagram-label-text:  #a3a3a3;
+
+  /* ── Math ── */
+  --math-block-bg:      rgba(10, 10, 10, 0.90);
+  --math-block-border:  rgba(255, 255, 255, 0.07);
+  --math-title-text:    #a3a3a3;
+  --math-number-text:   #404040;
+  --math-plot-bg:       #000000;
+  --math-plot-axis:     rgba(255, 255, 255, 0.18);
+  --math-plot-grid:     rgba(255, 255, 255, 0.04);
+  --math-plot-curve-0:  #7c3aed;
+  --math-plot-curve-1:  #16a34a;
+  --math-plot-curve-2:  #ca8a04;
+  --math-plot-curve-3:  #dc2626;
+  --math-plot-axis-text: #404040;
+
+  /* ── Card ── */
+  --card-bg:           #0a0a0a;
+  --card-border:       rgba(255, 255, 255, 0.08);
+  --card-shadow:       0 1px 0 rgba(255, 255, 255, 0.04);
+  --card-hover-bg:     #111111;
+  --card-hover-shadow: 0 4px 12px rgba(0, 0, 0, 0.80), 0 0 1px rgba(255, 255, 255, 0.06);
+  --card-title-text:   #ffffff;
+  --card-body-text:    #e5e5e5;
+
+  /* ── Code block ── */
+  --code-block-bg:         #000000;
+  --code-block-border:     rgba(255, 255, 255, 0.08);
+  --code-block-header-bg:  rgba(255, 255, 255, 0.03);
+  --code-block-lang-text:  #404040;
+
+  /* ── Editor ── */
+  --editor-bg:            #000000;
+  --editor-text:          #ffffff;
+  --editor-caret:         #7c3aed;
+  --editor-selection:     rgba(124, 58, 237, 0.22);
+  --editor-line-hl:       rgba(255, 255, 255, 0.02);
+  --editor-gutter-text:   #404040;
+  --editor-heading:       #ffffff;
+  --editor-directive:     #a78bfa;
+  --editor-directive-close: #7c3aed;
+  --editor-string:        #4ade80;
+  --editor-number:        #facc15;
+  --editor-math:          #f472b6;
+  --editor-comment:       #404040;
+  --editor-keyword:       #a78bfa;
+  --editor-bold:          #ffffff;
+  --editor-italic:        #e5e5e5;
+  --editor-code:          #e5e5e5;
+  --editor-link:          #22d3ee;
+  --editor-error:         #f87171;
+
+  /* ── Preview ── */
+  --preview-bg:               #000000;
+  --preview-text:             #ffffff;
+  --preview-text-mute:        #a3a3a3;
+  --preview-link:             #a78bfa;
+  --preview-link-hover:       #c4b5fd;
+  --preview-heading:          #ffffff;
+  --preview-code-bg:          #000000;
+  --preview-code-text:        #e5e5e5;
+  --preview-blockquote-border: #7c3aed;
+  --preview-hr:               rgba(255, 255, 255, 0.08);
+  --preview-table-border:     rgba(255, 255, 255, 0.08);
+  --preview-table-header-bg:  #0a0a0a;
+  --preview-table-stripe:     rgba(255, 255, 255, 0.02);
+
+  /* ── Sidebar ── */
+  --sidebar-bg:           #000000;
+  --sidebar-border:       rgba(255, 255, 255, 0.06);
+  --sidebar-text:         #404040;
+  --sidebar-text-active:  #ffffff;
+  --sidebar-hover-bg:     rgba(255, 255, 255, 0.04);
+  --sidebar-active-bg:    rgba(255, 255, 255, 0.07);
+  --sidebar-active-border: #7c3aed;
+
+  /* ── Toolbar ── */
+  --toolbar-bg:               #000000;
+  --toolbar-border:           rgba(255, 255, 255, 0.06);
+  --toolbar-btn-text:         #404040;
+  --toolbar-btn-hover-bg:     rgba(255, 255, 255, 0.06);
+  --toolbar-btn-hover-text:   #ffffff;
+  --toolbar-btn-active-bg:    rgba(124, 58, 237, 0.14);
+  --toolbar-btn-active-text:  #a78bfa;
+
+  /* ── Tabs ── */
+  --tabs-border:            rgba(255, 255, 255, 0.08);
+  --tabs-tab-text:          #404040;
+  --tabs-tab-active-text:   #ffffff;
+  --tabs-tab-active-border: #7c3aed;
+  --tabs-tab-hover-bg:      rgba(255, 255, 255, 0.04);
+
+  /* ── Accordion ── */
+  --accordion-border:          rgba(255, 255, 255, 0.07);
+  --accordion-header-text:     #ffffff;
+  --accordion-header-hover-bg: rgba(255, 255, 255, 0.04);
+  --accordion-body-text:       #e5e5e5;
+  --accordion-icon-color:      #404040;
+
+  /* ── Steps ── */
+  --steps-marker-bg:     rgba(124, 58, 237, 0.12);
+  --steps-marker-border: rgba(124, 58, 237, 0.35);
+  --steps-marker-text:   #a78bfa;
+  --steps-connector:     rgba(255, 255, 255, 0.07);
+  --steps-title-text:    #ffffff;
+  --steps-body-text:     #e5e5e5;
+
+  /* ── Footnotes ── */
+  --footnote-border:   rgba(255, 255, 255, 0.07);
+  --footnote-text:     #a3a3a3;
+  --footnote-ref-text: #a78bfa;
+
+  /* ── Palette ── */
+  --palette-bg:               #0a0a0a;
+  --palette-border:           rgba(255, 255, 255, 0.12);
+  --palette-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+  --palette-input-text:       #ffffff;
+  --palette-placeholder:      #404040;
+  --palette-item-text:        #a3a3a3;
+  --palette-item-hover-bg:    rgba(255, 255, 255, 0.06);
+  --palette-item-active-bg:   rgba(124, 58, 237, 0.14);
+  --palette-item-active-text: #ffffff;
+
+  /* ── Dropdown ── */
+  --dropdown-bg:             #0a0a0a;
+  --dropdown-border:         rgba(255, 255, 255, 0.10);
+  --dropdown-shadow:
+    0 10px 15px rgba(0, 0, 0, 0.90),
+    0 0    1px  rgba(255, 255, 255, 0.05);
+  --dropdown-item-text:      #a3a3a3;
+  --dropdown-item-hover-bg:  rgba(255, 255, 255, 0.06);
+  --dropdown-item-hover-text: #ffffff;
+  --dropdown-sep:            rgba(255, 255, 255, 0.06);
+
+  /* ── Tooltip ── */
+  --tooltip-bg:   #1a1a1a;
+  --tooltip-text: #ffffff;
+
+  /* ── Toast ── */
+  --toast-bg:     #0a0a0a;
+  --toast-border: rgba(255, 255, 255, 0.10);
+  --toast-shadow:
+    0 20px 25px rgba(0, 0, 0, 0.95),
+    0 0    1px  rgba(255, 255, 255, 0.05);
+  --toast-text:   #ffffff;
+
+  /* ── Split handle ── */
+  --split-handle-bg:       rgba(255, 255, 255, 0.05);
+  --split-handle-hover-bg: #7c3aed;
+}
