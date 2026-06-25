@@ -91,7 +91,16 @@ async function boot() {
 
   } catch (err) {
     logger.error('Boot failed', err);
-    showGlobalError(err instanceof Error ? err.message : String(err));
+    const msg = err instanceof Error ? `${err.message}\n\n${err.stack ?? ''}` : String(err);
+    // Ensure error is always visible — try overlay first, then alert
+    try {
+      showGlobalError(err instanceof Error ? err.message : String(err));
+    } catch {
+      // Overlay itself failed; fall back to alert so the error is never silent
+      // eslint-disable-next-line no-alert
+      alert(`Zolto failed to start:\n\n${msg}`);
+      hideBoot();
+    }
   }
 }
 
@@ -185,9 +194,8 @@ async function handleAction(action, event, el) {
       break;
 
     case 'doc:open-example': {
-      const { loadExample } = await import('./storage.js');
-      if (loadExample) loadExample();
-      else newDoc();
+      // loadExample is not exported from storage.js — open a blank new doc instead
+      newDoc();
       break;
     }
 
@@ -376,7 +384,7 @@ function wireStateWatchers() {
   // Word count
   watch('document', (doc) => {
     const el    = document.getElementById('word-count-value');
-    const words = doc.source.trim().split(/\s+/).filter(Boolean).length;
+    const words = (doc.source ?? '').trim().split(/\s+/).filter(Boolean).length;
     if (el) el.textContent = String(words);
   });
 

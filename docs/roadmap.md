@@ -642,4 +642,4 @@ These are current limitations of v8.1.0 that will be addressed in future release
 ---
 
 *Zolto v8.1.0 · Infinity Architecture*
-*Source: `docs/roadmap.md` · Architecture: `docs/architecture.md` · Changelog: `docs/changelog.md`*
+*Source: `docs/roadmap.md` · Architecture: `docs/architecture.md` · Changelog: `docs/changelog.md`*r

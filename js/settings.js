@@ -188,7 +188,7 @@ function notify(key, next, prev) {
   setState('settings', { ..._settings });
 
   // Emit on the bus
-  bus.emit(EVENTS.SETTINGS_CHANGE, { key, value: next, settings: _settings });
+  // SETTINGS_CHANGE is emitted by state.js _bridgeToEventBus — do not double-emit here.
 }
 
 

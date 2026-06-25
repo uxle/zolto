@@ -328,7 +328,7 @@ function _notify(key, next, prev) {
     }
   }
   // Forward select keys to the global event bus
-  _bridgeToEventBus(key, next);
+  _bridgeToEventBus(key, next, prev);
 }
 
 
@@ -339,13 +339,16 @@ function _notify(key, next, prev) {
 //    importing state.
 // ─────────────────────────────────────────────────────────────
 
-/** @param {string} key @param {any} next */
-function _bridgeToEventBus(key, next) {
+/** @param {string} key @param {any} next @param {any} prev */
+function _bridgeToEventBus(key, next, prev) {
   switch (key) {
     case 'document':
       if (next.dirty)  bus.emit(EVENTS.DOC_DIRTY,  next);
       if (!next.dirty) bus.emit(EVENTS.DOC_CLEAN,  next);
-      if (next.source !== undefined) {
+      // Only fire EDITOR_CHANGE when source text actually changes.
+      // Firing on every document patch (e.g. setAST, markSaved) would
+      // create an infinite render loop: setAST → EDITOR_CHANGE → render → setAST → …
+      if (next.source !== prev?.source) {
         bus.emit(EVENTS.EDITOR_CHANGE, next.source);
       }
       break;
@@ -360,8 +363,10 @@ function _bridgeToEventBus(key, next) {
       if (next === 'error') bus.emit(EVENTS.DOC_SAVE_ERROR, get('document'));
       break;
     case 'rendering':
-      if (next)  bus.emit(EVENTS.RENDER_START);
-      if (!next) bus.emit(EVENTS.RENDER_DONE);
+      // Only emit RENDER_START here.
+      // RENDER_DONE is emitted by live-renderer.js with the full
+      // { doc, elapsed, diagnostics } payload — don't double-emit it.
+      if (next && !prev) bus.emit(EVENTS.RENDER_START);
       break;
     case 'renderError':
       if (next) bus.emit(EVENTS.RENDER_ERROR, next);
@@ -445,10 +450,12 @@ export function setCursor(line, col, offset) {
   // on the most frequently-called state mutation in the app.
   const cur = _state.cursor;
   if (cur.line === line && cur.col === col && cur.offset === offset) return;
+  // Snapshot prev BEFORE mutation so watchers receive correct old value
+  const prev = { line: cur.line, col: cur.col, offset: cur.offset };
   cur.line   = line;
   cur.col    = col;
   cur.offset = offset;
-  _notify('cursor', cur, undefined);
+  _notify('cursor', cur, prev);
 }
 
 /**

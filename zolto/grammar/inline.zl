@@ -1,0 +1,239 @@
+# Inline Grammar Reference
+
+**Version:** 8.1.0 · Inline elements appear *within* a line of prose and do
+not create a new block. Zolto inherits all CommonMark inline syntax and adds
+`<Tag>` inline forms for constructs Markdown cannot express.
+
+---
+
+## 1 · CommonMark Inline (inherited)
+
+These work identically to standard Markdown:
+
+| Construct          | Syntax                        | Result                   |
+|--------------------|-------------------------------|--------------------------|
+| Bold               | `**bold**` or `__bold__`      | **bold**                 |
+| Italic             | `*italic*` or `_italic_`      | *italic*                 |
+| Bold + italic      | `***both***`                  | ***both***               |
+| Inline code        | `` `code` ``                  | `code`                   |
+| Strikethrough      | `~~strike~~`                  | ~~strike~~               |
+| Link               | `[label](url)`                | [label](url)             |
+| Link (ref-style)   | `[label][ref]`                | —                        |
+| Image              | `![alt](url)`                 | —                        |
+| Hard line break    | two trailing spaces or `\`    | `<br>`                   |
+| HTML entity        | `&amp;` `&copy;` `&mdash;`    | & © —                    |
+| Auto-link          | `<https://example.com>`       | clickable URL            |
+
+---
+
+## 2 · Inline Math
+
+Wrap any KaTeX expression in `<m>…</m>` for inline rendering.
+
+```zolto
+The quadratic formula is <m>x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}</m>.
+
+Energy–mass equivalence: <m>E = mc^2</m>.
+
+Euler's identity: <m>e^{i\pi} + 1 = 0</m>.
+```
+
+**Renders as:**
+
+The quadratic formula is <m>x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}</m>.
+
+Energy–mass equivalence: <m>E = mc^2</m>.
+
+Euler's identity: <m>e^{i\pi} + 1 = 0</m>.
+
+<tip>
+`<m>` is the *only* math delimiter. Dollar signs `$` have no special meaning
+in Zolto — they are rendered as literal `$` characters.
+</tip>
+
+<note>
+KaTeX is the primary renderer. If KaTeX cannot parse an expression, the
+transformer falls back to MathJax automatically.
+</note>
+
+---
+
+## 3 · Inline Variables
+
+Variables are declared once and referenced anywhere in the document with `{name}`.
+
+```zolto
+@var version  = 8.1.0
+@var author   = Zolto Team
+@var year     = 2025
+
+---
+
+**Zolto {version}** — © {year} {author}.
+All documentation is auto-generated from `{version}` source.
+```
+
+**Rules:**
+- Declarations must appear before the first use (transformer resolves in order)
+- Variable names are alphanumeric + underscore; case-sensitive
+- Values are plain strings; no nesting or expressions
+- Undefined references render as `{name}` (no error, but validator warns)
+
+---
+
+## 4 · Footnotes
+
+```zolto
+The proof relies on Cantor's diagonal argument[^cantor] and Gödel's
+incompleteness theorems[^godel].
+
+[^cantor]: Cantor, G. (1891). *Über eine elementare Frage der
+  Mannigfaltigkeitslehre*. Jahresbericht der DMV, 1, 75–78.
+
+[^godel]: Gödel, K. (1931). Über formal unentscheidbare Sätze der
+  Principia Mathematica und verwandter Systeme. *Monatshefte für
+  Mathematik und Physik*, 38, 173–198.
+```
+
+Footnote definitions can appear anywhere in the document; the transformer
+collects and re-orders them automatically. Reference markers are
+auto-numbered sequentially in order of appearance.
+
+---
+
+## 5 · Inline Spans (semantic tagging)
+
+For semantic markup that has no Markdown equivalent:
+
+```zolto
+Press <kbd>Ctrl</kbd>+<kbd>K</kbd> to open the command palette.
+
+The function returns <code class="zolto-type">Promise<void></code>.
+
+<abbr title="Abstract Syntax Tree">AST</abbr> nodes are immutable.
+
+Status: <mark>experimental</mark>.
+
+<sub>subscript</sub> and <sup>superscript</sup> text.
+
+<del>removed text</del> and <ins>inserted text</ins>.
+```
+
+**Renders as:**
+
+Press <kbd>Ctrl</kbd>+<kbd>K</kbd> to open the command palette.
+
+The function returns `Promise<void>`.
+
+Status: <mark>experimental</mark>.
+
+---
+
+## 6 · Inline Links (extended)
+
+Beyond standard Markdown links, Zolto supports decorated link attributes:
+
+```zolto
+[Open in new tab](https://example.com){target="_blank" rel="noopener"}
+
+[Download PDF](report.pdf){download="Q3-Report"}
+
+[Internal anchor](#section-3)
+
+[Doc cross-link](/docs/syntax#inline)
+```
+
+---
+
+## 7 · Inline Component Slots
+
+Component props can receive inline content:
+
+```zolto
+<badge variant="success">v8.1.0</badge>
+
+<tag color="indigo">experimental</tag>
+
+<icon name="arrow-right" size="16"/>
+```
+
+These are distinct from block components — they render without a wrapping `<div>`
+and flow naturally within paragraph text.
+
+---
+
+## 8 · Escaping
+
+Any Zolto or Markdown special character can be escaped with a backslash:
+
+```zolto
+\*not italic\*         → *not italic*
+\`not code\`           → `not code`
+\<not a tag\>          → <not a tag>
+\{not a variable\}     → {not a variable}
+\\                     → \
+```
+
+The tokenizer processes escapes before any other rule, so they apply uniformly
+across all inline contexts.
+
+---
+
+## 9 · Inline Precedence
+
+When multiple inline rules could match the same span, Zolto resolves ambiguity
+with this priority order (highest first):
+
+1. Escape sequences (`\…`)
+2. Inline code (`` `…` ``)
+3. Tag spans (`<Tag>…</Tag>` and `<Tag/>`)
+4. Inline math (`<m>…</m>`)
+5. Bold + italic (`***…***`)
+6. Bold (`**…**`, `__…__`)
+7. Italic (`*…*`, `_…_`)
+8. Strikethrough (`~~…~~`)
+9. Links (`[…](…)`)
+10. Auto-links, entities, plain text
+
+<warning>
+Inline tags are matched **greedily left-to-right**. Unclosed inline tags are
+treated as literal text — the validator emits a warning for each unclosed tag.
+</warning>
+
+---
+
+## 10 · Inline Grammar BNF
+
+```
+inline       ::= (escape | code-span | tag-span | math-span | emphasis
+                 | strong | strike | link | image | autolink | entity | text)+
+
+escape       ::= '\' ASCII_PUNCT
+
+code-span    ::= '`' (! '`')* '`'
+
+tag-span     ::= '<' tag-name attr* '>' inline '</' tag-name '>'
+               | '<' tag-name attr* '/>'
+
+math-span    ::= '<m>' (! '</m>')* '</m>'
+
+emphasis     ::= '*' inline '*'  |  '_' inline '_'
+
+strong       ::= '**' inline '**'  |  '__' inline '__'
+
+strike       ::= '~~' inline '~~'
+
+link         ::= '[' inline ']' '(' url title? ')' attr-group?
+
+attr-group   ::= '{' attr+ '}'
+
+attr         ::= name '=' '"' value '"'
+               | name '=' "'" value "'"
+               | name
+
+tag-name     ::= [A-Za-z][A-Za-z0-9-]*
+
+text         ::= (! special)+
+
+special      ::= '\\' | '`' | '*' | '_' | '~' | '[' | '<' | '{' | '&'
+```

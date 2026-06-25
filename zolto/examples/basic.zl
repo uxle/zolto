@@ -1,0 +1,173 @@
+<hero title="Hello, Zolto"
+      subtitle="Two rules. Markdown for prose — tags for everything else."
+      align="center"
+      text-anim="word-reveal">
+
+  <cta href="/docs/start" variant="primary">Get Started →</cta>
+  <cta href="/docs"       variant="ghost">Read the Docs</cta>
+
+</hero>
+
+---
+
+## What is Zolto?
+
+Zolto is a **unified document language** that combines the simplicity of
+Markdown with the power of structured layout, mathematics, diagrams, and
+interactive components — all in one coherent syntax.
+
+You already know 80% of it. If you can write Markdown, you can write Zolto.
+
+<cards cols="3">
+  <card title="Markdown Native" thumbnail="">
+  Headings, bold, italic, tables, code, links — all standard CommonMark.
+  No surprises.
+  </card>
+  <card title="Tag Everything Else">
+  Math, diagrams, callouts, cards, charts — one consistent `<Tag>` syntax.
+  </card>
+  <card title="Components">
+  Define reusable layout fragments with props and slots. Ship your own
+  design system in `.zl`.
+  </card>
+</cards>
+
+---
+
+## The Two Rules
+
+<tip title="Rule 1">
+Write **prose, headings, lists, and tables** using standard Markdown.
+</tip>
+
+<tip title="Rule 2">
+Use `<Tag attr="value">…</Tag>` for **everything beyond Markdown** — math,
+callouts, diagrams, charts, layouts.
+</tip>
+
+That's it. There is no `@directive` syntax. There are no `$dollar$` math
+delimiters. One tag format, everywhere.
+
+---
+
+## A Quick Tour
+
+### Math
+
+Inline: the area of a circle is <m>A = \pi r^2</m>.
+
+Block:
+
+<math>
+\sum_{k=1}^{n} k = \frac{n(n+1)}{2}
+</math>
+
+### Callouts
+
+<note>
+This is a note. Use it for neutral, supplementary information.
+</note>
+
+<warning>
+This is a warning. Use it when the reader should be careful.
+</warning>
+
+<tip>
+This is a tip. Use it for helpful hints and best practices.
+</tip>
+
+### Code
+
+```javascript title="greet.js"
+const greet = (name) => `Hello, ${name}! Welcome to Zolto.`;
+console.log(greet('World'));
+```
+
+### Diagram
+
+<diagram type="flowchart">
+Write Zolto --> Parse AST --> Transform --> Render HTML --> Done
+</diagram>
+
+### Chart
+
+<chart type="bar" title="Features by Version">
+Version, Features
+v1.0, 8
+v2.0, 14
+v4.0, 23
+v6.0, 31
+v8.0, 47
+</chart>
+
+---
+
+## Interactive Components
+
+### Tabs
+
+<tabs>
+  <tab title="HTML Output">
+  Zolto renders to clean, semantic HTML5. You can export the result as a
+  self-contained HTML file with all CSS inlined.
+  </tab>
+  <tab title="PDF Export">
+  Use File → Export → PDF to print-ready output. KaTeX math, diagrams, and
+  charts are all vector-rendered.
+  </tab>
+  <tab title="Markdown Export">
+  Export back to CommonMark + GFM. Tag blocks are rendered to their closest
+  Markdown equivalent where possible.
+  </tab>
+</tabs>
+
+### Accordion
+
+<accordion>
+  <item title="Is Zolto backwards-compatible with Markdown?">
+  Yes. All valid CommonMark is valid Zolto. You can open any `.md` file in
+  Zolto and it will render correctly. Zolto extends Markdown; it does not
+  replace it.
+  </item>
+  <item title="Can I use LaTeX math?">
+  You use KaTeX syntax — which is a strict superset of the math subset of
+  LaTeX. Most LaTeX math expressions work as-is inside `<math>` and `<m>` tags.
+  </item>
+  <item title="What about dollar-sign math?">
+  Dollar signs are not math delimiters in Zolto. Write `<m>E = mc^2</m>`,
+  not `$E = mc^2$`. Dollar signs render as literal `$` characters — useful
+  for prices, currencies, and shell prompts.
+  </item>
+</accordion>
+
+---
+
+## Next Steps
+
+<steps>
+  <step title="Install Zolto">
+
+```bash
+npm install -g zolto
+zolto new my-docs
+```
+
+  </step>
+  <step title="Open the editor">
+
+```bash
+cd my-docs
+zolto dev
+```
+
+Navigate to `http://localhost:3000`.
+
+  </step>
+  <step title="Write your first document">
+  Create a new file from the sidebar or press `Ctrl+N`. Start with a heading
+  and a `<tip>` callout.
+  </step>
+  <step title="Export">
+  Press `Ctrl+E` or use File → Export. Choose HTML, PDF, or Markdown.
+  </step>
+</steps>

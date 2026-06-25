@@ -663,3 +663,30 @@ export function truncate(str, max) {
   if (str.length <= max) return str;
   return str.slice(0, max - 1) + '…';
 }
+
+
+// ─────────────────────────────────────────────────────────────
+// 13. File Download Helper
+// ─────────────────────────────────────────────────────────────
+
+/**
+ * Trigger a browser file download with the given content.
+ * @param {string} filename  — e.g. 'document.md'
+ * @param {string} content   — file content as string
+ * @param {string} [mimeType='text/plain']
+ */
+export function downloadFile(filename, content, mimeType = 'text/plain') {
+  const blob = new Blob([content], { type: mimeType });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = filename;
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  // Clean up after the download is initiated
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, 1000);
+}

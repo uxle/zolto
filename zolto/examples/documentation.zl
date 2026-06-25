@@ -1,0 +1,398 @@
+@var lib      = zolto-parser
+@var version  = 8.1.0
+@var pkg      = @zolto/parser
+
+# {lib} · API Reference · v{version}
+
+The `{lib}` package is the standalone Zolto parse pipeline. It exposes
+the full tokenizer → lexer → parser → transformer → validator chain
+as a single importable module.
+
+```bash
+npm install {pkg}
+```
+
+---
+
+## Quick Start
+
+```javascript
+import { parse, transform, validate } from '{pkg}';
+
+const source = `
+# Hello
+
+<tip>This is a tip.</tip>
+
+The answer is <m>42</m>.
+`;
+
+const ast    = parse(source);
+const valid  = validate(ast);
+const result = transform(ast);
+
+console.log(result.nodes);
+```
+
+<tip>
+The three functions are composable but also available as a single
+`pipeline(source, options?)` call that runs all three steps.
+</tip>
+
+---
+
+## API Reference
+
+<tabs>
+  <tab title="parse()">
+
+### `parse(source, options?)`
+
+Tokenizes and parses a Zolto source string into a raw AST.
+
+```typescript
+function parse(
+  source:  string,
+  options?: ParseOptions
+): ZoltoAST
+
+interface ParseOptions {
+  filename?:      string;       // Used in error messages
+  tabWidth?:      number;       // Default: 2
+  strict?:        boolean;      // Default: false
+  extensions?:    Extension[];  // Parser extensions
+}
+```
+
+**Returns:** `ZoltoAST` — root `DocumentNode` with `children`, `meta`, and
+`diagnostics` arrays.
+
+**Throws:** Never. Parse errors are added to `ast.diagnostics` with severity
+`'error'`, `'warning'`, or `'hint'`.
+
+**Example:**
+
+```javascript
+const ast = parse('# Hello\n\n<tip>Great!</tip>');
+console.log(ast.children.length);      // 2
+console.log(ast.children[0].type);     // 'heading'
+console.log(ast.children[1].type);     // 'callout'
+console.log(ast.children[1].attrs.variant); // 'tip'
+```
+
+  </tab>
+  <tab title="validate()">
+
+### `validate(ast, options?)`
+
+Runs the semantic validator over a parsed AST. Adds diagnostics for
+unknown tags, missing required props, unclosed tags, etc.
+
+```typescript
+function validate(
+  ast:      ZoltoAST,
+  options?: ValidateOptions
+): ValidationResult
+
+interface ValidateOptions {
+  components?: ComponentDef[];   // Known external components
+  strict?:     boolean;          // Treat warnings as errors
+}
+
+interface ValidationResult {
+  valid:       boolean;
+  errors:      Diagnostic[];
+  warnings:    Diagnostic[];
+  hints:       Diagnostic[];
+}
+```
+
+**Example:**
+
+```javascript
+const { valid, errors, warnings } = validate(ast);
+if (!valid) {
+  errors.forEach(e => console.error(e.message, e.range));
+}
+```
+
+  </tab>
+  <tab title="transform()">
+
+### `transform(ast, options?)`
+
+Runs the 8-pass transformer pipeline over the AST:
+
+1. Variable extraction (`@var` declarations)
+2. Variable expansion (`{name}` references)
+3. Component registration (`<component>` definitions)
+4. Inline parsing (converts text nodes to inline AST)
+5. Math AST building (KaTeX expression trees)
+6. Equation numbering (assigns `number` to `<math number>` nodes)
+7. Footnote resolution (collects and renumbers `[^ref]`)
+8. Heading anchor deduplication
+
+```typescript
+function transform(
+  ast:      ZoltoAST,
+  options?: TransformOptions
+): ZoltoAST   // mutates in-place and returns
+
+interface TransformOptions {
+  variables?:   Record<string, string>;  // Initial variable values
+  components?:  ComponentDef[];          // Pre-registered components
+  mathEngine?:  'katex' | 'mathjax' | 'auto';  // Default: 'auto'
+}
+```
+
+  </tab>
+  <tab title="pipeline()">
+
+### `pipeline(source, options?)`
+
+Convenience wrapper that runs `parse → validate → transform` in sequence.
+
+```typescript
+function pipeline(
+  source:  string,
+  options?: PipelineOptions
+): PipelineResult
+
+interface PipelineResult {
+  ast:         ZoltoAST;
+  valid:       boolean;
+  diagnostics: Diagnostic[];
+  variables:   Record<string, string>;
+  components:  ComponentDef[];
+}
+```
+
+**Example:**
+
+```javascript
+const { ast, valid, diagnostics } = pipeline(source, {
+  variables: { version: '8.1.0' },
+  strict:    false,
+});
+
+if (!valid) {
+  diagnostics.filter(d => d.severity === 'error')
+             .forEach(d => console.error(d.message));
+}
+```
+
+  </tab>
+</tabs>
+
+---
+
+## AST Node Types
+
+<accordion>
+  <item title="Document & Block Nodes">
+
+| Node type        | Description                              | Key attrs                     |
+|------------------|------------------------------------------|-------------------------------|
+| `document`       | Root node                                | `meta`                        |
+| `heading`        | `#` through `######`                     | `level`, `anchor`, `text`     |
+| `paragraph`      | Prose paragraph                          | `children` (inline)           |
+| `code_block`     | Fenced code block                        | `lang`, `title`, `highlight`  |
+| `blockquote`     | `>` prefix                               | `children`                    |
+| `list`           | Ordered or unordered                     | `ordered`, `tight`, `items`   |
+| `list_item`      | Single list entry                        | `checked`, `children`         |
+| `table`          | Markdown table                           | `align`, `head`, `rows`       |
+| `horizontal_rule`| `---` separator                          | —                             |
+| `html_block`     | Raw HTML pass-through                    | `raw`                         |
+
+  </item>
+  <item title="Zolto Tag Nodes">
+
+| Node type    | Tag(s)                                   | Key attrs                          |
+|--------------|------------------------------------------|------------------------------------|
+| `callout`    | `<tip>` `<note>` `<warning>` etc.        | `variant`, `title`, `dismissable`  |
+| `details`    | `<details>`                              | `summary`, `open`                  |
+| `steps`      | `<steps>`                                | —                                  |
+| `step`       | `<step>`                                 | `title`                            |
+| `mcq`        | `<mcq>`                                  | `title`, `multiple`                |
+| `mcq_option` | `<option>`                               | `correct`                          |
+| `flashcard`  | `<flashcard>`                            | —                                  |
+| `math`       | `<math>`                                 | `number`, `label`, `plot`          |
+| `diagram`    | `<diagram>`                              | `type`, `title`                    |
+| `chart`      | `<chart>`                                | `type`, `title`, `smooth`          |
+| `card`       | `<card>`                                 | `title`, `href`, `variant`         |
+| `cards`      | `<cards>`                                | `cols`                             |
+| `tabs`       | `<tabs>`                                 | `variant`                          |
+| `tab`        | `<tab>`                                  | `title`                            |
+| `accordion`  | `<accordion>`                            | `exclusive`                        |
+| `timeline`   | `<timeline>`                             | —                                  |
+| `event`      | `<event>`                                | `date`, `title`                    |
+| `gallery`    | `<gallery>`                              | `cols`, `caption`                  |
+| `image`      | `<image>`                                | `src`, `alt`, `caption`            |
+| `hero`       | `<hero>`                                 | `title`, `subtitle`, `align`       |
+| `component`  | `<component>`                            | `name`, `props`                    |
+
+  </item>
+  <item title="Inline Nodes">
+
+| Node type     | Source               | Key attrs             |
+|---------------|----------------------|-----------------------|
+| `text`        | Plain characters     | `value`               |
+| `strong`      | `**…**`              | `children`            |
+| `emphasis`    | `*…*`                | `children`            |
+| `code_span`   | `` `…` ``            | `value`               |
+| `strikethrough` | `~~…~~`            | `children`            |
+| `link`        | `[…](…)`             | `href`, `title`       |
+| `image_inline`| `![…](…)`            | `src`, `alt`          |
+| `math_inline` | `<m>…</m>`           | `value`, `ast`        |
+| `variable_ref`| `{name}`             | `name`, `resolved`    |
+| `footnote_ref`| `[^ref]`             | `label`, `index`      |
+| `hardbreak`   | `\` or 2+ spaces     | —                     |
+
+  </item>
+</accordion>
+
+---
+
+## Diagnostic Object
+
+```typescript
+interface Diagnostic {
+  message:  string;
+  severity: 'error' | 'warning' | 'hint';
+  code:     string;         // e.g. "E001", "W014"
+  range: {
+    start: { line: number; col: number; offset: number };
+    end:   { line: number; col: number; offset: number };
+  };
+  source:   'parser' | 'validator' | 'transformer';
+  fix?:     CodeFix;       // Optional auto-fix
+}
+
+interface CodeFix {
+  description: string;
+  edit: {
+    offset: number;
+    length: number;
+    replacement: string;
+  };
+}
+```
+
+---
+
+## Error Codes
+
+<tabs>
+  <tab title="Parser (P-)">
+
+| Code  | Message                                  |
+|-------|------------------------------------------|
+| P001  | Unexpected end of input                  |
+| P002  | Unclosed tag `<{name}>`                  |
+| P003  | Mismatched closing tag `</{name}>`       |
+| P004  | Invalid attribute syntax                 |
+| P005  | Self-closing tag on a block element      |
+
+  </tab>
+  <tab title="Validator (V-)">
+
+| Code  | Message                                          |
+|-------|--------------------------------------------------|
+| V001  | Unknown tag `<{name}>`                           |
+| V002  | Required attribute `{attr}` missing on `<{tag}>` |
+| V003  | Unknown attribute `{attr}` on `<{tag}>`          |
+| V004  | `<slot>` used outside `<component>` definition   |
+| V005  | Circular component reference: `{name}`           |
+| V006  | Undefined variable reference: `{name}`           |
+| V007  | Undefined equation label: `{label}`              |
+| V008  | Duplicate heading anchor: `{anchor}`             |
+
+  </tab>
+  <tab title="Transformer (T-)">
+
+| Code  | Message                                          |
+|-------|--------------------------------------------------|
+| T001  | KaTeX render error in `<math>`: {detail}         |
+| T002  | MathJax fallback used (KaTeX unsupported macro)  |
+| T003  | Component `{name}` redefined                     |
+| T004  | Plot expression parse error: {expr}              |
+
+  </tab>
+</tabs>
+
+---
+
+## Plugin Extension Points
+
+```javascript
+import { createPlugin } from '{pkg}';
+
+const myPlugin = createPlugin('my-plugin', {
+  // Add a new block tag
+  tags: {
+    'spoiler': {
+      attrs: { title: { type: 'string', required: true } },
+      content: 'block',
+      transform(node, ctx) {
+        return { ...node, type: 'details', attrs: { summary: node.attrs.title } };
+      },
+    },
+  },
+
+  // Add a transformer pass
+  passes: [
+    {
+      name:  'resolve-embeds',
+      after: 'inline',
+      run(ast, ctx) {
+        // walk and mutate ast
+      },
+    },
+  ],
+
+  // Custom validator rules
+  rules: [
+    {
+      id: 'no-empty-tip',
+      check(node, report) {
+        if (node.type === 'callout' && !node.children.length) {
+          report.warn(node, 'Callout has no content');
+        }
+      },
+    },
+  ],
+});
+
+export default myPlugin;
+```
+
+<note>
+Plugins are registered via `pipeline(source, { plugins: [myPlugin] })` or
+through the editor plugin manager at runtime.
+</note>
+
+---
+
+## Changelog
+
+<details summary="v8.1.0 — current">
+
+- `transform()` now accepts `mathEngine: 'auto'` (new default); automatically
+  falls back from KaTeX to MathJax per-expression rather than per-document
+- `validate()` returns `hints` array (previously bundled with warnings)
+- New diagnostic codes: V007 (undefined equation label), V008 (duplicate anchor)
+- `pipeline()` result now includes `components` map of all registered definitions
+- Parser: `<image>` inside `<gallery>` now correctly accepts `caption` attr
+
+</details>
+
+<details summary="v8.0.0">
+
+- **Breaking:** removed all `@directive` block syntax. Use `<Tag>` throughout.
+- **Breaking:** `$…$` no longer parsed as math. Use `<m>…</m>`.
+- New: `<component>` system with named slots and scoped variables
+- New: `<hero>` block with parallax and text-animation attrs
+- New: `<gallery>` with built-in lightbox
+- VDom diffing in preview — full re-renders eliminated
+
+</details>

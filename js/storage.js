@@ -130,7 +130,11 @@ async function openDB() {
 
     request.onblocked = () => {
       logger.warn('IDB open blocked — another tab may be using an older version.');
+      reject(new Error('IDB blocked by another tab'));
     };
+
+    // Safety net: never hang the boot screen; fall back after 3 s
+    setTimeout(() => reject(new Error('IDB open timed out')), 3000);
   });
 }
 

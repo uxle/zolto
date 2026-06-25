@@ -1,7 +1,7 @@
 {
   "name": "zolto",
   "version": "8.1.0",
-  "description": "A unified visual markup language and live editor — Markdown superset with mathematics, diagrams, charts, vector graphics, spatial layouts, and a component system.",
+  "description": "A unified visual markup language and live editor \u2014 Markdown superset with mathematics, diagrams, charts, vector graphics, spatial layouts, and a component system.",
   "author": "Zolto",
   "license": "MIT",
   "homepage": "https://zolto.app",
@@ -41,10 +41,10 @@
   "scripts": {
     "dev": "node scripts/serve.js --port 3000 --live-reload",
     "build": "node scripts/build.js",
+    "lint": "eslint js/ plugins/ --ext .js",
+    "test": "node --test tests/**/*.test.js",
     "build:watch": "node scripts/build.js --watch",
     "preview": "node scripts/serve.js --port 4000 --dir dist",
-
-    "test": "node --test tests/**/*.test.js",
     "test:watch": "node --test --watch tests/**/*.test.js",
     "test:coverage": "node --test --experimental-test-coverage tests/**/*.test.js",
     "test:update-snapshots": "UPDATE_SNAPSHOTS=true node --test tests/**/*.test.js",
@@ -52,20 +52,14 @@
     "test:renderer": "node --test tests/renderer/**/*.test.js",
     "test:editor": "node --test tests/editor/**/*.test.js",
     "test:export": "node --test tests/export/**/*.test.js",
-
-    "lint": "eslint js/ plugins/ --ext .js",
     "lint:fix": "eslint js/ plugins/ --ext .js --fix",
     "lint:css": "stylelint css/**/*.css",
     "lint:css:fix": "stylelint css/**/*.css --fix",
-
     "format": "prettier --write \"js/**/*.js\" \"css/**/*.css\" \"zolto/**/*.md\" \"docs/**/*.md\"",
     "format:check": "prettier --check \"js/**/*.js\" \"css/**/*.css\" \"zolto/**/*.md\" \"docs/**/*.md\"",
-
     "typecheck": "tsc --noEmit",
-
     "docs": "node scripts/generate-docs.js",
     "docs:watch": "node scripts/generate-docs.js --watch",
-
     "validate": "npm run lint && npm run typecheck && npm test",
     "ci": "npm run format:check && npm run lint && npm run typecheck && npm run test:coverage"
   },
@@ -100,14 +94,31 @@
     "rules": {
       "no-var": "error",
       "prefer-const": "error",
-      "eqeqeq": ["error", "always"],
+      "eqeqeq": [
+        "error",
+        "always"
+      ],
       "no-eval": "error",
       "no-implied-eval": "error",
       "no-new-func": "error",
-      "semi": ["error", "always"],
-      "quotes": ["error", "single"],
-      "indent": ["error", 2],
-      "max-len": ["warn", { "code": 120 }],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "indent": [
+        "error",
+        2
+      ],
+      "max-len": [
+        "warn",
+        {
+          "code": 120
+        }
+      ],
       "no-restricted-syntax": [
         "error",
         {
@@ -120,13 +131,21 @@
         {
           "patterns": [
             {
-              "group": ["*/renderer/*"],
-              "importNames": ["*"],
+              "group": [
+                "*/renderer/*"
+              ],
+              "importNames": [
+                "*"
+              ],
               "message": "js/parser/ must not import from js/renderer/. Maintain layer isolation."
             },
             {
-              "group": ["*/editor/*"],
-              "importNames": ["*"],
+              "group": [
+                "*/editor/*"
+              ],
+              "importNames": [
+                "*"
+              ],
               "message": "js/renderer/ must not import from js/editor/. Maintain layer isolation."
             }
           ]
@@ -150,7 +169,11 @@
       "color-no-invalid-hex": true,
       "color-named": "never",
       "declaration-property-value-disallowed-list": {
-        "/.*/": ["/^#[0-9a-fA-F]{3,8}$/", "/^rgb/", "/^hsl/"]
+        "/.*/": [
+          "/^#[0-9a-fA-F]{3,8}$/",
+          "/^rgb/",
+          "/^hsl/"
+        ]
       },
       "custom-property-pattern": "^zolto-|^[a-z]",
       "selector-class-pattern": "^zolto-[a-z][a-z0-9-]*$|^[a-z][a-z0-9-]*$",
