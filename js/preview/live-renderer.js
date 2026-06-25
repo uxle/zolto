@@ -23,14 +23,6 @@ import { patch,
          activateInteractivity,
          observeLazy,
          processStreaming }  from './virtual-dom.js';
-import { init as initCardComponent }      from '../components/card.js';
-import { init as initAlertComponent }     from '../components/alert.js';
-import { init as initTabsComponent }      from '../components/tabs.js';
-import { init as initAccordionComponent } from '../components/accordion.js';
-import { init as initTimelineComponent }  from '../components/timeline.js';
-import { init as initGalleryComponent }   from '../components/gallery.js';
-import { init as initChartComponent }     from '../components/chart.js';
-import { init as initHeroComponent }      from '../components/hero.js';
 import { debounce16 }       from '../utils/debounce.js';
 import { createLogger }     from '../utils/logger.js';
 import { bus, EVENTS }      from '../utils/events.js';
@@ -149,15 +141,6 @@ export function renderNow(source) {
   if (container) {
     patch(container, html);
     activateInteractivity(container);
-    // Run full component init layer (event delegation + chart rendering)
-    initCardComponent(container);
-    initAlertComponent(container);
-    initTabsComponent(container);
-    initAccordionComponent(container);
-    initTimelineComponent(container);
-    initGalleryComponent(container);
-    initChartComponent(container);
-    initHeroComponent(container);
 
     // Re-observe lazy placeholders after patch
     if (_lazyObserver) _lazyObserver.disconnect();
@@ -346,12 +329,13 @@ export function initLiveRenderer() {
     if (source) renderNow(source);
   });
 
-  // Document opened → render immediately (no debounce).
-  // Using DOC_OPEN rather than watch('document') to avoid double-render:
-  // EDITOR_CHANGE also fires on source change, which would trigger a second
-  // scheduleRender 16ms later. DOC_OPEN gives us one clean immediate render.
-  bus.on(EVENTS.DOC_OPEN, (doc) => {
-    renderNow(doc.source ?? '');
+  // Document opened → render immediately (no debounce)
+  watch('document', (doc, prevDoc) => {
+    // Only force-render on document id change (new doc opened),
+    // not on every keystroke (those go through EDITOR_CHANGE)
+    if (doc.id !== prevDoc?.id) {
+      renderNow(doc.source);
+    }
   });
 
   logger.info('Live renderer initialised');

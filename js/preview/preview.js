@@ -199,6 +199,8 @@ export function scrollToAnchor(anchorId) {
   target.classList.add('zolto-anchor-flash');
   setTimeout(() => target.classList.remove('zolto-anchor-flash'), 1200);
 
+  // Update URL hash without triggering router navigation
+  history.replaceState(null, '', `#preview-${anchorId}`);
 }
 
 // ─────────────────────────────────────────────────────────────

@@ -346,38 +346,23 @@ export function activateInteractivity(root) {
 }
 
 function _activateTabs(root) {
-  for (const tabs of root.querySelectorAll('.zolto-tabs')) {
+  for (const tabs of root.querySelectorAll('.zolto-tabs[data-id]')) {
     if (tabs.dataset.jsActivated) continue;
     tabs.dataset.jsActivated = '1';
     tabs.addEventListener('click', (e) => {
-      // Support both .zolto-tab (CSS class) and [role="tab"] (ARIA)
-      const btn = /** @type {HTMLElement} */ (e.target).closest('.zolto-tab, [role="tab"]');
+      const btn = /** @type {HTMLElement} */ (e.target).closest('.zolto-tab-btn');
       if (!btn) return;
-      const panelId = btn.getAttribute('aria-controls') ?? btn.dataset.panel;
-      for (const b of tabs.querySelectorAll('.zolto-tab, [role="tab"]')) {
-        const active = b === btn;
-        b.classList.toggle('zolto-tab--active', active);
-        b.setAttribute('aria-selected', String(active));
-        b.setAttribute('tabindex', active ? '0' : '-1');
+      const id      = tabs.dataset.id;
+      const panelId = btn.getAttribute('aria-controls');
+      for (const b of tabs.querySelectorAll('.zolto-tab-btn')) {
+        b.classList.toggle('zolto-tab-active', b === btn);
+        b.setAttribute('aria-selected', String(b === btn));
       }
-      for (const p of tabs.querySelectorAll('.zolto-tab-panel, [role="tabpanel"]')) {
+      for (const p of tabs.querySelectorAll('.zolto-tab-panel')) {
         const active = p.id === panelId;
-        p.classList.toggle('zolto-tab-panel--active', active);
+        p.classList.toggle('zolto-tab-hidden', !active);
         p.hidden = !active;
       }
-    });
-    // Keyboard nav between tabs
-    tabs.addEventListener('keydown', (e) => {
-      const btn = /** @type {HTMLElement} */ (e.target).closest('.zolto-tab, [role="tab"]');
-      if (!btn) return;
-      const all  = [...tabs.querySelectorAll('.zolto-tab, [role="tab"]')];
-      const idx  = all.indexOf(btn);
-      let next   = -1;
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (idx + 1) % all.length;
-      if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   next = (idx - 1 + all.length) % all.length;
-      if (e.key === 'Home') next = 0;
-      if (e.key === 'End')  next = all.length - 1;
-      if (next >= 0) { e.preventDefault(); all[next].click(); all[next].focus(); }
     });
   }
 }
@@ -399,7 +384,7 @@ function _activateFlashcards(root) {
   for (const card of root.querySelectorAll('.zolto-flashcard')) {
     if (card.dataset.jsActivated) continue;
     card.dataset.jsActivated = '1';
-    const activate = () => card.classList.toggle('zolto-flashcard--flipped');
+    const activate = () => card.classList.toggle('flipped');
     card.addEventListener('click', activate);
     card.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
@@ -419,22 +404,15 @@ function _activateMCQ(root) {
       if (!opt || mcq.dataset.answered) return;
 
       mcq.dataset.answered = '1';
+      const idx     = parseInt(opt.dataset.option ?? '0', 10);
+      // Correct answer determined by data injected at render time
+      // For now highlight selected
+      opt.classList.add('selected');
+      if (explanation) mcq.classList.add('revealed');
 
-      // Mark each option correct / incorrect based on data-correct attribute
-      options.forEach(o => {
-        const isCorrect = o.dataset.correct === 'true';
-        const isSelected = o === opt;
-        o.classList.toggle('zolto-mcq-option--selected',  isSelected);
-        o.classList.toggle('zolto-mcq-option--correct',   isCorrect);
-        o.classList.toggle('zolto-mcq-option--incorrect', isSelected && !isCorrect);
-        o.setAttribute('aria-checked', String(isSelected));
+      options.forEach((o, i) => {
+        if (o === opt) o.setAttribute('aria-checked', 'true');
       });
-
-      const isCorrect = opt.dataset.correct === 'true';
-      mcq.classList.toggle('zolto-mcq--correct',   isCorrect);
-      mcq.classList.toggle('zolto-mcq--incorrect', !isCorrect);
-      mcq.classList.add('zolto-mcq--revealed');
-      if (explanation) explanation.hidden = false;
     });
   }
 }
