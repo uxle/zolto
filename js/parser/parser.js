@@ -18,6 +18,8 @@ import { LexedType, isCalloutTag, resolveNodeType } from './lexer.js';
 import { ASTFactory, ZOLTONodeTypes }               from './ast.js';
 import { createLogger }                             from '../utils/logger.js';
 import { slugify }                                  from '../utils/helpers.js';
+import { tokenize }                                 from './tokenizer.js';
+import { lex }                                      from './lexer.js';
 
 const logger   = createLogger('Parser');
 const MAX_DEPTH = 32;
@@ -41,8 +43,6 @@ export class ZoltoParser {
    */
   parse(source) {
     // Tokenize + lex
-    const { tokenize }          = require('./tokenizer.js');
-    const { lex }               = require('./lexer.js');
     this._tokens = lex(tokenize(source));
     this._pos    = 0;
     this._depth  = 0;
