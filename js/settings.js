@@ -14,8 +14,7 @@ import { createLogger }         from './utils/logger.js';
 import { bus, EVENTS }          from './utils/events.js';
 import { deepEqual, deepClone } from './utils/helpers.js';
 import { set as setState,
-         get as getState,
-         watch }                from './state.js';
+         get as getState }                from './state.js';
 
 const logger = createLogger('Settings');
 

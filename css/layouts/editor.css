@@ -193,6 +193,12 @@
 
   /* Smooth cursor movement */
   cursor: text;
+  
+  /* IME composition underline styling */
+  & [data-composing] {
+    text-decoration: underline;
+    text-decoration-style: wavy;
+  }
 }
 
 /* Placeholder shown when editor is empty */
