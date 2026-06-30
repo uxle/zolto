@@ -52,6 +52,9 @@ let _isProgrammaticUpdate = false;
 /** Last known source string — used to detect actual changes. */
 let _lastSource = '';
 
+/** Flag to track if IME composition is in progress */
+let _isComposing = false;
+
 // ─────────────────────────────────────────────────────────────
 // 2. Initialisation
 // ─────────────────────────────────────────────────────────────
@@ -75,6 +78,10 @@ export function initEditor() {
   _el.addEventListener('click',     onCursorActivity);
   _el.addEventListener('focus',     onFocus);
   _el.addEventListener('blur',      onBlur);
+  
+  // IME composition events for Japanese, Chinese, Korean input
+  _el.addEventListener('compositionstart', onCompositionStart);
+  _el.addEventListener('compositionend',   onCompositionEnd);
 
   // Drag & drop (images, files) — insert as embed tags
   _el.addEventListener('dragover',  onDragOver);
@@ -234,6 +241,10 @@ const _debouncedHighlight = debounce16(() => {
 
 function onInput() {
   if (_isProgrammaticUpdate || !_el) return;
+  
+  // Skip input handling during IME composition
+  // The actual text will be processed when composition ends
+  if (_isComposing) return;
 
   const source = getContent();
   if (source === _lastSource) return;
@@ -311,6 +322,32 @@ function onFocus() {
 
 function onBlur() {
   _el?.classList.remove('zolto-editor-focused');
+}
+
+// ─────────────────────────────────────────────────────────────
+// IME Composition Handling (Japanese, Chinese, Korean)
+// ─────────────────────────────────────────────────────────────
+
+/**
+ * Handle IME composition start event.
+ * This is triggered when the user starts typing with an IME
+ * (e.g., Japanese Kana-Kanji conversion or Chinese Pinyin).
+ */
+function onCompositionStart(event) {
+  _isComposing = true;
+  logger.debug('IME composition started');
+}
+
+/**
+ * Handle IME composition end event.
+ * This is triggered when the IME composition is finished
+ * and the final text is committed to the editor.
+ */
+function onCompositionEnd(event) {
+  _isComposing = false;
+  logger.debug('IME composition ended');
+  // Trigger input handling to process the committed text
+  onInput();
 }
 
 // ─────────────────────────────────────────────────────────────
