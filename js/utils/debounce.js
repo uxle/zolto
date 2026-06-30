@@ -13,9 +13,7 @@ export function debounce(fn, delay = 0) {
 
   function debounced(...args) {
     clearTimeout(timer);
-    timer = setTimeout(() => {
-      fn(...args);
-    }, delay);
+    timer = setTimeout(() => fn(...args), delay);
   }
 
   debounced.cancel = () => {
@@ -24,4 +22,11 @@ export function debounce(fn, delay = 0) {
   };
 
   return /** @type {any} */ (debounced);
+}
+
+/**
+ * 16ms debounce（約1フレーム）
+ */
+export function debounce16(fn) {
+  return debounce(fn, 16);
 }
