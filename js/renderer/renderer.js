@@ -28,6 +28,10 @@ import { ZOLTONodeTypes }          from '../parser/ast.js';
 import { ZoltoComponentRuntime }   from '../parser/transformer.js';
 import { escapeHtml, escapeAttr }  from '../utils/dom.js';
 import { createLogger }            from '../utils/logger.js';
+import { HTMLRenderer }            from './html-renderer.js';
+import { MathRenderer }            from './math-renderer.js';
+import { DiagramRenderer }         from './diagram-renderer.js';
+import { ComponentRenderer }       from './component-renderer.js';
 
 const logger = createLogger('Renderer');
 
@@ -310,7 +314,6 @@ export class ZoltoRenderer {
 
   _html() {
     if (!this._htmlRenderer) {
-      const { HTMLRenderer } = require('./html-renderer.js');
       this._htmlRenderer = new HTMLRenderer(this);
     }
     return this._htmlRenderer;
@@ -318,7 +321,6 @@ export class ZoltoRenderer {
 
   _math() {
     if (!this._mathRenderer) {
-      const { MathRenderer } = require('./math-renderer.js');
       this._mathRenderer = new MathRenderer(this);
     }
     return this._mathRenderer;
@@ -326,7 +328,6 @@ export class ZoltoRenderer {
 
   _diagram() {
     if (!this._diagramRenderer) {
-      const { DiagramRenderer } = require('./diagram-renderer.js');
       this._diagramRenderer = new DiagramRenderer(this);
     }
     return this._diagramRenderer;
@@ -334,7 +335,6 @@ export class ZoltoRenderer {
 
   _component() {
     if (!this._componentRenderer) {
-      const { ComponentRenderer } = require('./component-renderer.js');
       this._componentRenderer = new ComponentRenderer(this);
     }
     return this._componentRenderer;
