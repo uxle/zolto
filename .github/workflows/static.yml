@@ -29,8 +29,13 @@ jobs:
       - name: Prepare artifact
         run: |
           mkdir dist
-          cp -r * dist
-          rm -rf dist/.git dist/.github dist/*.md dist/LICENSE dist/*.yml
+          shopt -s dotglob
+          for item in *; do
+            if [ "$item" != "dist" ]; then
+              cp -r "$item" dist/
+            fi
+          done
+          rm -rf dist/.git dist/.github dist/*.md dist/LICENSE
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
