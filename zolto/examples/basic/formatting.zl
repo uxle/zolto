@@ -1,0 +1,11 @@
+---
+title: Text Formatting
+---
+
+# Text Formatting
+
+**Bold**, *italic*, ***bold italic***, ~~strikethrough~~, `inline code`.
+
+Phase 2 extensions: ^superscript^, ~subscript~, ==highlighted==, [[Ctrl+S]].
+
+Smart punctuation: em dash --- here, en dash -- there, ellipsis...

@@ -1,0 +1,53 @@
+---
+title: Study Notes — Phase 2 Features
+author: Zolto Team
+---
+
+@var subject = Extended Markdown
+@var version = 2.0.0
+
+# {{subject}} Study Notes
+
+## Callouts
+
+> [!NOTE]
+> Callouts use GitHub's `> [!TYPE]` syntax and render with icons and colour.
+
+> [!TIP]
+> Six callout types ship in Phase 2: NOTE, TIP, WARNING, IMPORTANT, CAUTION, DANGER.
+
+> [!WARNING]
+> Admonitions and callouts serve different purposes — admonitions are Zolto-native.
+
+## Admonitions
+
+[definition]
+**Extended Markdown**: A strict superset of standard Markdown that adds block
+and inline syntax while maintaining 100% backward compatibility.
+[/definition]
+
+[theorem]
+Every valid CommonMark document is a valid Zolto {{version}} document.
+[/theorem]
+
+[proof]
+Zolto's lexer processes standard Markdown tokens unchanged. No Zolto-specific
+feature conflicts with any CommonMark syntax. Therefore the superset property holds. □
+[/proof]
+
+## Code Examples
+
+```javascript title="compile.js" {3} numbers
+import { compile, parse } from './src/zolto.js';
+
+const html = compile('# Hello, **world**!');  // ← key call
+console.log(html);
+// → <h1 id="hello-world">Hello, <strong>world</strong>!</h1>
+```
+
+```diff
++ Added: callouts, admonitions, reference links
++ Added: figures, definition lists, table captions
++ Added: superscript, subscript, highlight, kbd, entities
+- Removed: nothing — 100% backward compatible
+```

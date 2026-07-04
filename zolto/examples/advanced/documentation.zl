@@ -1,0 +1,71 @@
+---
+title: API Documentation Template
+---
+
+# Zolto Public API
+
+## parse(src)
+
+Parses a Zolto source string into an AST with diagnostics.
+
+**Signature:**
+
+```typescript
+parse(src: string): {
+  ast:         DocumentNode;
+  errors:      string[];
+  warnings:    string[];
+  diagnostics: Diagnostics;
+}
+```
+
+**Parameters:**
+
+`src`
+: The raw Zolto/Markdown source string to parse.
+
+**Returns:**
+
+`ast`
+: The Document AST root node.
+
+`errors`
+: Array of error strings from the lexer and validator.
+
+`warnings`
+: Array of warning strings (undefined refs, unknown types, etc.)
+
+`diagnostics`
+: A `Diagnostics` instance for structured access to all issues.
+
+**Example:**
+
+```javascript
+import { parse } from './src/zolto.js';
+
+const { ast, errors, warnings } = parse('# Hello
+
+World[^missing].');
+console.log(errors);   // []
+console.log(warnings); // ['[W002] Undefined footnote: [^missing]']
+```
+
+---
+
+## render(ast, opts?)
+
+Renders a Document AST to an HTML string.
+
+**Signature:**
+
+```typescript
+render(ast: DocumentNode, opts?: RenderOptions): string
+```
+
+**Options:**
+
+`xhtml` (boolean, default `false`)
+: Self-close void elements (`<br />`, `<img />`).
+
+`footnoteSection` (boolean, default `true`)
+: Append the footnotes `<section>` at the end of output.

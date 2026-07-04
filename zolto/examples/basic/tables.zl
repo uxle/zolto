@@ -1,0 +1,14 @@
+---
+title: Tables
+---
+
+# Tables
+
+Table: Programming Language Comparison
+
+| Language   | Type     | Performance | Learning Curve |
+| :--------- | :------- | :---------: | -------------: |
+| Python     | Dynamic  |    Medium   |           Easy |
+| JavaScript | Dynamic  |    Medium   |         Medium |
+| Rust       | Static   |     High    |           Hard |
+| Go         | Static   |     High    |         Medium |

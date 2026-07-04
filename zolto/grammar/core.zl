@@ -1,0 +1,5 @@
+# Zolto Core Grammar
+# Entry point — imports all domain grammars.
+@import "blocks.zl"
+@import "inline.zl"
+@import "metadata.zl"

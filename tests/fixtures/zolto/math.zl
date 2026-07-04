@@ -1,0 +1,18 @@
+---
+title: Math Fixture (Phase 3 placeholder)
+---
+
+# Math Syntax — Phase 3
+
+> [!IMPORTANT]
+> Math rendering via KaTeX is implemented in Phase 3.
+> This fixture is a placeholder for future tests.
+
+The planned syntax:
+
+Inline: $E = mc^2$
+
+Block:
+$$
+\int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2}
+$$

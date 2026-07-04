@@ -1,0 +1,29 @@
+---
+title: Project README
+---
+
+# Project Name
+
+> One-line description of what this project does.
+
+## Installation
+
+```bash
+npm install project-name
+```
+
+## Quick Start
+
+```javascript
+import { thing } from 'project-name';
+thing.doSomething();
+```
+
+## Features
+
+- Feature one
+- Feature two
+- Feature three
+
+## License
+[MIT](LICENSE)

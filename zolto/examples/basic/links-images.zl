@@ -1,0 +1,25 @@
+---
+title: Links and Images
+---
+
+# Links and Images
+
+## Inline Links
+[Zolto GitHub](https://github.com/zolto/zolto "Zolto source code")
+
+## Reference Links
+See the [documentation][docs] for full details.
+
+[docs]: https://zolto.dev/docs "Zolto Documentation"
+
+## Auto-links
+Visit <https://zolto.dev> or email <hello@zolto.dev>
+
+## Standalone Image (becomes figure)
+![Zolto Logo](../logo/zolto-logo.svg "The Zolto wordmark")
+
+## Inline Image
+The logo ![icon](../icons/logo/zolto-icon.svg) appears inline here.
+
+## HTML Entities
+Copyright &copy; 2025 · Registered &reg; · Trade mark &trade;

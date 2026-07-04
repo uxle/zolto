@@ -1,0 +1,37 @@
+---
+title: Basic Zolto Example
+---
+
+# Hello, Zolto!
+
+This is a basic Zolto document — identical syntax to standard Markdown.
+
+## Inline Formatting
+
+**Bold**, *italic*, `inline code`, ~~strikethrough~~, [link](https://example.com).
+
+## Lists
+
+- Item one
+- Item two
+  - Nested
+
+1. First
+2. Second
+
+- [x] Done
+- [ ] Todo
+
+## Code
+
+```javascript
+const html = compile('# Hello');
+```
+
+## Table
+
+| Feature | Phase 1 | Phase 2 |
+| :------ | :-----: | :-----: |
+| Markdown | ✓ | ✓ |
+| Callouts | ✗ | ✓ |
+| Admonitions | ✗ | ✓ |

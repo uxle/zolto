@@ -1,0 +1,45 @@
+---
+title: "Your Blog Post Title"
+author: Your Name
+date: 2025-01-01
+tags: [tag1, tag2]
+---
+
+@var author = Your Name
+
+# Your Blog Post Title
+
+*By {{author}} · 1 January 2025*
+
+---
+
+## Introduction
+
+Write your opening paragraph here. Hook the reader with a compelling question
+or surprising fact.
+
+[info]
+**Key takeaway:** Summarise the core message of this post in one sentence.
+[/info]
+
+## Main Section
+
+Develop your argument with evidence and examples.
+
+> [!TIP]
+> Use callouts to highlight important points your readers shouldn't miss.
+
+## Code Example (if applicable)
+
+```javascript title="example.js"
+// Your code example here
+console.log('Hello, reader!');
+```
+
+## Conclusion
+
+Summarise what you covered and leave the reader with a clear next step.
+
+---
+
+*Found this useful? Share it with someone who needs it.*

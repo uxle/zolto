@@ -1,0 +1,54 @@
+---
+title: Complex Zolto Fixture
+version: 2.0.0
+---
+
+@var engine = Zolto
+@var phase  = 2
+
+# {{engine}} Phase {{phase}} — Full Feature Fixture {#top}
+
+> [!NOTE]
+> This fixture exercises all Phase 2 constructs in one document.
+
+[info title="Combined Test"]
+Testing **bold**, *italic*, ==highlight==, ^sup^, ~sub~, [[Ctrl+K]] inside an admonition.
+[/info]
+
+[theorem]
+For every valid CommonMark document $D$, $D$ is also a valid Zolto document.
+[/theorem]
+
+Reference: see [the spec][spec].
+
+[spec]: https://zolto.dev/spec "Zolto Specification"
+
+Caf&eacute; &copy; 2025 --- Em dash -- En dash ... Ellipsis
+
+```javascript title="full.js" {2,4} numbers diff
+const a = 1;
++ const b = 2;   // highlighted + added
+const c = 3;
+- const d = 4;   // highlighted + removed
+```
+
+![System diagram](arch.png "Architecture Overview")
+
+Inertia
+: Resistance to change in state of motion.
+: Depends on mass.
+
+Table: Phase 2 Test Counts
+
+| Suite | Tests | Status |
+| :---- | ----: | :----: |
+| Callouts | 10 | ✓ |
+| Admonitions | 12 | ✓ |
+| Reference Links | 5 | ✓ |
+| Code Metadata | 6 | ✓ |
+
+---
+
+Footnote here[^1].
+
+[^1]: Phase 2 ships 233 tests across 31 suites.

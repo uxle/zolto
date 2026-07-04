@@ -1,0 +1,491 @@
+{
+  "type": "document",
+  "children": [
+    {
+      "type": "frontmatter",
+      "value": "title: Complex Zolto Fixture\nversion: 2.0.0",
+      "data": {
+        "title": "Complex Zolto Fixture",
+        "version": "2.0.0"
+      }
+    },
+    {
+      "type": "variable_def",
+      "name": "engine",
+      "value": "Zolto"
+    },
+    {
+      "type": "variable_def",
+      "name": "phase",
+      "value": "2"
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "id": "top",
+      "classes": [],
+      "children": [
+        {
+          "type": "variable_ref",
+          "name": "engine"
+        },
+        {
+          "type": "text",
+          "value": " Phase "
+        },
+        {
+          "type": "variable_ref",
+          "name": "phase"
+        },
+        {
+          "type": "text",
+          "value": " — Full Feature Fixture"
+        }
+      ]
+    },
+    {
+      "type": "callout",
+      "calloutType": "note",
+      "title": null,
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "This fixture exercises all Phase 2 constructs in one document."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "admonition",
+      "admonType": "info",
+      "title": "Combined Test",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Testing "
+            },
+            {
+              "type": "bold",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "bold"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": ", "
+            },
+            {
+              "type": "italic",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "italic"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": ", "
+            },
+            {
+              "type": "highlight",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "highlight"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": ", "
+            },
+            {
+              "type": "superscript",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "sup"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": ", "
+            },
+            {
+              "type": "subscript",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "sub"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": ", "
+            },
+            {
+              "type": "kbd",
+              "value": "Ctrl+K"
+            },
+            {
+              "type": "text",
+              "value": " inside an admonition."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "admonition",
+      "admonType": "theorem",
+      "title": null,
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "For every valid CommonMark document $D$, $D$ is also a valid Zolto document."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Reference: see "
+        },
+        {
+          "type": "ref_link",
+          "id": "spec",
+          "children": [
+            {
+              "type": "text",
+              "value": "the spec"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "value": "."
+        }
+      ]
+    },
+    {
+      "type": "reference_def",
+      "id": "spec",
+      "href": "https://zolto.dev/spec",
+      "title": "Zolto Specification"
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Caf"
+        },
+        {
+          "type": "html_entity",
+          "raw": "eacute"
+        },
+        {
+          "type": "text",
+          "value": " "
+        },
+        {
+          "type": "html_entity",
+          "raw": "copy"
+        },
+        {
+          "type": "text",
+          "value": " 2025 — Em dash – En dash … Ellipsis"
+        }
+      ]
+    },
+    {
+      "type": "code_block",
+      "lang": "javascript",
+      "meta": "title=\"full.js\" {2,4} numbers diff",
+      "value": "const a = 1;\n+ const b = 2;   // highlighted + added\nconst c = 3;\n- const d = 4;   // highlighted + removed",
+      "title": "full.js",
+      "highlightLines": [
+        2,
+        4
+      ],
+      "lineNumbers": true,
+      "diff": true
+    },
+    {
+      "type": "figure",
+      "src": "arch.png",
+      "alt": "System diagram",
+      "title": "Architecture Overview",
+      "caption": "Architecture Overview",
+      "lazy": true,
+      "width": null,
+      "height": null
+    },
+    {
+      "type": "definition_list",
+      "items": [
+        {
+          "type": "definition_item",
+          "term": "Inertia",
+          "defs": [
+            "Resistance to change in state of motion.",
+            "Depends on mass."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "table",
+      "align": [
+        "left",
+        "right",
+        "center"
+      ],
+      "head": [
+        {
+          "type": "table_row",
+          "cells": [
+            {
+              "type": "table_cell",
+              "align": "left",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "Suite"
+                }
+              ]
+            },
+            {
+              "type": "table_cell",
+              "align": "right",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "Tests"
+                }
+              ]
+            },
+            {
+              "type": "table_cell",
+              "align": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "Status"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "rows": [
+        {
+          "type": "table_row",
+          "cells": [
+            {
+              "type": "table_cell",
+              "align": "left",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "Callouts"
+                }
+              ]
+            },
+            {
+              "type": "table_cell",
+              "align": "right",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "10"
+                }
+              ]
+            },
+            {
+              "type": "table_cell",
+              "align": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "✓"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "table_row",
+          "cells": [
+            {
+              "type": "table_cell",
+              "align": "left",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "Admonitions"
+                }
+              ]
+            },
+            {
+              "type": "table_cell",
+              "align": "right",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "12"
+                }
+              ]
+            },
+            {
+              "type": "table_cell",
+              "align": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "✓"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "table_row",
+          "cells": [
+            {
+              "type": "table_cell",
+              "align": "left",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "Reference Links"
+                }
+              ]
+            },
+            {
+              "type": "table_cell",
+              "align": "right",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "5"
+                }
+              ]
+            },
+            {
+              "type": "table_cell",
+              "align": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "✓"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "table_row",
+          "cells": [
+            {
+              "type": "table_cell",
+              "align": "left",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "Code Metadata"
+                }
+              ]
+            },
+            {
+              "type": "table_cell",
+              "align": "right",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "6"
+                }
+              ]
+            },
+            {
+              "type": "table_cell",
+              "align": "center",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "✓"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "caption": "Phase 2 Test Counts"
+    },
+    {
+      "type": "horizontal_rule"
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Footnote here"
+        },
+        {
+          "type": "footnote_ref",
+          "id": "1",
+          "index": 0
+        },
+        {
+          "type": "text",
+          "value": "."
+        }
+      ]
+    },
+    {
+      "type": "footnote_def",
+      "id": "1",
+      "children": [
+        {
+          "type": "text",
+          "value": "Phase 2 ships 233 tests across 31 suites."
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "title": "Complex Zolto Fixture",
+    "version": "2.0.0",
+    "variables": {
+      "engine": "Zolto",
+      "phase": "2"
+    },
+    "references": {
+      "spec": {
+        "href": "https://zolto.dev/spec",
+        "title": "Zolto Specification"
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+---
+title: User Manual
+---
+
+# User Manual
+
+## Getting Started
+
+[tip]
+Read this section first — it covers everything you need to get up and running.
+[/tip]
+
+### Installation
+
+1. Download the application.
+2. Follow the setup wizard.
+3. Launch the application.
+
+### First Steps
+
+1. Open the application.
+2. Create a new document.
+3. Start writing!
+
+## Reference
+
+### Keyboard Shortcuts
+
+| Action | Windows/Linux | macOS |
+| :----- | :------------ | :---- |
+| Save | [[Ctrl+S]] | [[Cmd+S]] |
+| Undo | [[Ctrl+Z]] | [[Cmd+Z]] |
+| Find | [[Ctrl+F]] | [[Cmd+F]] |
+
+## Troubleshooting
+
+[warning]
+Before contacting support, check the [FAQ](faq.zl) — most common issues
+are answered there.
+[/warning]
+
+### Common Issues
+
+Problem
+: The application won't start.
+
+Solution
+: Ensure you have the minimum system requirements. See [requirements](requirements.zl).

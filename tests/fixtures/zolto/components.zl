@@ -1,0 +1,22 @@
+---
+title: Component Fixture (Phase 4 placeholder)
+---
+
+# Component Syntax — Phase 4
+
+> [!IMPORTANT]
+> Components are implemented in Phase 4.
+> This fixture is a placeholder for future tests.
+
+The planned syntax:
+
+```zolto
+@component Card title="" variant="default"
+  ### {title}
+  [slot default][/slot]
+@/component
+
+<Card title="Hello">
+  Content inside the card.
+</Card>
+```

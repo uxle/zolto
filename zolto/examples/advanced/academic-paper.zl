@@ -1,0 +1,51 @@
+---
+title: "On the Design of Extended Markdown Engines"
+author: A. Scholar
+date: 2025-01-15
+---
+
+# On the Design of Extended Markdown Engines
+
+*Abstract* — We present Zolto, an extended Markdown engine that maintains
+strict backward compatibility while adding production-quality block and inline
+syntax. The system introduces a six-stage parser pipeline, structured diagnostics,
+and a pure-functional HTML renderer producing 233 passing tests across 31 suites.
+
+---
+
+## 1. Introduction
+
+Standard Markdown[^md] provides a minimal yet expressive plain-text format.
+However, technical documentation frequently requires constructs unavailable in
+CommonMark: callouts, admonitions, definition lists, figure captions, and
+rich code block metadata.
+
+We identify three design constraints for any Markdown extension:
+
+1. **Backward compatibility** — every valid CommonMark document must remain valid.
+2. **Modular architecture** — each feature must be independently testable.
+3. **Strict output** — given the same AST, the renderer must always produce identical HTML.
+
+## 2. Architecture
+
+The Zolto Phase 2 engine comprises eight source modules, each under 800 lines:
+
+| Module | Responsibility |
+| :----- | :------------- |
+| `ast.js` | Node factory functions with stable property layouts |
+| `tokenizer.js` | Character scanner, utilities, HTML entity map |
+| `lexer.js` | Block tokenizer producing typed token stream |
+| `inline-parser.js` | Cursor-based inline parser |
+| `parser.js` | Block → AST conversion |
+| `diagnostics.js` | Structured error/warning accumulator |
+| `validator.js` | AST walker with diagnostic emission |
+| `renderer.js` | Pure-functional AST → HTML generator |
+
+## 3. Results
+
+The test suite comprises 233 tests across 31 suites spanning all Phase 2
+features plus Phase 1 regression coverage. All tests pass.
+
+---
+
+[^md]: Gruber, J. (2004). *Markdown*. https://daringfireball.net/projects/markdown/

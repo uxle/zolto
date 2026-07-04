@@ -1,851 +1,803 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" data-preview-mode="live" data-sidebar="open">
+<html lang="en" data-theme="zolto" data-view="edit">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Zolto — A unified visual markup language and live editor. Markdown superset with mathematics, diagrams, charts, vector graphics, spatial layouts, and components." />
-  <meta name="author" content="Zolto" />
-  <meta name="version" content="8.1.0" />
-  <meta name="theme-color" content="#0a0a0f" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Zolto Studio · Phase 2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+/* ═══ DESIGN TOKENS — Zolto Brand Dark (default) ════════════════════════════ */
+:root {
+  --font-sans:'Inter',system-ui,sans-serif; --font-mono:'JetBrains Mono','Consolas',monospace;
+  --bg-base:#050b18; --bg-app:#06101f; --bg-panel:#0b1628; --bg-depth:#0f1e36;
+  --text-main:#e8f0fe; --text-body:#94afc8; --text-mute:#4d6a88; --text-subtle:#2d4a68;
+  --border-subtle:rgba(59,130,246,.06); --border-light:rgba(59,130,246,.10);
+  --border-base:rgba(59,130,246,.18); --border-heavy:rgba(59,130,246,.30);
+  --intent-primary:#3b82f6; --intent-primary-hover:#60a5fa;
+  --intent-success:#22c55e; --intent-warning:#f59e0b; --intent-danger:#ef4444;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.6),0 0 0 1px rgba(59,130,246,.08);
+  --shadow-md:0 4px 12px rgba(0,0,0,.6),0 0 0 1px rgba(59,130,246,.10);
+  --shadow-lg:0 10px 30px rgba(0,0,0,.7),0 0 0 1px rgba(59,130,246,.12);
+  --ring:#3b82f6; --ring-a:rgba(59,130,246,.50);
+  --canvas-dot:rgba(59,130,246,.10); --canvas-hdr-bg:rgba(5,11,24,.93);
+  --ed-bg:#070e1c; --ed-text:#94afc8; --ed-cursor:#60a5fa;
+  --ed-hdr-bg:rgba(5,11,24,.85); --ed-border:rgba(59,130,246,.12);
+  --sb-thumb:rgba(59,130,246,.22); --sb-hover:rgba(59,130,246,.42);
+  --brand-a:#60a5fa; --brand-b:#a78bfa;
+  --prose-bg:#0b1628; --prose-text:#94afc8; --prose-head:#e8f0fe;
+  --prose-link:#60a5fa; --prose-code-bg:#030912; --prose-code-text:#7dd3fc;
+  --prose-bq-bd:#3b82f6; --prose-bq-bg:rgba(59,130,246,.05); --prose-bq-text:#93c5fd;
+  --prose-hr:rgba(59,130,246,.20); --prose-tbl-bd:rgba(59,130,246,.14);
+  --prose-tbl-hd:rgba(59,130,246,.08); --prose-del:#4d6a88;
+  --prose-shadow:0 10px 30px rgba(0,0,0,.7),0 0 0 1px rgba(59,130,246,.12);
+  --hdr-bg:rgba(6,16,31,.98); --hdr-bd:rgba(59,130,246,.12);
+  --toast-bg:rgba(11,22,40,.96); --toast-bd:rgba(59,130,246,.30);
+  --r:8px; --r-sm:5px; --r-lg:12px; --r-xl:16px; --r-full:9999px;
+  --hdr-h:54px; --tb-h:37px; --edhdr-h:33px; --status-h:28px; --canvhdr-h:34px;
+  /* Phase 2 — callout / admonition intent palette */
+  --zl-note:#3b82f6; --zl-tip:#22c55e; --zl-warning:#f59e0b; --zl-important:#a78bfa;
+  --zl-caution:#fb923c; --zl-danger:#ef4444; --zl-info:#38bdf8; --zl-success:#22c55e;
+  --zl-mark-bg:rgba(245,208,66,.30); --zl-mark-text:#fde68a;
+  --zl-kbd-bg:#0f1e36; --zl-kbd-bd:rgba(59,130,246,.35); --zl-kbd-shadow:0 2px 0 rgba(59,130,246,.35);
+}
+[data-theme="light"] {
+  --bg-base:#f8fafc; --bg-app:#f1f5f9; --bg-panel:#ffffff; --bg-depth:#f1f5f9;
+  --text-main:#0f172a; --text-body:#334155; --text-mute:#64748b; --text-subtle:#94a3b8;
+  --border-subtle:rgba(0,0,0,.04); --border-light:#e2e8f0; --border-base:#cbd5e1; --border-heavy:#94a3b8;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08); --shadow-md:0 4px 6px rgba(0,0,0,.07);
+  --shadow-lg:0 10px 15px rgba(0,0,0,.08); --ring-a:rgba(59,130,246,.30);
+  --canvas-dot:rgba(59,130,246,.08); --canvas-hdr-bg:rgba(248,250,252,.95);
+  --ed-bg:#f8fafc; --ed-text:#334155; --ed-cursor:#3b82f6; --ed-hdr-bg:rgba(241,245,249,.95);
+  --ed-border:#e2e8f0; --sb-thumb:rgba(100,116,139,.28); --sb-hover:rgba(100,116,139,.55);
+  --prose-bg:#ffffff; --prose-text:#374151; --prose-head:#111827; --prose-link:#2563eb;
+  --prose-code-bg:#f3f4f6; --prose-code-text:#dc2626; --prose-bq-bg:#eff6ff; --prose-bq-text:#1e40af;
+  --prose-hr:#e5e7eb; --prose-tbl-bd:#e5e7eb; --prose-tbl-hd:#f9fafb; --prose-del:#9ca3af;
+  --prose-shadow:0 10px 24px rgba(0,0,0,.08),0 0 0 1px rgba(0,0,0,.05);
+  --hdr-bg:rgba(255,255,255,.98); --hdr-bd:#e2e8f0;
+  --toast-bg:rgba(15,23,42,.95); --toast-bd:#334155;
+  --zl-mark-bg:#fef08a; --zl-mark-text:#713f12;
+  --zl-kbd-bg:#f8fafc; --zl-kbd-bd:#cbd5e1; --zl-kbd-shadow:0 2px 0 #cbd5e1;
+}
+[data-theme="dark"] {
+  --bg-base:#030712; --bg-app:#0a0f1a; --bg-panel:#111827; --bg-depth:#1f2937;
+  --text-main:#f9fafb; --text-body:#d1d5db; --text-mute:#6b7280;
+  --border-subtle:rgba(255,255,255,.04); --border-light:rgba(255,255,255,.07);
+  --border-base:rgba(255,255,255,.10); --border-heavy:rgba(255,255,255,.18);
+  --canvas-dot:rgba(255,255,255,.04); --canvas-hdr-bg:rgba(3,7,18,.94);
+  --ed-bg:#030712; --ed-text:#d1d5db; --ed-hdr-bg:rgba(3,7,18,.88); --ed-border:rgba(255,255,255,.07);
+  --sb-thumb:rgba(255,255,255,.14); --sb-hover:rgba(255,255,255,.28);
+  --prose-bg:#111827; --prose-text:#d1d5db; --prose-head:#f9fafb;
+  --prose-code-bg:#030712; --prose-code-text:#6ee7b7; --prose-bq-bg:rgba(255,255,255,.03);
+  --prose-bq-text:#93c5fd; --prose-hr:rgba(255,255,255,.10);
+  --prose-tbl-bd:rgba(255,255,255,.08); --prose-tbl-hd:rgba(255,255,255,.04); --prose-del:#4b5563;
+  --prose-shadow:0 10px 30px rgba(0,0,0,.6);
+  --hdr-bg:rgba(10,15,26,.98); --hdr-bd:rgba(255,255,255,.07);
+  --zl-kbd-bg:#1f2937; --zl-kbd-bd:rgba(255,255,255,.18); --zl-kbd-shadow:0 2px 0 rgba(255,255,255,.18);
+}
+[data-theme="midnight"] {
+  --bg-base:#000; --bg-app:#080a12; --bg-panel:#0d1117; --bg-depth:#161b22;
+  --text-main:#fff; --text-body:#8b949e; --text-mute:#484f58;
+  --border-base:rgba(48,54,61,1); --border-heavy:rgba(65,72,80,1);
+  --canvas-dot:rgba(255,255,255,.03); --canvas-hdr-bg:rgba(0,0,0,.95);
+  --ed-bg:#010409; --ed-text:#c9d1d9; --ed-cursor:#58a6ff; --ed-hdr-bg:rgba(0,0,0,.92); --ed-border:#21262d;
+  --sb-thumb:rgba(255,255,255,.12); --sb-hover:rgba(255,255,255,.24);
+  --prose-bg:#0d1117; --prose-text:#c9d1d9; --prose-head:#fff;
+  --prose-code-bg:#000; --prose-code-text:#79c0ff; --prose-bq-bd:#58a6ff;
+  --prose-bq-bg:rgba(88,166,255,.04); --prose-hr:#21262d;
+  --prose-tbl-bd:#21262d; --prose-tbl-hd:rgba(255,255,255,.03); --prose-del:#484f58;
+  --prose-shadow:0 10px 30px rgba(0,0,0,.8);
+  --hdr-bg:rgba(0,0,0,.99); --hdr-bd:#21262d;
+  --zl-kbd-bg:#161b22; --zl-kbd-bd:#30363d; --zl-kbd-shadow:0 2px 0 #30363d;
+}
 
-  <!-- Open Graph -->
-  <meta property="og:type"        content="website" />
-  <meta property="og:title"       content="Zolto — Unified Visual Markup" />
-  <meta property="og:description" content="Markdown superset with mathematics, diagrams, charts, vector graphics, spatial layouts, and components." />
-  <meta property="og:url"         content="https://zolto.app" />
-  <meta property="og:image"       content="https://zolto.app/assets/og-image.png" />
+/* ═══ RESET ══════════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{height:100%;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{width:100vw;height:100dvh;overflow:hidden;font-family:var(--font-sans);
+  background:var(--bg-app);color:var(--text-main);
+  transition:background-color .3s ease,color .2s ease}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent;font:inherit;border:none;background:none;color:inherit}
+textarea{font:inherit;border:none;background:none;color:inherit;resize:none;outline:none}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--sb-thumb);border-radius:var(--r-full);border:2px solid var(--bg-base)}
+::-webkit-scrollbar-thumb:hover{background:var(--sb-hover)}
+*{scrollbar-width:thin;scrollbar-color:var(--sb-thumb) transparent}
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card"        content="summary_large_image" />
-  <meta name="twitter:title"       content="Zolto — Unified Visual Markup" />
-  <meta name="twitter:description" content="Markdown superset with mathematics, diagrams, charts, vector graphics, spatial layouts, and components." />
-  <meta name="twitter:image"       content="https://zolto.app/assets/og-image.png" />
+/* ═══ APP SHELL ══════════════════════════════════════════════════════════════ */
+#app{display:flex;flex-direction:column;height:100dvh}
+.workspace{flex:1;display:flex;overflow:hidden;min-height:0}
 
-  <title>Zolto</title>
+/* ═══ HEADER ══════════════════════════════════════════════════════════════ */
+.hdr{height:var(--hdr-h);display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(12px,2vw,20px);background:var(--hdr-bg);
+  border-bottom:1px solid var(--hdr-bd);z-index:100;flex-shrink:0;
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  transition:background .3s,border-color .3s}
+.brand{display:flex;align-items:center;gap:10px;user-select:none;flex-shrink:0}
+.brand-icon{width:32px;height:32px;border-radius:var(--r-sm);
+  background:linear-gradient(135deg,#3b82f6,#8b5cf6);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;
+  box-shadow:0 4px 12px -2px rgba(59,130,246,.55),0 0 0 1px rgba(139,92,246,.30);
+  flex-shrink:0}
+.brand-name{font-size:15px;font-weight:800;letter-spacing:-.02em;
+  background:linear-gradient(90deg,var(--brand-a),var(--brand-b));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.brand-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:var(--r-full);
+  background:rgba(59,130,246,.10);color:var(--brand-a);border:1px solid rgba(59,130,246,.20);
+  letter-spacing:.04em;flex-shrink:0}
+.view-switch{display:none;align-items:center;gap:2px;padding:3px;
+  background:var(--bg-depth);border-radius:var(--r-full);border:1px solid var(--border-base)}
+.vbtn{padding:4px 14px;border-radius:var(--r-full);font-size:12px;font-weight:600;
+  color:var(--text-mute);transition:all .15s}
+.vbtn.active{background:var(--intent-primary);color:#fff;box-shadow:0 2px 8px rgba(59,130,246,.40)}
+.controls{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.sep{width:1px;height:22px;background:var(--border-base);margin:0 4px}
+.ibtn{display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  height:34px;padding:0 12px;border-radius:var(--r);color:var(--text-body);
+  border:1px solid transparent;font-size:13px;font-weight:500;
+  transition:all .15s;white-space:nowrap}
+.ibtn:hover{background:rgba(59,130,246,.08);border-color:var(--border-base);color:var(--text-main)}
+.ibtn:active{transform:scale(.96)}
+.ibtn.square{width:34px;padding:0;font-size:14px}
+.ibtn.primary{background:var(--intent-primary);color:#fff;border-color:transparent;
+  box-shadow:0 4px 14px -2px var(--ring-a)}
+.ibtn.primary:hover{background:var(--intent-primary-hover);transform:translateY(-2px);
+  box-shadow:0 6px 18px -3px var(--ring-a)}
+.ibtn.primary:active{transform:scale(.96) translateY(0)}
 
-  <!-- Favicon -->
-  <link rel="icon"             type="image/svg+xml"  href="/assets/favicon.svg" />
-  <link rel="icon"             type="image/png"      href="/assets/favicon-32.png" sizes="32x32" />
-  <link rel="icon"             type="image/png"      href="/assets/favicon-16.png" sizes="16x16" />
-  <link rel="apple-touch-icon"                       href="/assets/apple-touch-icon.png" sizes="180x180" />
-  <link rel="manifest"                               href="/manifest.json" />
+/* ═══ EDITOR PANEL ══════════════════════════════════════════════════════════ */
+.ed-panel{flex:0 0 42%;display:flex;flex-direction:column;background:var(--ed-bg);
+  border-right:1px solid var(--ed-border);overflow:hidden;z-index:10;
+  transition:background .3s,border-color .3s}
+.ed-hdr{height:var(--edhdr-h);display:flex;align-items:center;justify-content:space-between;
+  gap:8px;padding:0 14px;background:var(--ed-hdr-bg);
+  border-bottom:1px solid var(--ed-border);flex-shrink:0;
+  font-family:var(--font-mono);font-size:10px;font-weight:700;
+  letter-spacing:.10em;text-transform:uppercase;color:var(--text-mute);user-select:none}
+.ed-hdr-r{display:flex;align-items:center;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot-blue{background:#60a5fa;box-shadow:0 0 5px rgba(96,165,250,.6)}
+.dot-grn{background:#22c55e;box-shadow:0 0 5px rgba(34,197,94,.6)}
+.dot-mute{background:var(--border-heavy)}
+.toolbar{height:var(--tb-h);display:flex;align-items:center;gap:1px;padding:0 6px;
+  background:var(--ed-hdr-bg);border-bottom:1px solid var(--border-subtle);flex-shrink:0;overflow-x:auto}
+.tb{display:inline-flex;align-items:center;justify-content:center;
+  width:27px;height:26px;border-radius:var(--r-sm);color:var(--text-mute);
+  font-size:11.5px;border:1px solid transparent;transition:all .12s;flex-shrink:0}
+.tb:hover{color:var(--text-main);background:rgba(59,130,246,.08);border-color:var(--border-light)}
+.tb:active{transform:scale(.92)}
+.tb-sep{width:1px;height:14px;background:var(--border-subtle);margin:0 3px;flex-shrink:0}
+#editor{flex:1;width:100%;padding:18px 18px;background:transparent;
+  color:var(--ed-text);font-family:var(--font-mono);font-size:13.5px;
+  line-height:1.75;caret-color:var(--ed-cursor);tab-size:2;min-height:0}
+#editor::selection{background:rgba(59,130,246,.22)}
+.status{height:var(--status-h);display:flex;align-items:center;gap:14px;
+  padding:0 14px;background:var(--ed-hdr-bg);border-top:1px solid var(--border-subtle);
+  font-family:var(--font-mono);font-size:10.5px;color:var(--text-mute);flex-shrink:0}
+.s-ok{color:#22c55e}.s-err{color:#ef4444}.s-warn{color:#f59e0b}.s-dot{color:var(--border-heavy)}
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet"  href="https://fonts.googleapis.com/css2?family=Inter+Variable:wght@100..900&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" />
+/* ═══ DIVIDER ══════════════════════════════════════════════════════════════ */
+.divider{flex:0 0 4px;background:var(--border-subtle);cursor:col-resize;
+  transition:background .15s;position:relative;z-index:20}
+.divider::after{content:'';position:absolute;inset:0 -4px}
+.divider:hover,.divider.dragging{background:rgba(59,130,246,.35)}
 
-  <!-- KaTeX CSS (math rendering) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
-        integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5"
-        crossorigin="anonymous" />
+/* ═══ CANVAS PREVIEW ═══════════════════════════════════════════════════════ */
+.canvas{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;
+  background:var(--bg-app);
+  background-image:radial-gradient(var(--canvas-dot) 1px,transparent 1px);
+  background-size:24px 24px;transition:background .3s}
+.canvas-hdr{position:absolute;top:0;left:0;right:0;z-index:10;
+  height:var(--canvhdr-h);display:flex;align-items:center;justify-content:space-between;
+  padding:0 14px;background:var(--canvas-hdr-bg);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border-base);pointer-events:none;
+  font-family:var(--font-mono);font-size:10px;font-weight:700;
+  letter-spacing:.10em;text-transform:uppercase;color:var(--text-mute);user-select:none}
+.canvas-scroll{flex:1;overflow-y:auto;padding:calc(var(--canvhdr-h) + 20px) 24px 64px;
+  display:flex;flex-direction:column;align-items:center;min-height:0}
+.doc-card{background:var(--prose-bg);border-radius:var(--r-xl);
+  border:1px solid var(--border-base);box-shadow:var(--prose-shadow);
+  padding:52px 60px;width:100%;max-width:768px;
+  transition:background .3s,border-color .3s,box-shadow .3s}
 
-  <!-- Prism.js CSS (syntax highlighting in code blocks) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" />
+/* ═══ PROSE — base typography ═══════════════════════════════════════════════ */
+.prose{font-family:var(--font-sans);color:var(--prose-text);line-height:1.78;font-size:15px}
+.prose h1,.prose h2,.prose h3,.prose h4,.prose h5,.prose h6{color:var(--prose-head);font-weight:700;line-height:1.28;margin:1.6em 0 .5em}
+.prose h1{font-size:2rem;font-weight:800;letter-spacing:-.025em;
+  border-bottom:1px solid var(--prose-hr);padding-bottom:.4em;margin-top:.8em}
+.prose h2{font-size:1.45rem;border-bottom:1px solid var(--prose-hr);padding-bottom:.3em}
+.prose h3{font-size:1.2rem} .prose h4{font-size:1.05rem}
+.prose h5,.prose h6{font-size:.95rem}
+.prose p{margin:.85em 0}
+.prose strong{font-weight:700;color:var(--prose-head)}
+.prose em{font-style:italic}
+.prose del{color:var(--prose-del);text-decoration:line-through}
+.prose a{color:var(--prose-link);text-decoration:underline;text-underline-offset:3px;transition:opacity .15s}
+.prose a:hover{opacity:.75}
+.prose code{background:var(--prose-code-bg);color:var(--prose-code-text);
+  padding:.18em .42em;border-radius:var(--r-sm);font-family:var(--font-mono);font-size:.85em;
+  border:1px solid var(--border-subtle)}
+.prose blockquote{border-left:3px solid var(--prose-bq-bd);background:var(--prose-bq-bg);
+  color:var(--prose-bq-text);padding:.7em 1.1em;border-radius:0 var(--r-sm) var(--r-sm) 0;margin:1em 0}
+.prose ul{list-style:disc;padding-left:1.5rem;margin:.7em 0}
+.prose ol{list-style:decimal;padding-left:1.5rem;margin:.7em 0}
+.prose li{margin:.22em 0}
+.prose li>ul,.prose li>ol{margin:.22em 0}
+.prose hr{border:none;border-top:1px solid var(--prose-hr);margin:1.8em 0}
+.prose img{max-width:100%;border-radius:var(--r);display:block;margin:.5em 0}
 
-  <!-- ─────────────────────────────────────────────
-       CSS Load Order:
-       1. base/reset         — box-sizing, margin reset
-       2. base/variables     — all CSS custom property declarations
-       3. base/typography    — font stack, sizes, line heights
-       4. layouts/*          — workspace chrome, editor, preview, sidebar
-       5. components/*       — per-component styles
-       6. themes/*           — active theme token overrides (last — highest priority)
-       ───────────────────────────────────────────── -->
+/* ═══ PROSE — task lists (Phase 2 zl-task class) ════════════════════════════ */
+.prose .zl-task{list-style:none;margin-left:-1.5rem;display:flex;align-items:baseline;gap:.5em}
+.prose .zl-task input[type="checkbox"]{accent-color:var(--intent-primary);margin-top:.2em;flex-shrink:0}
+.prose .zl-task.zl-done{color:var(--text-mute);text-decoration:line-through}
 
-  <!-- Base -->
-  <link rel="stylesheet" href="css/base/reset.css" />
-  <link rel="stylesheet" href="css/base/variables.css" />
-  <link rel="stylesheet" href="css/base/typography.css" />
+/* ═══ PROSE — tables (Phase 2: responsive wrap + caption) ═══════════════════ */
+.prose .zl-table-wrap{overflow-x:auto;margin:1.1em 0;border-radius:var(--r);
+  border:1px solid var(--prose-tbl-bd)}
+.prose .zl-table{width:100%;border-collapse:collapse;font-size:.9em;margin:0}
+.prose .zl-table caption{caption-side:top;text-align:left;padding:.6em .9em;
+  font-weight:600;color:var(--prose-head);background:var(--prose-tbl-hd);
+  border-bottom:1px solid var(--prose-tbl-bd)}
+.prose .zl-table th{background:var(--prose-tbl-hd);border-bottom:1px solid var(--prose-tbl-bd);
+  padding:.5em .9em;font-weight:600;color:var(--prose-head);text-align:left}
+.prose .zl-table td{border-bottom:1px solid var(--prose-tbl-bd);padding:.5em .9em}
+.prose .zl-table tbody tr:last-child td{border-bottom:none}
+.prose .zl-table tbody tr:nth-child(even){background:rgba(59,130,246,.025)}
 
-  <!-- Layouts -->
-  <link rel="stylesheet" href="css/layouts/workspace.css" />
-  <link rel="stylesheet" href="css/layouts/sidebar.css" />
-  <link rel="stylesheet" href="css/layouts/editor.css" />
-  <link rel="stylesheet" href="css/layouts/preview.css" />
+/* ═══ PROSE — footnotes (Phase 2 zl- prefix) ════════════════════════════════ */
+.prose .zl-fn-ref a{color:var(--brand-b);font-size:.8em;font-weight:600;text-decoration:none;vertical-align:super}
+.prose .zl-footnotes{margin-top:2.2em;font-size:.85em;color:var(--text-mute)}
+.prose .zl-footnotes hr{margin:.8em 0}
+.prose .zl-footnotes ol{padding-left:1.2rem}
+.prose .zl-fn-back{color:var(--text-mute);margin-left:.2em;text-decoration:none}
 
-  <!-- Components -->
-  <link rel="stylesheet" href="css/components/alert.css" />
-  <link rel="stylesheet" href="css/components/accordion.css" />
-  <link rel="stylesheet" href="css/components/card.css" />
-  <link rel="stylesheet" href="css/components/chart.css" />
-  <link rel="stylesheet" href="css/components/gallery.css" />
-  <link rel="stylesheet" href="css/components/hero.css" />
-  <link rel="stylesheet" href="css/components/tabs.css" />
-  <link rel="stylesheet" href="css/components/timeline.css" />
+/* ═══ PROSE — Phase 2 inline: mark / sup / sub / kbd ════════════════════════ */
+.prose mark{background:var(--zl-mark-bg);color:var(--zl-mark-text);padding:.05em .25em;
+  border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.prose sup,.prose sub{font-size:.72em;line-height:0}
+.prose kbd{font-family:var(--font-mono);font-size:.82em;padding:.18em .5em;
+  background:var(--zl-kbd-bg);border:1px solid var(--zl-kbd-bd);border-radius:5px;
+  box-shadow:var(--zl-kbd-shadow);color:var(--prose-head)}
+.prose .zl-broken-ref{border-bottom:1px dashed var(--intent-danger);color:var(--intent-danger);cursor:help}
 
-  <!-- Themes (loaded all, active one controlled by [data-theme] on <html>) -->
-  <link rel="stylesheet" href="css/themes/dark.css" />
-  <link rel="stylesheet" href="css/themes/light.css" />
-  <link rel="stylesheet" href="css/themes/midnight.css" />
-  <link rel="stylesheet" href="css/themes/oled.css" />
+/* ═══ PROSE — callouts (Phase 2: GitHub-style) ══════════════════════════════ */
+.prose .zl-callout{border-left:3px solid var(--zl-note);background:rgba(59,130,246,.05);
+  border-radius:0 var(--r) var(--r) 0;padding:.85em 1.1em;margin:1.1em 0}
+.prose .zl-callout-title{font-weight:700;color:var(--zl-note);margin-bottom:.4em;
+  display:flex;align-items:center;gap:.45em;font-size:.92em}
+.prose .zl-callout-body{color:var(--prose-text)}
+.prose .zl-callout-body>:first-child{margin-top:0} .prose .zl-callout-body>:last-child{margin-bottom:0}
+.prose .zl-callout-tip{border-left-color:var(--zl-tip);background:rgba(34,197,94,.05)}
+.prose .zl-callout-tip .zl-callout-title{color:var(--zl-tip)}
+.prose .zl-callout-warning{border-left-color:var(--zl-warning);background:rgba(245,158,11,.06)}
+.prose .zl-callout-warning .zl-callout-title{color:var(--zl-warning)}
+.prose .zl-callout-important{border-left-color:var(--zl-important);background:rgba(167,139,250,.06)}
+.prose .zl-callout-important .zl-callout-title{color:var(--zl-important)}
+.prose .zl-callout-caution{border-left-color:var(--zl-caution);background:rgba(251,146,60,.06)}
+.prose .zl-callout-caution .zl-callout-title{color:var(--zl-caution)}
+.prose .zl-callout-danger{border-left-color:var(--zl-danger);background:rgba(239,68,68,.06)}
+.prose .zl-callout-danger .zl-callout-title{color:var(--zl-danger)}
+.prose .zl-callout-info{border-left-color:var(--zl-info);background:rgba(56,189,248,.06)}
+.prose .zl-callout-info .zl-callout-title{color:var(--zl-info)}
+.prose .zl-callout-success{border-left-color:var(--zl-success);background:rgba(34,197,94,.05)}
+.prose .zl-callout-success .zl-callout-title{color:var(--zl-success)}
 
-  <!-- Critical inline styles — prevent flash of unstyled content -->
-  <style>
-    /* Prevent FOUC before CSS loads */
-    html { background: var(--bg-app, #0a0a0f); }
+/* ═══ PROSE — admonitions (Phase 2: boxed, distinct from callouts) ══════════ */
+.prose .zl-admonition{border:1px solid var(--border-base);border-radius:var(--r-lg);
+  margin:1.1em 0;overflow:hidden;box-shadow:var(--shadow-sm)}
+.prose .zl-admonition-header{display:flex;align-items:center;gap:.5em;padding:.65em 1em;
+  font-weight:700;font-size:.88em;background:rgba(59,130,246,.08);color:var(--zl-note);
+  border-bottom:1px solid var(--border-base)}
+.prose .zl-admonition-body{padding:.9em 1.1em;color:var(--prose-text)}
+.prose .zl-admonition-body>:first-child{margin-top:0} .prose .zl-admonition-body>:last-child{margin-bottom:0}
+.prose .zl-admonition-tip .zl-admonition-header,.prose .zl-admonition-success .zl-admonition-header{background:rgba(34,197,94,.08);color:var(--zl-tip)}
+.prose .zl-admonition-warning .zl-admonition-header,.prose .zl-admonition-caution .zl-admonition-header{background:rgba(245,158,11,.09);color:var(--zl-warning)}
+.prose .zl-admonition-danger .zl-admonition-header{background:rgba(239,68,68,.09);color:var(--zl-danger)}
+.prose .zl-admonition-important .zl-admonition-header{background:rgba(167,139,250,.09);color:var(--zl-important)}
+.prose .zl-admonition-info .zl-admonition-header{background:rgba(56,189,248,.09);color:var(--zl-info)}
+.prose .zl-admonition-definition .zl-admonition-header,.prose .zl-admonition-theorem .zl-admonition-header,.prose .zl-admonition-proof .zl-admonition-header{background:rgba(167,139,250,.09);color:var(--zl-important)}
 
-    /* Hide all route views immediately — router.js shows the correct one */
-    [data-view] { display: none; }
+/* ═══ PROSE — figures (Phase 2) ══════════════════════════════════════════════ */
+.prose .zl-figure{margin:1.4em 0;text-align:center}
+.prose .zl-figure img{margin:0 auto;border-radius:var(--r);box-shadow:var(--shadow-md)}
+.prose .zl-caption{font-size:.82em;color:var(--text-mute);margin-top:.6em;font-style:italic}
 
-    /* Loading spinner shown until app.js finishes bootstrapping */
-    #zolto-boot {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg-app, #0a0a0f);
-      z-index: 9999;
-      transition: opacity 240ms ease, visibility 240ms ease;
-    }
-    #zolto-boot.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    .zolto-boot-logo {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.25rem;
-    }
-    .zolto-boot-wordmark {
-      font-family: 'Instrument Serif', Georgia, serif;
-      font-size: 2.5rem;
-      font-style: italic;
-      letter-spacing: -0.02em;
-      color: var(--text-main, #f1f5f9);
-      opacity: 0;
-      animation: zolto-boot-fade 400ms ease 100ms forwards;
-    }
-    .zolto-boot-spinner {
-      width: 28px;
-      height: 28px;
-      border: 2px solid var(--border-subtle, rgba(255,255,255,0.1));
-      border-top-color: var(--accent-primary, #6366f1);
-      border-radius: 50%;
-      animation: zolto-boot-spin 600ms linear infinite;
-    }
-    @keyframes zolto-boot-fade {
-      to { opacity: 1; }
-    }
-    @keyframes zolto-boot-spin {
-      to { transform: rotate(360deg); }
-    }
-  </style>
+/* ═══ PROSE — definition lists (Phase 2) ═════════════════════════════════════ */
+.prose .zl-dl{margin:1.1em 0}
+.prose .zl-dt{font-weight:700;color:var(--prose-head);margin-top:.8em}
+.prose .zl-dt:first-child{margin-top:0}
+.prose .zl-dd{margin:.25em 0 0 1.4em;color:var(--prose-text)}
+
+/* ═══ PROSE — enhanced code blocks (Phase 2: header/title/numbers/diff/copy) ═ */
+.prose .zl-cb{margin:1.1em 0;border-radius:var(--r);overflow:hidden;
+  border:1px solid var(--border-base);box-shadow:var(--shadow-sm);background:var(--prose-code-bg)}
+.prose .zl-code-header{display:flex;align-items:center;gap:.7em;padding:.5em .9em;
+  background:rgba(59,130,246,.07);border-bottom:1px solid var(--border-base);
+  font-family:var(--font-mono);font-size:.78em}
+.prose .zl-code-lang{color:var(--brand-a);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.prose .zl-code-title{color:var(--text-body);flex:1}
+.prose .zl-copy{margin-left:auto;padding:.25em .7em;border-radius:var(--r-sm);
+  border:1px solid var(--border-base);color:var(--text-mute);font-size:.85em;transition:all .15s}
+.prose .zl-copy:hover{color:var(--text-main);border-color:var(--border-heavy);background:rgba(59,130,246,.08)}
+.prose .zl-pre{margin:0;padding:.9em 0;overflow-x:auto;background:transparent}
+.prose .zl-pre code{background:none;border:none;padding:0;font-size:.85rem;color:var(--ed-text);
+  display:block;font-family:var(--font-mono)}
+.prose .zl-ln{display:block;padding:0 1.2em;white-space:pre}
+.prose .zl-has-nums .zl-ln{padding-left:3.6em;position:relative}
+.prose .zl-has-nums .zl-ln::before{content:attr(data-n);position:absolute;left:0;width:2.8em;
+  text-align:right;color:var(--text-subtle);user-select:none;padding-right:.6em}
+.prose .zl-ln.zl-hl{background:rgba(59,130,246,.10);border-left:2px solid var(--intent-primary)}
+.prose .zl-diff .zl-diff-add{background:rgba(34,197,94,.10);border-left:2px solid var(--zl-success)}
+.prose .zl-diff .zl-diff-rem{background:rgba(239,68,68,.10);border-left:2px solid var(--zl-danger)}
+
+/* ═══ TOAST ══════════════════════════════════════════════════════════════= */
+#toast{position:fixed;bottom:22px;left:50%;z-index:9999;pointer-events:none;
+  transform:translate(-50%,calc(100% + 30px));opacity:0;
+  background:var(--toast-bg);border:1px solid var(--toast-bd);border-radius:var(--r-full);
+  padding:7px 20px;font-size:12.5px;font-weight:500;color:var(--text-main);
+  box-shadow:var(--shadow-lg);backdrop-filter:blur(16px);white-space:nowrap;
+  transition:transform .28s cubic-bezier(0,0,.2,1),opacity .28s ease}
+#toast.show{transform:translate(-50%,0);opacity:1}
+
+/* ═══ TEST MODAL ═════════════════════════════════════════════════════════= */
+#modal{position:fixed;inset:0;z-index:1050;display:flex;align-items:center;justify-content:center;
+  padding:20px;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);
+  opacity:0;pointer-events:none;transition:opacity .2s}
+#modal.open{opacity:1;pointer-events:auto}
+.modal-card{background:var(--bg-panel);border:1px solid var(--border-base);border-radius:var(--r-xl);
+  box-shadow:var(--shadow-lg),0 0 40px rgba(59,130,246,.12);
+  width:100%;max-width:700px;max-height:82vh;display:flex;flex-direction:column;
+  transform:scale(.96);transition:transform .22s cubic-bezier(.175,.885,.32,1.275)}
+#modal.open .modal-card{transform:scale(1)}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;border-bottom:1px solid var(--border-subtle)}
+.modal-hdr h2{font-size:13.5px;font-weight:700;color:var(--text-main);display:flex;align-items:center;gap:8px}
+.modal-summary{padding:9px 18px;background:var(--bg-depth);border-bottom:1px solid var(--border-subtle);font-size:12.5px;color:var(--text-body)}
+.modal-body{flex:1;overflow-y:auto;padding:10px 18px 16px;font-family:var(--font-mono);font-size:11px;line-height:1.65}
+.t-suite{font-weight:700;color:var(--text-mute);font-size:9.5px;letter-spacing:.08em;
+  text-transform:uppercase;padding:10px 0 3px;border-top:1px solid var(--border-subtle);margin-top:4px}
+.t-suite:first-child{border-top:none;padding-top:3px}
+.t-pass{color:#22c55e} .t-fail{color:#ef4444} .t-err{color:#f97316;font-size:10px;padding-left:18px;opacity:.85}
+
+/* ═══ RESPONSIVE ════════════════════════════════════════════════════════= */
+@media(max-width:900px){
+  .view-switch{display:flex}
+  .brand-badge,.ibtn:not(.square):not(.primary) span{display:none}
+  [data-view="preview"] .ed-panel,[data-view="preview"] .divider{display:none}
+  [data-view="edit"] .canvas{display:none}
+  .ibtn:not(.square):not(.primary){width:36px;padding:0}
+}
+@media print{
+  .hdr,.divider,.canvas-hdr{display:none!important}
+  .canvas{background:none!important}
+  .doc-card{box-shadow:none!important;border:none!important;padding:0!important;max-width:none!important}
+  .prose{color:#000!important} .prose h1,.prose h2,.prose h3,.prose h4{color:#000!important}
+}
+body.exporting .doc-card{box-shadow:none!important;border:none!important}
+</style>
 </head>
-
 <body>
+<div id="app">
 
-  <!-- ─────────────────────────────────
-       Boot screen — hidden by app.js after
-       initial render is complete
-       ───────────────────────────────── -->
-  <div id="zolto-boot" role="status" aria-label="Loading Zolto" aria-live="polite">
-    <div class="zolto-boot-logo">
-      <span class="zolto-boot-wordmark">Zolto</span>
-      <div class="zolto-boot-spinner" aria-hidden="true"></div>
+  <!-- HEADER -->
+  <header class="hdr">
+    <div class="brand">
+      <div class="brand-icon"><i class="fa-solid fa-cube"></i></div>
+      <span class="brand-name">Zolto Studio</span>
+      <span class="brand-badge">Phase 2</span>
     </div>
-  </div>
+    <div class="view-switch">
+      <button class="vbtn active" data-view="edit"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+      <button class="vbtn" data-view="preview"><i class="fa-solid fa-eye"></i> Preview</button>
+    </div>
+    <div class="controls">
+      <button class="ibtn square" id="btn-open" title="Open .zl file  (Ctrl+O)"><i class="fa-solid fa-folder-open"></i></button>
+      <button class="ibtn square" id="btn-save" title="Save source as .zl"><i class="fa-solid fa-floppy-disk"></i></button>
+      <div class="sep"></div>
+      <button class="ibtn square" id="btn-theme" title="Cycle theme"><i class="fa-solid fa-moon"></i></button>
+      <div class="sep"></div>
+      <button class="ibtn" id="btn-tests"><i class="fa-solid fa-flask"></i><span>Tests</span></button>
+      <button class="ibtn primary" id="btn-pdf"><i class="fa-solid fa-file-pdf"></i><span>Export PDF</span></button>
+    </div>
+  </header>
 
-  <!-- ─────────────────────────────────
-       Application Shell
-       ───────────────────────────────── -->
-  <div id="zolto-app" role="application" aria-label="Zolto Editor">
+  <!-- WORKSPACE -->
+  <div class="workspace">
 
-    <!-- ── Top Bar ── -->
-    <header id="zolto-topbar" class="zolto-topbar" role="banner">
-      <div class="zolto-topbar-left">
-
-        <!-- Sidebar toggle -->
-        <button
-          id="btn-sidebar-toggle"
-          class="zolto-icon-btn"
-          aria-label="Toggle sidebar"
-          aria-expanded="true"
-          aria-controls="zolto-sidebar"
-          data-action="sidebar:toggle"
-        >
-          <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-            <rect x="2" y="2" width="12" height="12" rx="2" />
-            <line x1="6" y1="2" x2="6" y2="14" />
-          </svg>
-        </button>
-
-        <!-- Wordmark -->
-        <a href="#/" class="zolto-wordmark" aria-label="Zolto home">
-          <span class="zolto-wordmark-text">Zolto</span>
-          <span class="zolto-version-badge" aria-label="Version 8.1.0">8.1</span>
-        </a>
-
-        <!-- Document title -->
-        <div class="zolto-doc-title" id="zolto-doc-title">
-          <span
-            id="zolto-doc-title-text"
-            class="zolto-doc-title-text"
-            role="textbox"
-            contenteditable="true"
-            aria-label="Document title"
-            spellcheck="false"
-            data-placeholder="Untitled"
-          ></span>
-          <span class="zolto-doc-dirty-indicator" id="zolto-dirty" aria-label="Unsaved changes" hidden>●</span>
+    <!-- EDITOR PANEL -->
+    <aside class="ed-panel" id="ed-panel">
+      <div class="ed-hdr">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="dot dot-blue"></span>
+          <span id="filename">source.zl</span>
         </div>
-
-      </div>
-
-      <div class="zolto-topbar-center">
-        <!-- Preview mode switcher -->
-        <div
-          class="zolto-preview-mode-group"
-          role="group"
-          aria-label="Preview mode"
-        >
-          <button
-            class="zolto-mode-btn zolto-mode-active"
-            data-mode="live"
-            aria-pressed="true"
-            aria-label="Live split view"
-            title="Live split view (Ctrl+1)"
-          >
-            <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="1" y="2" width="6" height="12" rx="1" />
-              <rect x="9" y="2" width="6" height="12" rx="1" />
-            </svg>
-          </button>
-          <button
-            class="zolto-mode-btn"
-            data-mode="focus"
-            aria-pressed="false"
-            aria-label="Focus mode (preview only)"
-            title="Focus mode (Ctrl+2)"
-          >
-            <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="2" y="2" width="12" height="12" rx="1" />
-            </svg>
-          </button>
-          <button
-            class="zolto-mode-btn"
-            data-mode="split"
-            aria-pressed="false"
-            aria-label="Independent split view"
-            title="Split mode (Ctrl+3)"
-          >
-            <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="1" y="2" width="6" height="12" rx="1" />
-              <line x1="8" y1="2" x2="8" y2="14" stroke-dasharray="2 2" />
-              <rect x="9" y="2" width="6" height="12" rx="1" />
-            </svg>
-          </button>
+        <div class="ed-hdr-r">
+          <span id="char-count" style="opacity:.55">0 chars</span>
         </div>
       </div>
-
-      <div class="zolto-topbar-right">
-
-        <!-- Search -->
-        <button
-          class="zolto-icon-btn"
-          aria-label="Search documents (Ctrl+F)"
-          title="Search (Ctrl+F)"
-          data-action="search:open"
-        >
-          <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="6.5" cy="6.5" r="4" />
-            <line x1="10" y1="10" x2="14" y2="14" />
-          </svg>
-        </button>
-
-        <!-- Theme picker -->
-        <button
-          class="zolto-icon-btn"
-          id="btn-theme"
-          aria-label="Switch theme"
-          aria-haspopup="listbox"
-          aria-expanded="false"
-          aria-controls="theme-dropdown"
-          data-action="theme:toggle-picker"
-          title="Switch theme"
-        >
-          <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="8" cy="8" r="3" />
-            <line x1="8"  y1="1"  x2="8"  y2="3" />
-            <line x1="8"  y1="13" x2="8"  y2="15" />
-            <line x1="1"  y1="8"  x2="3"  y2="8" />
-            <line x1="13" y1="8"  x2="15" y2="8" />
-            <line x1="3"  y1="3"  x2="4.5" y2="4.5" />
-            <line x1="11.5" y1="11.5" x2="13" y2="13" />
-            <line x1="13" y1="3"  x2="11.5" y2="4.5" />
-            <line x1="4.5" y1="11.5" x2="3" y2="13" />
-          </svg>
-        </button>
-
-        <!-- Theme dropdown (hidden until btn-theme clicked) -->
-        <ul
-          id="theme-dropdown"
-          class="zolto-dropdown"
-          role="listbox"
-          aria-label="Choose theme"
-          hidden
-        >
-          <li role="option" aria-selected="true"  data-theme-id="dark"     class="zolto-dropdown-item zolto-dropdown-active">Dark</li>
-          <li role="option" aria-selected="false" data-theme-id="light"    class="zolto-dropdown-item">Light</li>
-          <li role="option" aria-selected="false" data-theme-id="midnight" class="zolto-dropdown-item">Midnight</li>
-          <li role="option" aria-selected="false" data-theme-id="oled"     class="zolto-dropdown-item">OLED</li>
-        </ul>
-
-        <!-- Export -->
-        <button
-          class="zolto-icon-btn"
-          aria-label="Export document"
-          aria-haspopup="menu"
-          aria-expanded="false"
-          aria-controls="export-menu"
-          data-action="export:toggle-menu"
-          title="Export"
-        >
-          <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M3 10v3h10v-3" />
-            <line x1="8" y1="1" x2="8" y2="10" />
-            <polyline points="5,7 8,10 11,7" />
-          </svg>
-        </button>
-
-        <!-- Export menu (hidden until export button clicked) -->
-        <ul
-          id="export-menu"
-          class="zolto-dropdown"
-          role="menu"
-          aria-label="Export options"
-          hidden
-        >
-          <li role="menuitem" class="zolto-dropdown-item" data-action="export:html">
-            <span class="zolto-dropdown-icon">⬡</span> Export as HTML
-          </li>
-          <li role="menuitem" class="zolto-dropdown-item" data-action="export:pdf">
-            <span class="zolto-dropdown-icon">⬛</span> Export as PDF
-          </li>
-          <li role="menuitem" class="zolto-dropdown-item" data-action="export:markdown">
-            <span class="zolto-dropdown-icon">↓</span> Export as Markdown
-          </li>
-          <li role="menuitem" class="zolto-dropdown-item" data-action="export:text">
-            <span class="zolto-dropdown-icon">≡</span> Export as Plain Text
-          </li>
-          <li role="separator" class="zolto-dropdown-sep"></li>
-          <li role="menuitem" class="zolto-dropdown-item" data-action="export:json">
-            <span class="zolto-dropdown-icon">{}</span> Export AST as JSON
-          </li>
-        </ul>
-
-        <!-- Settings -->
-        <button
-          class="zolto-icon-btn"
-          aria-label="Settings"
-          title="Settings (Ctrl+,)"
-          data-action="settings:open"
-        >
-          <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="8" cy="8" r="2.5" />
-            <path d="M8 1v2M8 13v2M1 8h2M13 8h2
-                     M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41
-                     M12.95 3.05l-1.41 1.41M4.46 11.54l-1.41 1.41" />
-          </svg>
-        </button>
-
-        <!-- Command palette trigger -->
-        <button
-          class="zolto-cmd-pill"
-          aria-label="Open command palette (Ctrl+K)"
-          title="Command palette (Ctrl+K)"
-          data-action="palette:open"
-        >
-          <kbd>⌘</kbd><kbd>K</kbd>
-        </button>
-
+      <div class="toolbar" role="toolbar" aria-label="Formatting">
+        <button class="tb" data-wrap="**" title="Bold (Ctrl+B)"><i class="fa-solid fa-bold"></i></button>
+        <button class="tb" data-wrap="*" title="Italic (Ctrl+I)"><i class="fa-solid fa-italic"></i></button>
+        <button class="tb" data-wrap="~~" title="Strikethrough"><i class="fa-solid fa-strikethrough"></i></button>
+        <button class="tb" data-wrap="==" title="Highlight"><i class="fa-solid fa-highlighter"></i></button>
+        <button class="tb" data-wrap="`" title="Inline code"><i class="fa-solid fa-code"></i></button>
+        <div class="tb-sep"></div>
+        <button class="tb" data-insert="# " title="Heading"><i class="fa-solid fa-heading"></i></button>
+        <button class="tb" data-insert="- " title="List item"><i class="fa-solid fa-list"></i></button>
+        <button class="tb" data-insert="- [ ] " title="Task item"><i class="fa-regular fa-square-check"></i></button>
+        <button class="tb" data-insert="---\n" title="Horizontal rule"><i class="fa-solid fa-minus"></i></button>
+        <button class="tb" data-block="```\n" title="Code block"><i class="fa-solid fa-file-code"></i></button>
+        <div class="tb-sep"></div>
+        <button class="tb" data-insert="[text](url)" title="Link"><i class="fa-solid fa-link"></i></button>
+        <button class="tb" data-insert="![alt](url)" title="Image"><i class="fa-regular fa-image"></i></button>
+        <div class="tb-sep"></div>
+        <button class="tb" data-block="> [!NOTE]\n> " title="Callout"><i class="fa-solid fa-quote-left"></i></button>
+        <button class="tb" data-block="[info]\n" data-block-close="\n[/info]" title="Admonition"><i class="fa-solid fa-circle-info"></i></button>
+        <button class="tb" data-insert="[[Ctrl+K]]" title="Keyboard key"><i class="fa-solid fa-keyboard"></i></button>
+        <div class="tb-sep"></div>
+        <button class="tb" data-insert="@var name = value\n" title="Variable"><i class="fa-solid fa-dollar-sign"></i></button>
+        <button class="tb" data-insert="[^1]" title="Footnote ref"><i class="fa-solid fa-superscript"></i></button>
       </div>
-    </header>
-
-    <!-- ── Main workspace ── -->
-    <div class="zolto-workspace" id="zolto-workspace">
-
-      <!-- ── Sidebar ── -->
-      <aside
-        id="zolto-sidebar"
-        class="zolto-sidebar"
-        aria-label="Document sidebar"
-        aria-hidden="false"
-      >
-        <!-- Sidebar tabs -->
-        <div class="zolto-sidebar-tabs" role="tablist" aria-label="Sidebar panels">
-          <button role="tab" class="zolto-sidebar-tab zolto-sidebar-tab-active"
-                  aria-selected="true" aria-controls="sidebar-files" id="stab-files"
-                  title="Files">
-            <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M3 2h7l3 3v9H3z" />
-              <path d="M10 2v3h3" />
-            </svg>
-          </button>
-          <button role="tab" class="zolto-sidebar-tab"
-                  aria-selected="false" aria-controls="sidebar-outline" id="stab-outline"
-                  title="Outline">
-            <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-              <line x1="4" y1="4" x2="13" y2="4" />
-              <line x1="6" y1="7" x2="13" y2="7" />
-              <line x1="6" y1="10" x2="13" y2="10" />
-              <line x1="4" y1="13" x2="13" y2="13" />
-              <circle cx="2.5" cy="7"  r="0.8" fill="currentColor" stroke="none" />
-              <circle cx="2.5" cy="10" r="0.8" fill="currentColor" stroke="none" />
-            </svg>
-          </button>
-          <button role="tab" class="zolto-sidebar-tab"
-                  aria-selected="false" aria-controls="sidebar-search" id="stab-search"
-                  title="Search">
-            <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="6.5" cy="6.5" r="4" />
-              <line x1="10" y1="10" x2="14" y2="14" />
-            </svg>
-          </button>
-        </div>
-
-        <!-- Files panel -->
-        <div id="sidebar-files" class="zolto-sidebar-panel"
-             role="tabpanel" aria-labelledby="stab-files">
-          <div class="zolto-sidebar-panel-header">
-            <span class="zolto-sidebar-panel-title">Files</span>
-            <button
-              class="zolto-icon-btn zolto-icon-btn-sm"
-              aria-label="New document"
-              title="New document (Ctrl+N)"
-              data-action="doc:new"
-            >
-              <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                <line x1="8" y1="3" x2="8" y2="13" />
-                <line x1="3" y1="8" x2="13" y2="8" />
-              </svg>
-            </button>
-          </div>
-          <div class="zolto-file-list" id="zolto-file-list" role="list" aria-label="Documents">
-            <!-- Populated by js/router.js and js/storage.js -->
-          </div>
-        </div>
-
-        <!-- Outline panel -->
-        <div id="sidebar-outline" class="zolto-sidebar-panel zolto-sidebar-panel-hidden"
-             role="tabpanel" aria-labelledby="stab-outline" hidden>
-          <div class="zolto-sidebar-panel-header">
-            <span class="zolto-sidebar-panel-title">Outline</span>
-          </div>
-          <nav
-            class="zolto-outline"
-            id="zolto-outline"
-            aria-label="Document outline"
-          >
-            <!-- Populated by js/preview/preview.js from heading nodes -->
-          </nav>
-        </div>
-
-        <!-- Search panel -->
-        <div id="sidebar-search" class="zolto-sidebar-panel zolto-sidebar-panel-hidden"
-             role="tabpanel" aria-labelledby="stab-search" hidden>
-          <div class="zolto-sidebar-panel-header">
-            <span class="zolto-sidebar-panel-title">Search</span>
-          </div>
-          <div class="zolto-search-box">
-            <label for="sidebar-search-input" class="sr-only">Search documents</label>
-            <input
-              id="sidebar-search-input"
-              type="search"
-              class="zolto-search-input"
-              placeholder="Search across documents…"
-              aria-label="Search all documents"
-              autocomplete="off"
-              spellcheck="false"
-            />
-          </div>
-          <div class="zolto-search-results" id="zolto-search-results" role="list" aria-label="Search results">
-            <!-- Populated by search handler in js/state.js -->
-          </div>
-        </div>
-
-        <!-- Sidebar resize handle -->
-        <div
-          class="zolto-sidebar-resize-handle"
-          role="separator"
-          aria-orientation="vertical"
-          aria-label="Resize sidebar"
-          tabindex="0"
-        ></div>
-      </aside>
-
-      <!-- ── Editor + Preview split ── -->
-      <main class="zolto-main" id="zolto-main" role="main">
-
-        <!-- Route: Home (recent documents) -->
-        <div data-view="home" class="zolto-view-home" aria-label="Home" role="region">
-          <div class="zolto-home-inner">
-            <h1 class="zolto-home-title">
-              <span class="zolto-home-wordmark">Zolto</span>
-            </h1>
-            <p class="zolto-home-tagline">Unified visual markup — write, compute, visualise.</p>
-
-            <div class="zolto-home-actions">
-              <button class="zolto-btn zolto-btn-primary" data-action="doc:new">
-                New Document
-              </button>
-              <button class="zolto-btn zolto-btn-ghost" data-action="doc:open-example">
-                Open Example
-              </button>
-            </div>
-
-            <section class="zolto-recent" aria-label="Recent documents">
-              <h2 class="zolto-recent-title">Recent</h2>
-              <div class="zolto-recent-list" id="zolto-recent-list" role="list">
-                <!-- Populated by js/storage.js -->
-              </div>
-            </section>
-          </div>
-        </div>
-
-        <!-- Route: Editor -->
-        <div data-view="editor" class="zolto-view-editor" aria-label="Editor" role="region">
-
-          <!-- Editor pane -->
-          <section
-            class="zolto-editor-pane"
-            id="zolto-editor-pane"
-            aria-label="Source editor"
-          >
-            <!-- Editor toolbar -->
-            <div class="zolto-editor-toolbar" role="toolbar" aria-label="Formatting">
-
-              <div class="zolto-toolbar-group" role="group" aria-label="Text formatting">
-                <button class="zolto-toolbar-btn" aria-label="Bold (Ctrl+B)"     title="Bold (Ctrl+B)"     data-action="format:bold">
-                  <strong>B</strong>
-                </button>
-                <button class="zolto-toolbar-btn" aria-label="Italic (Ctrl+I)"   title="Italic (Ctrl+I)"   data-action="format:italic">
-                  <em>I</em>
-                </button>
-                <button class="zolto-toolbar-btn" aria-label="Code (Ctrl+\`)"    title="Code (Ctrl+\`)"    data-action="format:code">
-                  <code>&lt;/&gt;</code>
-                </button>
-                <button class="zolto-toolbar-btn" aria-label="Link (Ctrl+K)"     title="Link (Ctrl+K)"     data-action="format:link">
-                  <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M6.5 9.5a4 4 0 0 0 5.66 0l1.41-1.41a4 4 0 0 0-5.66-5.66L7 4.34" />
-                    <path d="M9.5 6.5a4 4 0 0 0-5.66 0L2.43 7.91a4 4 0 0 0 5.66 5.66L9 12.66" />
-                  </svg>
-                </button>
-              </div>
-
-              <div class="zolto-toolbar-sep" role="separator"></div>
-
-              <div class="zolto-toolbar-group" role="group" aria-label="Headings">
-                <button class="zolto-toolbar-btn" aria-label="Heading 1" title="Heading 1 (Ctrl+1)" data-action="format:h1">H1</button>
-                <button class="zolto-toolbar-btn" aria-label="Heading 2" title="Heading 2 (Ctrl+2)" data-action="format:h2">H2</button>
-                <button class="zolto-toolbar-btn" aria-label="Heading 3" title="Heading 3 (Ctrl+3)" data-action="format:h3">H3</button>
-              </div>
-
-              <div class="zolto-toolbar-sep" role="separator"></div>
-
-              <div class="zolto-toolbar-group" role="group" aria-label="Insert">
-                <button class="zolto-toolbar-btn" aria-label="Insert math block"    title="Insert math"    data-action="insert:math">∑</button>
-                <button class="zolto-toolbar-btn" aria-label="Insert diagram"       title="Insert diagram" data-action="insert:diagram">
-                  <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <rect x="1" y="5" width="5" height="3" rx="1" />
-                    <rect x="10" y="2" width="5" height="3" rx="1" />
-                    <rect x="10" y="8" width="5" height="3" rx="1" />
-                    <line x1="6" y1="6.5" x2="10" y2="3.5" />
-                    <line x1="6" y1="6.5" x2="10" y2="9.5" />
-                  </svg>
-                </button>
-                <button class="zolto-toolbar-btn" aria-label="Insert chart"         title="Insert chart"   data-action="insert:chart">
-                  <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <rect x="1" y="9" width="3" height="5" rx="0.5" />
-                    <rect x="6" y="6" width="3" height="8" rx="0.5" />
-                    <rect x="11" y="3" width="3" height="11" rx="0.5" />
-                  </svg>
-                </button>
-                <button class="zolto-toolbar-btn" aria-label="Insert callout"       title="Insert callout" data-action="insert:callout">
-                  <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <circle cx="8" cy="8" r="6" />
-                    <line x1="8" y1="7" x2="8" y2="11" />
-                    <circle cx="8" cy="5" r="0.8" fill="currentColor" stroke="none" />
-                  </svg>
-                </button>
-                <button class="zolto-toolbar-btn" aria-label="Insert table"         title="Insert table"   data-action="insert:table">
-                  <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <rect x="1" y="2" width="14" height="12" rx="1" />
-                    <line x1="1" y1="6"  x2="15" y2="6"  />
-                    <line x1="6" y1="2"  x2="6"  y2="14" />
-                    <line x1="11" y1="2" x2="11" y2="14" />
-                  </svg>
-                </button>
-              </div>
-
-              <div class="zolto-toolbar-spacer" aria-hidden="true"></div>
-
-              <!-- Word count -->
-              <div class="zolto-word-count" id="zolto-word-count" aria-live="polite" aria-label="Word count">
-                <span id="word-count-value">0</span> words
-              </div>
-
-              <!-- Auto-save indicator -->
-              <div class="zolto-save-status" id="zolto-save-status" aria-live="polite">
-                <span data-status="saved"    class="zolto-save-badge">Saved</span>
-                <span data-status="saving"   class="zolto-save-badge" hidden>Saving…</span>
-                <span data-status="unsaved"  class="zolto-save-badge" hidden>Unsaved</span>
-                <span data-status="error"    class="zolto-save-badge" hidden>Save failed</span>
-              </div>
-
-            </div>
-
-            <!-- The actual contenteditable editor surface -->
-            <div
-              id="zolto-editor"
-              class="zolto-editor"
-              contenteditable="true"
-              role="textbox"
-              aria-multiline="true"
-              aria-label="Document source"
-              aria-placeholder="Start writing Zolto…"
-              spellcheck="false"
-              autocorrect="off"
-              autocapitalize="off"
-              data-gramm="false"
-              data-lt-active="false"
-            ></div>
-
-            <!-- Cursor position display -->
-            <div class="zolto-editor-statusbar" id="zolto-editor-statusbar" aria-live="off">
-              <span class="zolto-cursor-pos" id="zolto-cursor-pos" aria-label="Cursor position">
-                Ln <span id="cursor-line">1</span>, Col <span id="cursor-col">1</span>
-              </span>
-              <span class="zolto-statusbar-sep" aria-hidden="true">·</span>
-              <span class="zolto-lang-label">Zolto</span>
-            </div>
-
-          </section>
-
-          <!-- Editor–Preview resizable divider -->
-          <div
-            class="zolto-split-handle"
-            id="zolto-split-handle"
-            role="separator"
-            aria-orientation="vertical"
-            aria-label="Resize editor and preview"
-            aria-valuenow="50"
-            aria-valuemin="20"
-            aria-valuemax="80"
-            tabindex="0"
-          ></div>
-
-          <!-- Preview pane -->
-          <section
-            class="zolto-preview-pane"
-            id="zolto-preview-pane"
-            aria-label="Rendered preview"
-          >
-            <!-- Preview toolbar -->
-            <div class="zolto-preview-toolbar" role="toolbar" aria-label="Preview controls">
-              <span class="zolto-preview-label">Preview</span>
-              <div class="zolto-toolbar-spacer" aria-hidden="true"></div>
-              <button
-                class="zolto-icon-btn zolto-icon-btn-sm"
-                aria-label="Toggle scroll sync"
-                aria-pressed="true"
-                title="Scroll sync"
-                data-action="preview:toggle-scroll-sync"
-              >
-                <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <line x1="8" y1="1" x2="8" y2="15" />
-                  <polyline points="4,5 8,1 12,5" />
-                  <polyline points="4,11 8,15 12,11" />
-                </svg>
-              </button>
-              <button
-                class="zolto-icon-btn zolto-icon-btn-sm"
-                aria-label="Open preview in new tab"
-                title="Open in new tab"
-                data-action="preview:open-tab"
-              >
-                <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M7 3H3v10h10V9" />
-                  <polyline points="10,2 14,2 14,6" />
-                  <line x1="8" y1="8" x2="14" y2="2" />
-                </svg>
-              </button>
-            </div>
-
-            <!-- Rendered document output -->
-            <div
-              id="zolto-preview"
-              class="zolto-preview"
-              aria-label="Document preview"
-              aria-live="polite"
-              aria-atomic="false"
-              aria-relevant="additions removals"
-            >
-              <!-- Populated and patched by js/preview/live-renderer.js -->
-            </div>
-
-          </section>
-        </div>
-
-        <!-- Route: Settings -->
-        <div data-view="settings" class="zolto-view-settings" aria-label="Settings" role="region" hidden>
-          <div class="zolto-settings-inner">
-            <h1 class="zolto-settings-title">Settings</h1>
-            <div class="zolto-settings-body" id="zolto-settings-body">
-              <!-- Populated by js/settings.js -->
-            </div>
-          </div>
-        </div>
-
-        <!-- Route: Plugins -->
-        <div data-view="plugins" class="zolto-view-plugins" aria-label="Plugin manager" role="region" hidden>
-          <div class="zolto-plugins-inner">
-            <h1 class="zolto-plugins-title">Plugins</h1>
-            <div class="zolto-plugins-body" id="zolto-plugins-body">
-              <!-- Populated by plugins/plugin-manager.js -->
-            </div>
-          </div>
-        </div>
-
-      </main>
-    </div>
-  </div>
-
-  <!-- ─────────────────────────────────
-       Command Palette
-       Mounted outside the app shell so it
-       can overlay everything at z-index 1000
-       ───────────────────────────────── -->
-  <div
-    id="zolto-palette-overlay"
-    class="zolto-palette-overlay"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Command palette"
-    aria-hidden="true"
-    hidden
-  >
-    <div class="zolto-palette" id="zolto-palette">
-      <div class="zolto-palette-input-wrap">
-        <svg class="zolto-palette-search-icon" aria-hidden="true" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="6.5" cy="6.5" r="4" />
-          <line x1="10" y1="10" x2="14" y2="14" />
-        </svg>
-        <label for="zolto-palette-input" class="sr-only">Command search</label>
-        <input
-          id="zolto-palette-input"
-          class="zolto-palette-input"
-          type="text"
-          placeholder="Type a command or search…"
-          autocomplete="off"
-          spellcheck="false"
-          role="combobox"
-          aria-expanded="true"
-          aria-autocomplete="list"
-          aria-controls="zolto-palette-results"
-        />
-        <kbd class="zolto-palette-esc-hint">esc</kbd>
+      <textarea id="editor" spellcheck="false" aria-label="Zolto source editor" placeholder="Start writing Zolto Markdown…"></textarea>
+      <div class="status">
+        <span id="s-errors" class="s-ok">✓ No errors</span>
+        <span class="s-dot">·</span>
+        <span id="s-warn"></span>
+        <span class="s-dot" id="s-dot2" style="display:none">·</span>
+        <span id="s-time"></span>
       </div>
-      <ul
-        id="zolto-palette-results"
-        class="zolto-palette-results"
-        role="listbox"
-        aria-label="Commands"
-      >
-        <!-- Populated by js/editor/command-palette.js -->
-      </ul>
+    </aside>
+
+    <!-- RESIZE HANDLE -->
+    <div class="divider" id="divider" title="Drag to resize" aria-hidden="true"></div>
+
+    <!-- PREVIEW CANVAS -->
+    <main class="canvas" id="canvas">
+      <div class="canvas-hdr">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="dot dot-grn"></span>
+          <span>Live Preview · Extended Markdown</span>
+        </div>
+        <span id="render-time" style="opacity:.6"></span>
+      </div>
+      <div class="canvas-scroll">
+        <div class="doc-card" id="pdf-root">
+          <div id="preview" class="prose"></div>
+        </div>
+      </div>
+    </main>
+
+  </div><!-- /workspace -->
+</div><!-- /app -->
+
+<div id="toast"></div>
+<input type="file" id="file-input" accept=".zl,.md,.txt" style="display:none">
+
+<!-- TEST MODAL -->
+<div id="modal" role="dialog" aria-modal="true" aria-label="Test results">
+  <div class="modal-card">
+    <div class="modal-hdr">
+      <h2><i class="fa-solid fa-flask" style="color:var(--intent-primary)"></i>Phase 2 Test Suite</h2>
+      <button class="ibtn square" id="btn-modal-close" title="Close"><i class="fa-solid fa-xmark"></i></button>
     </div>
+    <div class="modal-summary" id="modal-summary">Click <em>Tests</em> in the header to run the suite.</div>
+    <div class="modal-body" id="modal-body"></div>
   </div>
+</div>
 
-  <!-- ─────────────────────────────────
-       Autocomplete Popup
-       ───────────────────────────────── -->
-  <div
-    id="zolto-autocomplete"
-    class="zolto-autocomplete"
-    role="listbox"
-    aria-label="Autocomplete suggestions"
-    aria-hidden="true"
-    hidden
-  >
-    <!-- Populated by js/editor/autocomplete.js -->
-  </div>
+<script type="module">
+import { compile, parse, about } from './src/zolto.js';
 
-  <!-- ─────────────────────────────────
-       Toast Notifications
-       ───────────────────────────────── -->
-  <div
-    id="zolto-toasts"
-    class="zolto-toast-region"
-    role="region"
-    aria-label="Notifications"
-    aria-live="polite"
-    aria-atomic="false"
-  >
-    <!-- Injected by js/utils/events.js toast() helper -->
-  </div>
+// ── DOM ──────────────────────────────────────────────────────────────────────
+const editor   = document.getElementById('editor');
+const preview  = document.getElementById('preview');
+const sErrors  = document.getElementById('s-errors');
+const sWarn    = document.getElementById('s-warn');
+const sDot2    = document.getElementById('s-dot2');
+const sTime    = document.getElementById('s-time');
+const rtLabel  = document.getElementById('render-time');
+const charCnt  = document.getElementById('char-count');
 
-  <!-- ─────────────────────────────────
-       Global Error Overlay
-       Shown when a critical initialisation
-       error occurs before the app loads
-       ───────────────────────────────── -->
-  <div
-    id="zolto-error-overlay"
-    class="zolto-error-overlay"
-    role="alertdialog"
-    aria-modal="true"
-    aria-label="Application error"
-    aria-hidden="true"
-    hidden
-  >
-    <div class="zolto-error-box">
-      <h2 class="zolto-error-title">Something went wrong</h2>
-      <p class="zolto-error-message" id="zolto-error-message"></p>
-      <button class="zolto-btn zolto-btn-primary" data-action="app:reload">Reload</button>
-    </div>
-  </div>
+// ── Live render ───────────────────────────────────────────────────────────────
+let timer;
+function renderPreview() {
+  const src = editor.value;
+  const t0  = performance.now();
+  const { errors, warnings } = parse(src);
+  const html = compile(src);
+  const ms   = (performance.now() - t0).toFixed(1);
 
-  <!-- ─────────────────────────────────
-       Screen reader only utility class
-       ───────────────────────────────── -->
-  <style>
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0,0,0,0);
-      white-space: nowrap;
-      border: 0;
+  preview.innerHTML = html;
+  charCnt.textContent = `${src.length} chars`;
+  rtLabel.textContent = `${ms} ms`;
+  sTime.textContent = `${ms} ms`;
+
+  if (errors.length) {
+    sErrors.textContent = `✗ ${errors.length} error${errors.length > 1 ? 's' : ''}`;
+    sErrors.className = 's-err';
+  } else {
+    sErrors.textContent = '✓ No errors';
+    sErrors.className = 's-ok';
+  }
+  if (warnings.length) {
+    sWarn.textContent = `${warnings.length} warning${warnings.length > 1 ? 's' : ''}`;
+    sWarn.className = 's-warn';
+    sDot2.style.display = '';
+  } else {
+    sWarn.textContent = '';
+    sDot2.style.display = 'none';
+  }
+}
+editor.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(renderPreview, 120); });
+
+// ── Toolbar ───────────────────────────────────────────────────────────────────
+document.querySelectorAll('.tb[data-wrap]').forEach(b =>
+  b.addEventListener('click', () => wrapSel(b.dataset.wrap, b.dataset.wrap))
+);
+document.querySelectorAll('.tb[data-insert]').forEach(b =>
+  b.addEventListener('click', () => insertLineStart(b.dataset.insert.replace(/\\n/g, '\n')))
+);
+document.querySelectorAll('.tb[data-block]').forEach(b =>
+  b.addEventListener('click', () => {
+    const open  = b.dataset.block.replace(/\\n/g, '\n');
+    const close = (b.dataset.blockClose ?? '\n```').replace(/\\n/g, '\n');
+    wrapSel(open, close);
+  })
+);
+
+function wrapSel(open, close) {
+  const s = editor.selectionStart, e = editor.selectionEnd;
+  const sel = editor.value.slice(s, e) || 'text';
+  editor.setRangeText(open + sel + close, s, e, 'select');
+  renderPreview();
+  editor.focus();
+}
+function insertLineStart(text) {
+  const p = editor.selectionStart;
+  const ls = editor.value.lastIndexOf('\n', p - 1) + 1;
+  editor.setRangeText(text, ls, ls, 'end');
+  renderPreview();
+  editor.focus();
+}
+
+// ── Keyboard shortcuts ────────────────────────────────────────────────────────
+editor.addEventListener('keydown', e => {
+  const mod = e.ctrlKey || e.metaKey;
+  if (mod && e.key === 'b') { e.preventDefault(); wrapSel('**', '**'); }
+  if (mod && e.key === 'i') { e.preventDefault(); wrapSel('*', '*'); }
+  if (mod && e.key === 'k') { e.preventDefault(); wrapSel('[', '](url)'); }
+  if (mod && e.key === 'o') { e.preventDefault(); document.getElementById('file-input').click(); }
+  if (mod && e.key === 's') { e.preventDefault(); saveSource(); }
+  if (e.key === 'Tab') { e.preventDefault(); editor.setRangeText('  ', editor.selectionStart, editor.selectionEnd, 'end'); }
+});
+
+// ── Resize divider ────────────────────────────────────────────────────────────
+const divider = document.getElementById('divider');
+const edPanel = document.getElementById('ed-panel');
+let dragging  = false;
+divider.addEventListener('mousedown', e => {
+  dragging = true; divider.classList.add('dragging');
+  document.body.style.cursor = 'col-resize';
+  document.body.style.userSelect = 'none';
+  e.preventDefault();
+});
+document.addEventListener('mousemove', e => {
+  if (!dragging) return;
+  const ws = document.querySelector('.workspace').getBoundingClientRect();
+  const w  = Math.min(Math.max(e.clientX - ws.left, 260), ws.width - 280);
+  edPanel.style.flex = `0 0 ${w}px`;
+});
+document.addEventListener('mouseup', () => {
+  if (!dragging) return;
+  dragging = false; divider.classList.remove('dragging');
+  document.body.style.cursor = ''; document.body.style.userSelect = '';
+});
+
+// ── Theme cycling ──────────────────────────────────────────────────────────────
+const THEMES = ['zolto','dark','midnight','light'];
+const T_ICONS = { zolto:'fa-moon', dark:'fa-moon', midnight:'fa-circle-half-stroke', light:'fa-sun' };
+let themeIdx = 0;
+document.getElementById('btn-theme').addEventListener('click', () => {
+  themeIdx = (themeIdx + 1) % THEMES.length;
+  const t = THEMES[themeIdx];
+  document.documentElement.dataset.theme = t;
+  const icon = document.querySelector('#btn-theme i');
+  icon.className = `fa-solid ${T_ICONS[t]}`;
+  showToast(`Theme: ${t}`);
+});
+
+// ── File open ──────────────────────────────────────────────────────────────────
+document.getElementById('btn-open').addEventListener('click', () => document.getElementById('file-input').click());
+document.getElementById('file-input').addEventListener('change', e => {
+  const f = e.target.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = ev => {
+    editor.value = ev.target.result;
+    document.getElementById('filename').textContent = f.name;
+    renderPreview();
+    showToast(`Opened: ${f.name}`);
+  };
+  r.readAsText(f);
+  e.target.value = '';
+});
+
+// ── File save ──────────────────────────────────────────────────────────────────
+document.getElementById('btn-save').addEventListener('click', saveSource);
+function saveSource() {
+  const blob = new Blob([editor.value], { type: 'text/plain' });
+  const a = Object.assign(document.createElement('a'), {
+    href: URL.createObjectURL(blob),
+    download: document.getElementById('filename').textContent || 'document.zl',
+  });
+  a.click(); URL.revokeObjectURL(a.href);
+  showToast('Source saved');
+}
+
+// ── Mobile view switch ─────────────────────────────────────────────────────────
+document.querySelectorAll('.vbtn').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.vbtn').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  document.documentElement.dataset.view = b.dataset.view;
+}));
+
+// ── PDF export ─────────────────────────────────────────────────────────────────
+document.getElementById('btn-pdf').addEventListener('click', () => {
+  const root = document.getElementById('pdf-root');
+  document.body.classList.add('exporting');
+  const bg = getComputedStyle(document.documentElement).getPropertyValue('--prose-bg').trim() || '#ffffff';
+  html2pdf().set({
+    margin: [12, 15, 12, 15],
+    filename: 'zolto-document.pdf',
+    image: { type: 'jpeg', quality: 0.97 },
+    html2canvas: { scale: 2, useCORS: true, backgroundColor: bg },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+  }).from(root).save().then(() => {
+    document.body.classList.remove('exporting');
+    showToast('PDF exported');
+  });
+});
+
+// ── Toast ──────────────────────────────────────────────────────────────────────
+let toastT;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// ── Test modal ─────────────────────────────────────────────────────────────────
+const modal = document.getElementById('modal');
+document.getElementById('btn-tests').addEventListener('click', async () => {
+  modal.classList.add('open');
+  document.getElementById('modal-summary').innerHTML =
+    '<span style="color:var(--text-mute)">Running tests…</span>';
+  document.getElementById('modal-body').innerHTML = '';
+  const { runAllTests } = await import('./tests/tests.js');
+  const { results, passed, failed, total } = runAllTests();
+  const fc = failed === 0 ? '#22c55e' : '#ef4444';
+  document.getElementById('modal-summary').innerHTML =
+    `<span style="color:${fc};font-weight:700">${passed}/${total} passed</span>` +
+    (failed ? ` — <span style="color:#ef4444">${failed} failed</span>` : ' &nbsp;·&nbsp; All green ✓');
+  let html = '', suite = '';
+  for (const r of results) {
+    if (r.suite !== suite) {
+      suite = r.suite;
+      html += `<div class="t-suite">${esc(suite)}</div>`;
     }
-  </style>
+    html += r.pass
+      ? `<div class="t-pass">  ✓ ${esc(r.desc)}</div>`
+      : `<div class="t-fail">  ✗ ${esc(r.desc)}</div>` +
+        (r.error ? `<div class="t-err">${esc(r.error)}</div>` : '');
+  }
+  document.getElementById('modal-body').innerHTML = html;
+});
+document.getElementById('btn-modal-close').addEventListener('click', () => modal.classList.remove('open'));
+modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('open'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') modal.classList.remove('open'); });
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-  <!-- ─────────────────────────────────
-       JavaScript — ES Module entry point
-       All other modules imported by app.js
-       ───────────────────────────────── -->
+// ── Default content — Phase 2 showcase ──────────────────────────────────────────
+editor.value = `---
+title: Zolto Studio · Phase 2
+version: 2.0.0
+---
 
-  <script type="module" src="js/app.js"></script>
+@var studio  = Zolto Studio
+@var phase   = Phase 2
 
-  <!-- KaTeX runtime (required for math rendering) -->
-  <script defer
-    src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
-    integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL369OViuhW1u0fn2209+8J0V5tf00"
-    crossorigin="anonymous">
-  </script>
+# {{studio}} {#top}
 
-  <!-- Prism.js (code block syntax highlighting) -->
-  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+> **{{studio}}** extends the Phase 1 Markdown core into a complete,
+> production-quality "Extended Markdown" layer — fully backward
+> compatible with standard Markdown. This is **{{phase}}**.
 
-  <!-- Chart.js — classic global build (fallback when importmap unavailable) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+---
 
+## GitHub-Style Callouts
+
+> [!NOTE]
+> Callouts use the same \`> [!TYPE]\` syntax GitHub renders natively.
+
+> [!TIP]
+> Six types ship out of the box: NOTE, TIP, WARNING, IMPORTANT, CAUTION, DANGER.
+
+> [!WARNING]
+> Each one carries its own icon, color, and accessible ARIA role.
+
+## Native Admonitions
+
+[info title="Did you know?"]
+Admonitions are Zolto's own bracket syntax — \`[type]…[/type]\` — and
+support **nested markdown**, lists, and code blocks inside.
+
+- Nested list item one
+- Nested list item two
+[/info]
+
+[danger]
+This block uses the \`danger\` admonition type for high-visibility warnings.
+[/danger]
+
+## Extended Inline Syntax
+
+Superscript: E = mc^2^ · Subscript: H~2~O · ==Highlighted text== ·
+Press [[Ctrl+S]] to save · Caf&eacute; &copy; 2026 · wait... three dots become an ellipsis
+
+## Enhanced Code Blocks
+
+\`\`\`javascript title="zolto.js" {2} numbers
+import { compile } from './zolto.js';
+const html = compile(source);   // ← highlighted line
+console.log(html);
+\`\`\`
+
+\`\`\`diff
++ Added a new feature
+- Removed the old approach
+  Unchanged context line
+\`\`\`
+
+## Figures & Reference Links
+
+![System architecture](https://placehold.co/600x200/0b1628/60a5fa?text=Zolto+Pipeline "Compiler pipeline overview")
+
+See the [full specification][spec] for details.
+
+[spec]: https://zolto.dev/docs "Zolto Language Reference"
+
+## Definition Lists
+
+Tokenizer
+: Converts raw source into a flat block-token stream.
+
+Inline Parser
+: Cursor-based scanner producing bold, italic, links, and all Phase 2 inline types.
+
+## Tables with Captions
+
+Table: Phase 2 Module Status
+
+| Module | File | Status |
+| :----- | :--- | :----: |
+| Diagnostics | \`diagnostics.js\` | ✓ |
+| Validator | \`validator.js\` | ✓ |
+| Renderer | \`renderer.js\` | ✓ |
+
+---
+
+*Built on a 100% Markdown-compatible core[^1].*
+
+[^1]: Every valid CommonMark/GFM document remains a valid Zolto document.
+`;
+console.log(about());
+renderPreview();
+</script>
 </body>
 </html>

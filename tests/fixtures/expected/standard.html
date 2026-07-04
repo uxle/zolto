@@ -1,0 +1,43 @@
+<h1 id="standard-markdown-fixture">Standard Markdown Fixture</h1>
+<p>This fixture exercises every CommonMark construct.</p>
+<h2 id="inline">Inline</h2>
+<p><strong>Bold</strong> <em>italic</em> <strong><em>bold italic</em></strong> <del>strike</del> <code>code</code> <a href="https://example.com" title="Title">link</a> <img src="pic.png" alt="img" loading="lazy"> <a href="https://auto-link.com">https://auto-link.com</a> <a href="mailto:email@example.com">email@example.com</a> Hard break<br>
+next line.</p>
+<h2 id="lists">Lists</h2>
+<ul>
+<li><p>Unordered</p>
+<ul>
+<li>Nested</li>
+</ul></li>
+<li><p>Another</p>
+<ol>
+<li>Ordered</li>
+<li>Items</li>
+</ol></li>
+<li class="zl-task zl-done"><p><input type="checkbox" checked disabled> Task done</p></li>
+<li class="zl-task"><p><input type="checkbox" disabled> Task todo</p></li>
+</ul>
+<h2 id="blockquote">Blockquote</h2>
+<blockquote>
+<p>Nested</p>
+<blockquote>
+<p>Double nested</p>
+</blockquote>
+</blockquote>
+<h2 id="code">Code</h2>
+<div class="zl-cb" data-lang="javascript"><div class="zl-code-header"><span class="zl-code-lang">javascript</span><button class="zl-copy" onclick="(t=&gt;{var l=[...t.closest('.zl-cb').querySelectorAll('.zl-ln')].map(n=&gt;n.textContent).join('\n');navigator.clipboard.writeText(l);t.textContent='✓';setTimeout(()=&gt;t.textContent='Copy',1500)})(this)" aria-label="Copy code">Copy</button></div><pre class="zl-pre"><code class="language-javascript"><span class="zl-ln">const x = 42;</span>
+</code></pre></div>
+<h2 id="table">Table</h2>
+<div class="zl-table-wrap" role="region" aria-label="Data table" tabindex="0"><table class="zl-table"><thead>
+<tr><th>A</th><th>B</th></tr>
+</thead><tbody>
+<tr><td>1</td><td>2</td></tr>
+</tbody></table></div>
+<h2 id="horizontal-rule">Horizontal Rule</h2>
+<hr>
+<h2 id="footnote">Footnote</h2>
+<p>Text<sup class="zl-fn-ref"><a href="#fn-1" id="fnref-1" aria-describedby="footnote-label">[1]</a></sup>.</p>
+<section class="zl-footnotes" aria-label="Footnotes"><hr>
+<ol>
+<li id="fn-1" value="1">The footnote. <a href="#fnref-1" class="zl-fn-back" aria-label="Back to reference">↩</a></li>
+</ol></section>
