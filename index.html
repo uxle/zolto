@@ -334,9 +334,10 @@ textarea, input {
 }
 .canvas-scroll {
   flex: 1; overflow-y: auto; padding: calc(48px + var(--space-3)) var(--space-4) var(--space-8);
-  display: flex; flex-direction: column; align-items: center;
+  -webkit-overflow-scrolling: touch;
 }
 .card.spotlight {
+  margin: 0 auto;
   background: var(--bg-surface);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-base);
@@ -424,8 +425,9 @@ textarea, input {
 @media (max-width: 900px) {
   .view-switch { display: flex; }
   .brand-badge { display: none; }
+  .ed-panel { flex: 1; border-right: none; }
   html[data-view="preview"] .ed-panel, html[data-view="preview"] .divider { display: none; }
-  html[data-view="edit"] .canvas { display: none; }
+  html[data-view="edit"] .canvas, html[data-view="edit"] .divider { display: none; }
   .view-switch .btn span { display: none; }
   .btn:not(.btn-icon) span { display: none; }
   .btn:not(.btn-icon) { width: 40px; padding: 0; }
