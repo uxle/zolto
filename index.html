@@ -510,12 +510,12 @@ body.exporting .card.spotlight { box-shadow: none !important; border: none !impo
         <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="---\n" title="Horizontal rule" tabindex="0"><i class="fa-solid fa-minus"></i></button>
         <button class="btn btn-sm btn-icon btn-ghost tb" data-block="```\n" title="Code block" tabindex="0"><i class="fa-solid fa-file-code"></i></button>
         <div style="width:1px; height:16px; background:var(--border-subtle); margin:0 4px; flex-shrink: 0;"></div>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="[text](url)" title="Link" tabindex="0"><i class="fa-solid fa-link"></i></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="![alt](url)" title="Image" tabindex="0"><i class="fa-regular fa-image"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap-open="[" data-wrap-close="](url)" title="Link" tabindex="0"><i class="fa-solid fa-link"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap-open="![" data-wrap-close="](url)" title="Image" tabindex="0"><i class="fa-regular fa-image"></i></button>
         <div style="width:1px; height:16px; background:var(--border-subtle); margin:0 4px; flex-shrink: 0;"></div>
         <button class="btn btn-sm btn-icon btn-ghost tb" data-block="> [!NOTE]\n> " title="Callout" tabindex="0"><i class="fa-solid fa-quote-left"></i></button>
         <button class="btn btn-sm btn-icon btn-ghost tb" data-block="[info]\n" data-block-close="\n[/info]" title="Admonition" tabindex="0"><i class="fa-solid fa-circle-info"></i></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="[[Ctrl+K]]" title="Keyboard key" tabindex="0"><i class="fa-solid fa-keyboard"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert-inline="[[Ctrl+K]]" title="Keyboard key" tabindex="0"><i class="fa-solid fa-keyboard"></i></button>
       </div>
       <textarea id="editor" spellcheck="false" aria-label="Zolto source editor" placeholder="Start writing Zolto Markdown…" tabindex="0"></textarea>
       <div class="status">
@@ -629,8 +629,14 @@ editor.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout
 document.querySelectorAll('.tb[data-wrap]').forEach(b =>
   b.addEventListener('click', () => wrapSel(b.dataset.wrap, b.dataset.wrap))
 );
+document.querySelectorAll('.tb[data-wrap-open]').forEach(b =>
+  b.addEventListener('click', () => wrapSel(b.dataset.wrapOpen, b.dataset.wrapClose))
+);
 document.querySelectorAll('.tb[data-insert]').forEach(b =>
   b.addEventListener('click', () => insertLineStart(b.dataset.insert.replace(/\\n/g, '\n')))
+);
+document.querySelectorAll('.tb[data-insert-inline]').forEach(b =>
+  b.addEventListener('click', () => insertInline(b.dataset.insertInline.replace(/\\n/g, '\n')))
 );
 document.querySelectorAll('.tb[data-block]').forEach(b =>
   b.addEventListener('click', () => {
@@ -651,6 +657,12 @@ function insertLineStart(text) {
   const p = editor.selectionStart;
   const ls = editor.value.lastIndexOf('\n', p - 1) + 1;
   editor.setRangeText(text, ls, ls, 'end');
+  renderPreview();
+  editor.focus();
+}
+function insertInline(text) {
+  const p = editor.selectionStart;
+  editor.setRangeText(text, p, p, 'end');
   renderPreview();
   editor.focus();
 }
