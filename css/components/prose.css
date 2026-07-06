@@ -1,0 +1,64 @@
+/* PROSE STYLING */
+.prose { font-family: var(--font-sans); color: var(--text-secondary); line-height: 1.8; font-size: 1rem; }
+.prose h1, .prose h2, .prose h3, .prose h4 { color: var(--text-primary); font-weight: 700; line-height: 1.3; margin: 1.5em 0 0.5em; letter-spacing: -0.01em; }
+.prose h1 { font-size: 2.25rem; font-weight: 800; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.3em; }
+.prose h2 { font-size: 1.5rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.3em; }
+.prose h3 { font-size: 1.25rem; }
+.prose p { margin: 1em 0; }
+.prose strong { font-weight: 600; color: var(--text-primary); }
+.prose a { color: var(--primary); text-decoration: none; transition: color 0.15s; }
+.prose a:hover { color: var(--primary-dim); text-decoration: underline; }
+.prose code { background: var(--bg-surface-raised); color: var(--primary); padding: 0.2em 0.4em; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.85em; border: 1px solid var(--border-subtle); }
+.prose pre { background: var(--bg-base); padding: var(--space-2); border-radius: var(--radius-lg); border: 1px solid var(--border-base); overflow-x: auto; margin: 1.5em 0; }
+.prose pre code { background: transparent; border: none; padding: 0; color: var(--text-secondary); }
+.prose blockquote { border-left: 3px solid var(--primary); background: var(--bg-glass-soft); padding: var(--space-2) var(--space-3); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 1.5em 0; color: var(--text-primary); font-style: italic; }
+.prose ul, .prose ol { padding-left: var(--space-3); margin: 1em 0; }
+.prose li { margin: 0.25em 0; }
+.prose hr { border: none; border-top: 1px solid var(--border-base); margin: 2em 0; }
+
+/* Callouts / Admonitions */
+.prose .zl-callout { border-left: 3px solid var(--primary); background: var(--primary-soft); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: var(--space-2) var(--space-3); margin: 1.5em 0; }
+.prose .zl-callout-title { font-weight: 600; color: var(--primary); margin-bottom: 0.2em; display: flex; align-items: center; gap: 8px; }
+.prose .zl-callout-body { color: var(--text-secondary); font-size: 0.95em; }
+.prose .zl-callout-tip { border-left-color: var(--accent-green); background: rgba(94, 226, 154, 0.05); }
+.prose .zl-callout-tip .zl-callout-title { color: var(--accent-green); }
+.prose .zl-callout-warning { border-left-color: var(--accent-amber); background: rgba(250, 185, 91, 0.05); }
+.prose .zl-callout-warning .zl-callout-title { color: var(--accent-amber); }
+.prose .zl-callout-danger { border-left-color: var(--accent-red); background: rgba(242, 139, 130, 0.05); }
+.prose .zl-callout-danger .zl-callout-title { color: var(--accent-red); }
+
+/* Admonitions (Boxes) */
+.prose .zl-admonition { border: 1px solid var(--border-base); border-radius: var(--radius-lg); margin: 1.1em 0; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+.prose .zl-admonition-header { display: flex; align-items: center; gap: 0.5em; padding: 0.65em 1em; font-weight: 700; font-size: 0.88em; background: var(--primary-soft); color: var(--primary); border-bottom: 1px solid var(--border-base); }
+.prose .zl-admonition-body { padding: 0.9em 1.1em; color: var(--text-secondary); background: var(--bg-surface-raised); }
+.prose .zl-admonition-tip .zl-admonition-header, .prose .zl-admonition-success .zl-admonition-header { background: rgba(94, 226, 154, 0.1); color: var(--accent-green); }
+.prose .zl-admonition-warning .zl-admonition-header, .prose .zl-admonition-caution .zl-admonition-header { background: rgba(250, 185, 91, 0.1); color: var(--accent-amber); }
+.prose .zl-admonition-danger .zl-admonition-header { background: rgba(242, 139, 130, 0.1); color: var(--accent-red); }
+
+/* Badges */
+.lx-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+.lx-badge-blue { background: var(--primary-soft); color: var(--primary); }
+.lx-badge-green { background: rgba(94, 226, 154, 0.1); color: var(--accent-green); }
+
+/* Code blocks (Zolto specific) */
+.prose .zl-cb { margin: 1.1em 0; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-base); box-shadow: 0 4px 12px rgba(0,0,0,0.3); background: var(--bg-base); }
+.prose .zl-code-header { display: flex; align-items: center; gap: 0.7em; padding: 0.5em 0.9em; background: var(--bg-surface-raised); border-bottom: 1px solid var(--border-base); font-family: var(--font-mono); font-size: 0.78em; }
+.prose .zl-code-lang { color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.prose .zl-code-title { color: var(--text-secondary); flex: 1; }
+.prose .zl-copy { margin-left: auto; padding: 0.25em 0.7em; border-radius: var(--radius-sm); border: 1px solid var(--border-base); color: var(--text-secondary); font-size: 0.85em; transition: all 0.15s; background: none; cursor: pointer; }
+.prose .zl-copy:hover { color: var(--text-primary); border-color: var(--border-strong); background: var(--bg-glass-hover); }
+.prose .zl-pre { margin: 0; padding: 0.9em 0; overflow-x: auto; background: transparent; }
+.prose .zl-pre code { background: none; border: none; padding: 0; font-size: 0.85rem; color: var(--text-secondary); display: block; font-family: var(--font-mono); }
+.prose .zl-ln { display: block; padding: 0 1.2em; white-space: pre; }
+.prose .zl-has-nums .zl-ln { padding-left: 3.6em; position: relative; }
+.prose .zl-has-nums .zl-ln::before { content: attr(data-n); position: absolute; left: 0; width: 2.8em; text-align: right; color: var(--text-tertiary); user-select: none; padding-right: 0.6em; }
+
+/* Keyboard key */
+.prose kbd { font-family: var(--font-mono); font-size: 0.82em; padding: 0.18em 0.5em; background: var(--bg-surface-raised); border: 1px solid var(--border-strong); border-radius: 5px; box-shadow: 0 2px 0 var(--border-strong); color: var(--text-primary); }
+
+/* Table */
+.prose .zl-table-wrap { overflow-x: auto; margin: 1.1em 0; border-radius: var(--radius-md); border: 1px solid var(--border-base); }
+.prose .zl-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin: 0; }
+.prose .zl-table th { background: var(--bg-surface-raised); border-bottom: 1px solid var(--border-base); padding: 0.75em 1em; font-weight: 600; color: var(--text-primary); text-align: left; }
+.prose .zl-table td { border-bottom: 1px solid var(--border-base); padding: 0.75em 1em; color: var(--text-secondary); }
+

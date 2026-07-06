@@ -1,0 +1,47 @@
+/* Modals */
+.lx-modal-backdrop {
+  position: fixed; inset: 0; z-index: 1050;
+  display: flex; align-items: center; justify-content: center;
+  padding: var(--space-2);
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-soft);
+}
+.lx-modal-backdrop.open { opacity: 1; pointer-events: auto; }
+
+.lx-modal-box {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.4), 0 0 0 1px var(--border-base);
+  width: 100%; max-width: 600px; max-height: 85vh;
+  display: flex; flex-direction: column;
+  transform: scale(0.95) translateY(10px);
+  transition: transform var(--dur-base) var(--ease-spring);
+}
+.lx-modal-backdrop.open .lx-modal-box { transform: scale(1) translateY(0); }
+
+.lx-modal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.lx-modal-title { font-weight: 600; font-size: 1.125rem; display: flex; align-items: center; gap: 8px; color: var(--text-primary); }
+.lx-modal-body { flex: 1; overflow-y: auto; padding: var(--space-3); color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; }
+.lx-modal-foot { padding: var(--space-2) var(--space-3); border-top: 1px solid var(--border-subtle); display: flex; justify-content: flex-end; gap: var(--space-1); }
+
+/* Toasts */
+#toast {
+  position: fixed; bottom: var(--space-4); right: var(--space-4); z-index: 9999;
+  background: var(--bg-glass-heavy); border: 1px solid var(--border-base);
+  border-radius: var(--radius-md); padding: var(--space-1) var(--space-2);
+  font-size: 0.875rem; font-weight: 500; color: var(--text-primary);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(16px);
+  display: flex; align-items: center; gap: 8px;
+  transform: translateX(120%); transition: transform var(--dur-base) var(--ease-spring), opacity var(--dur-base) var(--ease-soft);
+  opacity: 0; pointer-events: none;
+}
+#toast.show { transform: translateX(0); opacity: 1; pointer-events: auto; }
+#toast .material-symbols-rounded { font-size: 18px; }
+
