@@ -1,0 +1,21 @@
+{
+  "name": "Zolto Studio",
+  "short_name": "Zolto",
+  "description": "Extended Markdown document engine",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0B0D0F",
+  "theme_color": "#15171B",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/assets/icons/logo/zolto-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "lang": "en-US",
+  "dir": "ltr"
+}
