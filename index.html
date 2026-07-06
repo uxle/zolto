@@ -11,456 +11,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
-<style>
-/* ═══ LEONUX DESIGN TOKENS ════════════════════════════════════════════════ */
-:root {
-  --font-sans: 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Consolas', monospace;
-
-  /* Surfaces */
-  --bg-base: #0B0D0F;
-  --bg-surface: #15171B;
-  --bg-surface-raised: #1C1F23;
-  --bg-glass: rgba(21, 23, 27, 0.60);
-  --bg-glass-heavy: rgba(12, 14, 17, 0.86);
-  --bg-glass-soft: rgba(255, 255, 255, 0.03);
-  --bg-glass-hover: rgba(255, 255, 255, 0.07);
-
-  /* Borders */
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --border-base: rgba(255, 255, 255, 0.10);
-  --border-strong: rgba(255, 255, 255, 0.18);
-
-  /* Accents */
-  --primary: #5B9DFA;
-  --primary-dim: #3A7BD5;
-  --primary-glow: rgba(91, 157, 250, 0.35);
-  --primary-soft: rgba(91, 157, 250, 0.12);
-  --accent-purple: #9D7AFA;
-  --accent-green: #5EE29A;
-  --accent-amber: #FAB95B;
-  --accent-red: #F28B82;
-
-  /* Text Scale */
-  --text-primary: #F4F5F7;
-  --text-secondary: #9CA3AF;
-  --text-tertiary: #5C6270;
-
-  /* Spacing */
-  --space-1: 8px;
-  --space-2: 16px;
-  --space-3: 24px;
-  --space-4: 32px;
-  --space-5: 40px;
-  --space-6: 48px;
-  --space-8: 64px;
-
-  /* Radii */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  --radius-pill: 999px;
-
-  /* Motion */
-  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
-  --ease-soft: cubic-bezier(.16, 1, .3, 1);
-  --ease-snap: cubic-bezier(.4, 0, .2, 1);
-  --dur-fast: 0.15s;
-  --dur-base: 0.3s;
-  --dur-slow: 0.6s;
-
-  /* Layout Variables */
-  --hdr-h: 64px;
-  --tb-h: 48px;
-}
-
-/* ═══ RESET & FOUNDATIONS ════════════════════════════════════════════════ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html {
-  height: 100%;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  font-size: clamp(14px, 1.5vw, 16px); /* Fluid Typography Base */
-}
-body {
-  width: 100vw;
-  height: 100dvh;
-  overflow: hidden;
-  font-family: var(--font-sans);
-  background: var(--bg-base);
-  color: var(--text-primary);
-}
-button {
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  font: inherit;
-  border: none;
-  background: none;
-  color: inherit;
-}
-textarea, input {
-  font: inherit;
-  border: none;
-  background: none;
-  color: inherit;
-  resize: none;
-  outline: none;
-}
-:focus-visible {
-  outline: 2px solid var(--primary);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: var(--radius-pill); border: 2px solid var(--bg-base); }
-::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
-
-/* Material Symbols */
-.material-symbols-rounded {
-  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-  font-size: 20px;
-}
-
-/* ═══ COMPONENTS ════════════════════════════════════════════════════════ */
-/* Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-1);
-  height: 40px;
-  padding: 0 var(--space-2);
-  border-radius: var(--radius-md);
-  font-weight: 500;
-  font-size: 0.875rem;
-  transition: transform var(--dur-base) var(--ease-spring), box-shadow var(--dur-base) var(--ease-spring), background var(--dur-fast) var(--ease-soft), border-color var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft);
-  white-space: nowrap;
-}
-.btn:active { transform: scale(0.96); }
-
-.btn-primary {
-  background: var(--primary);
-  color: #fff;
-}
-.btn-primary:hover, .btn-primary:focus-visible {
-  background: var(--primary-dim);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px var(--primary-glow);
-}
-
-.btn-secondary {
-  background: var(--bg-glass-soft);
-  border: 1px solid var(--border-base);
-  color: var(--text-primary);
-  backdrop-filter: blur(16px);
-}
-.btn-secondary:hover, .btn-secondary:focus-visible {
-  background: var(--bg-glass-hover);
-  border-color: var(--border-strong);
-  transform: translateY(-1px);
-}
-
-.btn-ghost {
-  color: var(--text-secondary);
-}
-.btn-ghost:hover, .btn-ghost:focus-visible {
-  color: var(--text-primary);
-  background: var(--bg-glass-soft);
-}
-
-.btn-icon {
-  width: 40px;
-  padding: 0;
-  border-radius: var(--radius-pill);
-}
-
-.btn-sm {
-  height: 32px;
-  padding: 0 var(--space-1);
-  border-radius: var(--radius-sm);
-  font-size: 0.75rem;
-}
-.btn-sm.btn-icon {
-  width: 32px;
-}
-
-/* Modals */
-.lx-modal-backdrop {
-  position: fixed; inset: 0; z-index: 1050;
-  display: flex; align-items: center; justify-content: center;
-  padding: var(--space-2);
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(8px);
-  opacity: 0; pointer-events: none;
-  transition: opacity var(--dur-base) var(--ease-soft);
-}
-.lx-modal-backdrop.open { opacity: 1; pointer-events: auto; }
-
-.lx-modal-box {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-base);
-  border-radius: var(--radius-xl);
-  box-shadow: 0 24px 48px rgba(0,0,0,0.4), 0 0 0 1px var(--border-base);
-  width: 100%; max-width: 600px; max-height: 85vh;
-  display: flex; flex-direction: column;
-  transform: scale(0.95) translateY(10px);
-  transition: transform var(--dur-base) var(--ease-spring);
-}
-.lx-modal-backdrop.open .lx-modal-box { transform: scale(1) translateY(0); }
-
-.lx-modal-head {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: var(--space-2) var(--space-3);
-  border-bottom: 1px solid var(--border-subtle);
-}
-.lx-modal-title { font-weight: 600; font-size: 1.125rem; display: flex; align-items: center; gap: 8px; color: var(--text-primary); }
-.lx-modal-body { flex: 1; overflow-y: auto; padding: var(--space-3); color: var(--text-secondary); font-size: 0.875rem; line-height: 1.6; }
-.lx-modal-foot { padding: var(--space-2) var(--space-3); border-top: 1px solid var(--border-subtle); display: flex; justify-content: flex-end; gap: var(--space-1); }
-
-/* Toasts */
-#toast {
-  position: fixed; bottom: var(--space-4); right: var(--space-4); z-index: 9999;
-  background: var(--bg-glass-heavy); border: 1px solid var(--border-base);
-  border-radius: var(--radius-md); padding: var(--space-1) var(--space-2);
-  font-size: 0.875rem; font-weight: 500; color: var(--text-primary);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(16px);
-  display: flex; align-items: center; gap: 8px;
-  transform: translateX(120%); transition: transform var(--dur-base) var(--ease-spring), opacity var(--dur-base) var(--ease-soft);
-  opacity: 0; pointer-events: none;
-}
-#toast.show { transform: translateX(0); opacity: 1; pointer-events: auto; }
-#toast .material-symbols-rounded { font-size: 18px; }
-
-/* ═══ APP LAYOUT ═════════════════════════════════════════════════════════ */
-#app {
-  display: flex; flex-direction: column; height: 100dvh;
-}
-.workspace {
-  flex: 1; display: flex; overflow: hidden; min-height: 0; position: relative;
-}
-
-/* HEADER */
-.hdr {
-  height: var(--hdr-h);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 clamp(var(--space-2), 3vw, var(--space-4));
-  background: var(--bg-glass-heavy);
-  border-bottom: 1px solid var(--border-subtle);
-  z-index: 100; flex-shrink: 0;
-  backdrop-filter: blur(16px);
-}
-.brand { display: flex; align-items: center; gap: var(--space-2); user-select: none; }
-.brand-icon {
-  width: 32px; height: 32px;
-  border-radius: var(--radius-sm);
-  background: var(--primary);
-  display: flex; align-items: center; justify-content: center;
-  color: #fff; font-size: 16px;
-  box-shadow: 0 4px 12px var(--primary-glow);
-}
-.brand-name {
-  font-size: 1.125rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text-primary);
-}
-.brand-badge {
-  font-size: 0.65rem; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-pill);
-  background: var(--primary-soft); color: var(--primary); letter-spacing: 0.05em; text-transform: uppercase;
-}
-.view-switch { display: none; align-items: center; gap: 4px; padding: 4px; background: var(--bg-surface-raised); border-radius: var(--radius-pill); }
-.controls { display: flex; align-items: center; gap: var(--space-1); }
-
-/* EDITOR PANEL */
-.ed-panel {
-  flex: 0 0 45%;
-  display: flex; flex-direction: column;
-  background: var(--bg-surface);
-  border-right: 1px solid var(--border-subtle);
-  overflow: hidden; z-index: 10;
-}
-.ed-hdr {
-  height: 48px;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 var(--space-2);
-  background: var(--bg-surface-raised);
-  border-bottom: 1px solid var(--border-subtle);
-  font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500;
-  color: var(--text-secondary); user-select: none;
-}
-.toolbar {
-  display: flex; align-items: center; gap: 2px; padding: 6px var(--space-2);
-  background: var(--bg-surface); border-bottom: 1px solid var(--border-subtle);
-  overflow-x: auto; flex-shrink: 0;
-}
-.toolbar::-webkit-scrollbar { display: none; }
-.toolbar { scrollbar-width: none; }
-
-#editor {
-  flex: 1; width: 100%; padding: var(--space-3);
-  background: transparent; color: var(--text-primary);
-  font-family: var(--font-mono); font-size: 0.875rem; line-height: 1.7;
-  caret-color: var(--primary); tab-size: 2;
-}
-#editor::selection { background: var(--primary-soft); color: #fff; }
-
-.status {
-  height: 36px; display: flex; align-items: center; gap: var(--space-2);
-  padding: 0 var(--space-2); background: var(--bg-surface-raised);
-  border-top: 1px solid var(--border-subtle);
-  font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-secondary);
-}
-.s-ok { color: var(--accent-green); }
-.s-err { color: var(--accent-red); }
-.s-warn { color: var(--accent-amber); }
-
-/* DIVIDER */
-.divider {
-  flex: 0 0 1px; background: var(--border-strong); cursor: col-resize;
-  position: relative; z-index: 20; transition: background 0.15s;
-}
-.divider::after { content: ''; position: absolute; inset: 0 -4px; }
-.divider:hover, .divider.dragging { background: var(--primary); }
-
-/* CANVAS PREVIEW */
-.canvas {
-  flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative;
-  background: radial-gradient(circle at 50% 0%, rgba(91, 157, 250, 0.1) 0%, var(--bg-base) 70%);
-}
-.canvas-hdr {
-  position: absolute; top: 0; left: 0; right: 0; z-index: 10;
-  height: 48px; display: flex; align-items: center; justify-content: space-between;
-  padding: 0 var(--space-3);
-  background: linear-gradient(180deg, var(--bg-base) 0%, transparent 100%);
-  font-family: var(--font-mono); font-size: 0.75rem; font-weight: 500;
-  color: var(--text-secondary); pointer-events: none;
-}
-.canvas-scroll {
-  flex: 1; overflow-y: auto; padding: calc(48px + var(--space-3)) var(--space-4) var(--space-8);
-  -webkit-overflow-scrolling: touch;
-}
-.card.spotlight {
-  margin: 0 auto;
-  background: var(--bg-surface);
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border-base);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-  padding: var(--space-6) clamp(var(--space-4), 5vw, var(--space-8));
-  width: 100%; max-width: 800px;
-  position: relative; overflow: hidden;
-  transition: transform var(--dur-base) var(--ease-spring), box-shadow var(--dur-base) var(--ease-spring);
-}
-.card.spotlight:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px var(--border-strong);
-}
-/* Spotlight effect pseudoelement (handled via JS) */
-.card.spotlight::before {
-  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: -1;
-  background: radial-gradient(800px circle at var(--x, 50%) var(--y, 50%), rgba(255,255,255,0.06), transparent 40%);
-}
-
-/* PROSE STYLING */
-.prose { font-family: var(--font-sans); color: var(--text-secondary); line-height: 1.8; font-size: 1rem; }
-.prose h1, .prose h2, .prose h3, .prose h4 { color: var(--text-primary); font-weight: 700; line-height: 1.3; margin: 1.5em 0 0.5em; letter-spacing: -0.01em; }
-.prose h1 { font-size: 2.25rem; font-weight: 800; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.3em; }
-.prose h2 { font-size: 1.5rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 0.3em; }
-.prose h3 { font-size: 1.25rem; }
-.prose p { margin: 1em 0; }
-.prose strong { font-weight: 600; color: var(--text-primary); }
-.prose a { color: var(--primary); text-decoration: none; transition: color 0.15s; }
-.prose a:hover { color: var(--primary-dim); text-decoration: underline; }
-.prose code { background: var(--bg-surface-raised); color: var(--primary); padding: 0.2em 0.4em; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.85em; border: 1px solid var(--border-subtle); }
-.prose pre { background: var(--bg-base); padding: var(--space-2); border-radius: var(--radius-lg); border: 1px solid var(--border-base); overflow-x: auto; margin: 1.5em 0; }
-.prose pre code { background: transparent; border: none; padding: 0; color: var(--text-secondary); }
-.prose blockquote { border-left: 3px solid var(--primary); background: var(--bg-glass-soft); padding: var(--space-2) var(--space-3); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin: 1.5em 0; color: var(--text-primary); font-style: italic; }
-.prose ul, .prose ol { padding-left: var(--space-3); margin: 1em 0; }
-.prose li { margin: 0.25em 0; }
-.prose hr { border: none; border-top: 1px solid var(--border-base); margin: 2em 0; }
-
-/* Callouts / Admonitions */
-.prose .zl-callout { border-left: 3px solid var(--primary); background: var(--primary-soft); border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: var(--space-2) var(--space-3); margin: 1.5em 0; }
-.prose .zl-callout-title { font-weight: 600; color: var(--primary); margin-bottom: 0.2em; display: flex; align-items: center; gap: 8px; }
-.prose .zl-callout-body { color: var(--text-secondary); font-size: 0.95em; }
-.prose .zl-callout-tip { border-left-color: var(--accent-green); background: rgba(94, 226, 154, 0.05); }
-.prose .zl-callout-tip .zl-callout-title { color: var(--accent-green); }
-.prose .zl-callout-warning { border-left-color: var(--accent-amber); background: rgba(250, 185, 91, 0.05); }
-.prose .zl-callout-warning .zl-callout-title { color: var(--accent-amber); }
-.prose .zl-callout-danger { border-left-color: var(--accent-red); background: rgba(242, 139, 130, 0.05); }
-.prose .zl-callout-danger .zl-callout-title { color: var(--accent-red); }
-
-/* Admonitions (Boxes) */
-.prose .zl-admonition { border: 1px solid var(--border-base); border-radius: var(--radius-lg); margin: 1.1em 0; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-.prose .zl-admonition-header { display: flex; align-items: center; gap: 0.5em; padding: 0.65em 1em; font-weight: 700; font-size: 0.88em; background: var(--primary-soft); color: var(--primary); border-bottom: 1px solid var(--border-base); }
-.prose .zl-admonition-body { padding: 0.9em 1.1em; color: var(--text-secondary); background: var(--bg-surface-raised); }
-.prose .zl-admonition-tip .zl-admonition-header, .prose .zl-admonition-success .zl-admonition-header { background: rgba(94, 226, 154, 0.1); color: var(--accent-green); }
-.prose .zl-admonition-warning .zl-admonition-header, .prose .zl-admonition-caution .zl-admonition-header { background: rgba(250, 185, 91, 0.1); color: var(--accent-amber); }
-.prose .zl-admonition-danger .zl-admonition-header { background: rgba(242, 139, 130, 0.1); color: var(--accent-red); }
-
-/* Badges */
-.lx-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: var(--radius-pill); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
-.lx-badge-blue { background: var(--primary-soft); color: var(--primary); }
-.lx-badge-green { background: rgba(94, 226, 154, 0.1); color: var(--accent-green); }
-
-/* Code blocks (Zolto specific) */
-.prose .zl-cb { margin: 1.1em 0; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-base); box-shadow: 0 4px 12px rgba(0,0,0,0.3); background: var(--bg-base); }
-.prose .zl-code-header { display: flex; align-items: center; gap: 0.7em; padding: 0.5em 0.9em; background: var(--bg-surface-raised); border-bottom: 1px solid var(--border-base); font-family: var(--font-mono); font-size: 0.78em; }
-.prose .zl-code-lang { color: var(--primary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-.prose .zl-code-title { color: var(--text-secondary); flex: 1; }
-.prose .zl-copy { margin-left: auto; padding: 0.25em 0.7em; border-radius: var(--radius-sm); border: 1px solid var(--border-base); color: var(--text-secondary); font-size: 0.85em; transition: all 0.15s; background: none; cursor: pointer; }
-.prose .zl-copy:hover { color: var(--text-primary); border-color: var(--border-strong); background: var(--bg-glass-hover); }
-.prose .zl-pre { margin: 0; padding: 0.9em 0; overflow-x: auto; background: transparent; }
-.prose .zl-pre code { background: none; border: none; padding: 0; font-size: 0.85rem; color: var(--text-secondary); display: block; font-family: var(--font-mono); }
-.prose .zl-ln { display: block; padding: 0 1.2em; white-space: pre; }
-.prose .zl-has-nums .zl-ln { padding-left: 3.6em; position: relative; }
-.prose .zl-has-nums .zl-ln::before { content: attr(data-n); position: absolute; left: 0; width: 2.8em; text-align: right; color: var(--text-tertiary); user-select: none; padding-right: 0.6em; }
-
-/* Keyboard key */
-.prose kbd { font-family: var(--font-mono); font-size: 0.82em; padding: 0.18em 0.5em; background: var(--bg-surface-raised); border: 1px solid var(--border-strong); border-radius: 5px; box-shadow: 0 2px 0 var(--border-strong); color: var(--text-primary); }
-
-/* Table */
-.prose .zl-table-wrap { overflow-x: auto; margin: 1.1em 0; border-radius: var(--radius-md); border: 1px solid var(--border-base); }
-.prose .zl-table { width: 100%; border-collapse: collapse; font-size: 0.9em; margin: 0; }
-.prose .zl-table th { background: var(--bg-surface-raised); border-bottom: 1px solid var(--border-base); padding: 0.75em 1em; font-weight: 600; color: var(--text-primary); text-align: left; }
-.prose .zl-table td { border-bottom: 1px solid var(--border-base); padding: 0.75em 1em; color: var(--text-secondary); }
-
-/* ═══ RESPONSIVE BREAKPOINTS ═════════════════════════════════════════════ */
-@media (max-width: 900px) {
-  .view-switch { display: flex; }
-  .brand-badge { display: none; }
-  .ed-panel { flex: 1; border-right: none; }
-  html[data-view="preview"] .ed-panel, html[data-view="preview"] .divider { display: none; }
-  html[data-view="edit"] .canvas, html[data-view="edit"] .divider { display: none; }
-  .view-switch .btn span { display: none; }
-  .btn:not(.btn-icon) span { display: none; }
-  .btn:not(.btn-icon) { width: 40px; padding: 0; }
-  .lx-modal-box { max-width: 90vw; }
-}
-
-/* Keypad Mobile (Jio Phone ~240px width) */
-@media (max-width: 320px) {
-  .hdr { padding: 0 var(--space-1); gap: var(--space-1); }
-  .brand-name { display: none; }
-  .view-switch .btn { padding: 4px 8px; font-size: 0.7rem; width: auto; height: 32px; }
-  .view-switch .btn i { font-size: 14px; }
-  .toolbar { flex-wrap: nowrap; overflow-x: scroll; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
-  .btn-icon { width: 36px; height: 36px; }
-  .btn { width: auto; padding: 0 8px; }
-  .card.spotlight { padding: var(--space-3) var(--space-2); border-radius: var(--radius-md); }
-  .prose h1 { font-size: 1.5rem; }
-  .prose h2 { font-size: 1.25rem; }
-  #toast { left: var(--space-1); right: var(--space-1); bottom: var(--space-1); transform: translateY(120%); text-align: center; justify-content: center; }
-  #toast.show { transform: translateY(0); }
-}
-
-@media print {
-  .hdr, .divider, .canvas-hdr, .ed-panel, .view-switch { display: none !important; }
-  .canvas { background: none !important; }
-  .card.spotlight { box-shadow: none !important; border: none !important; padding: 0 !important; max-width: none !important; }
-  .prose { color: #000 !important; }
-  .prose h1, .prose h2, .prose h3, .prose h4 { color: #000 !important; }
-}
-body.exporting .card.spotlight { box-shadow: none !important; border: none !important; }
-</style>
+  <link rel="stylesheet" href="css/core/variables.css">
+  <link rel="stylesheet" href="css/core/reset.css">
+  <link rel="stylesheet" href="css/layout/app.css">
+  <link rel="stylesheet" href="css/components/buttons.css">
+  <link rel="stylesheet" href="css/components/modals.css">
+  <link rel="stylesheet" href="css/components/prose.css">
 </head>
 <body>
 <div id="app">
@@ -468,21 +24,20 @@ body.exporting .card.spotlight { box-shadow: none !important; border: none !impo
   <!-- HEADER -->
   <header class="hdr">
     <div class="brand">
-      <div class="brand-icon"><span class="material-symbols-rounded">deployed_code</span></div>
+      <div class="brand-icon"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M8.7 15.9L4.8 12l3.9-3.9c.39-.39.39-1.01 0-1.4-.39-.39-1.01-.39-1.4 0l-4.59 4.59c-.39.39-.39 1.02 0 1.41l4.59 4.6c.39.39 1.01.39 1.4 0 .39-.39.39-1.01 0-1.4zm6.6 0l3.9-3.9-3.9-3.9c-.39-.39-.39-1.01 0-1.4.39-.39 1.01-.39 1.4 0l4.59 4.59c.39.39.39 1.02 0 1.41l-4.59 4.6c-.39.39-1.01.39-1.4 0-.39-.39-.39-1.01 0-1.4z"/></svg></div>
       <span class="brand-name">Zolto Studio</span>
-      <span class="brand-badge lx-badge lx-badge-blue">LeonUX</span>
     </div>
     
     <div class="view-switch">
-      <button class="btn btn-sm btn-secondary active" data-view="edit" tabindex="0"><span class="material-symbols-rounded">edit</span></button>
-      <button class="btn btn-sm btn-ghost" data-view="preview" tabindex="0"><span class="material-symbols-rounded">visibility</span></button>
+      <button class="btn btn-sm btn-secondary active" data-view="edit" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M3 17.46v3.04c0 .28.22.5.5.5h3.04c.13 0 .26-.05.35-.15L17.81 9.94l-3.75-3.75L3.15 17.1c-.1.1-.15.22-.15.36zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></button>
+      <button class="btn btn-sm btn-ghost" data-view="preview" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 4C7 4 2.73 7.11 1 11.5 2.73 15.89 7 19 12 19s9.27-3.11 11-7.5C21.27 7.11 17 4 12 4zm0 12.5c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></button>
     </div>
 
     <div class="controls">
-      <button class="btn btn-icon btn-ghost" id="btn-open" title="Open .zl file (Ctrl+O)" tabindex="0"><span class="material-symbols-rounded">folder_open</span></button>
-      <button class="btn btn-icon btn-ghost" id="btn-save" title="Save source as .zl" tabindex="0"><span class="material-symbols-rounded">save</span></button>
-      <button class="btn btn-ghost" id="btn-tests" tabindex="0"><span class="material-symbols-rounded">experiment</span> <span>Tests</span></button>
-      <button class="btn btn-primary" id="btn-pdf" tabindex="0"><span class="material-symbols-rounded">picture_as_pdf</span> <span>Export PDF</span></button>
+      <button class="btn btn-icon btn-ghost" id="btn-open" title="Open .zl file (Ctrl+O)" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 6h-8l-1.41-1.41C10.21 4.21 9.7 4 9.17 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-1 12H5c-.55 0-1-.45-1-1V9c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v8c0 .55-.45 1-1 1z"/></svg></button>
+      <button class="btn btn-icon btn-ghost" id="btn-save" title="Save source as .zl" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M17.59 3.59c-.38-.38-.89-.59-1.42-.59H5c-1.11 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V7.83c0-.53-.21-1.04-.59-1.41l-2.82-2.83zM12 19c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm1-10H7c-1.1 0-2-.9-2-2s.9-2 2-2h6c1.1 0 2 .9 2 2s-.9 2-2 2z"/></svg></button>
+      <button class="btn btn-ghost" id="btn-tests" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect fill="none" height="24" width="24"/><rect fill="none" height="24" width="24"/></g><g><path d="M19.8,18.4L14,10.67V6.5l1.35-1.69C15.61,4.48,15.38,4,14.96,4H9.04C8.62,4,8.39,4.48,8.65,4.81L10,6.5v4.17L4.2,18.4 C3.71,19.06,4.18,20,5,20h14C19.82,20,20.29,19.06,19.8,18.4z"/></g></svg> <span>Tests</span></button>
+      <button class="btn btn-primary" id="btn-pdf" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v1.25c0 .41-.34.75-.75.75s-.75-.34-.75-.75V8c0-.55.45-1 1-1H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2c-.28 0-.5-.22-.5-.5v-5c0-.28.22-.5.5-.5h2c.83 0 1.5.67 1.5 1.5v3zm4-3.75c0 .41-.34.75-.75.75H19v1h.75c.41 0 .75.34.75.75s-.34.75-.75.75H19v1.25c0 .41-.34.75-.75.75s-.75-.34-.75-.75V8c0-.55.45-1 1-1h1.25c.41 0 .75.34.75.75zM9 9.5h1v-1H9v1zM3 6c-.55 0-1 .45-1 1v13c0 1.1.9 2 2 2h13c.55 0 1-.45 1-1s-.45-1-1-1H5c-.55 0-1-.45-1-1V7c0-.55-.45-1-1-1zm11 5.5h1v-3h-1v3z"/></svg> <span>Export PDF</span></button>
     </div>
   </header>
 
@@ -500,28 +55,28 @@ body.exporting .card.spotlight { box-shadow: none !important; border: none !impo
         </div>
       </div>
       <div class="toolbar" role="toolbar" aria-label="Formatting">
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="**" title="Bold (Ctrl+B)" tabindex="0"><span class="material-symbols-rounded">format_bold</span></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="*" title="Italic (Ctrl+I)" tabindex="0"><span class="material-symbols-rounded">format_italic</span></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="~~" title="Strikethrough" tabindex="0"><span class="material-symbols-rounded">format_strikethrough</span></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="==" title="Highlight" tabindex="0"><span class="material-symbols-rounded">ink_highlighter</span></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="`" title="Inline code" tabindex="0"><span class="material-symbols-rounded">code</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="**" title="Bold (Ctrl+B)" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H8c-.55 0-1 .45-1 1v12c0 .55.45 1 1 1h5.78c2.07 0 3.96-1.69 3.97-3.77.01-1.53-.85-2.84-2.15-3.44zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="*" title="Italic (Ctrl+I)" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M10 5.5c0 .83.67 1.5 1.5 1.5h.71l-3.42 8H7.5c-.83 0-1.5.67-1.5 1.5S6.67 18 7.5 18h5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-.71l3.42-8h1.29c.83 0 1.5-.67 1.5-1.5S17.33 4 16.5 4h-5c-.83 0-1.5.67-1.5 1.5z"/></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="~~" title="Strikethrough" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 19c1.1 0 2-.9 2-2v-1h-4v1c0 1.1.9 2 2 2zM5 5.5C5 6.33 5.67 7 6.5 7H10v3h4V7h3.5c.83 0 1.5-.67 1.5-1.5S18.33 4 17.5 4h-11C5.67 4 5 4.67 5 5.5zM4 14h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1z"/></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="==" title="Highlight" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M6.29 14.29L9 17v4c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-4l2.71-2.71c.19-.19.29-.44.29-.71V10c0-.55-.45-1-1-1H7c-.55 0-1 .45-1 1v3.59c0 .26.11.52.29.7zM12 2c.55 0 1 .45 1 1v1c0 .55-.45 1-1 1s-1-.45-1-1V3c0-.55.45-1 1-1zM4.21 5.17c.39-.39 1.02-.39 1.42 0l.71.71c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0l-.72-.71c-.39-.39-.39-1.02 0-1.41zm13.46.71l.71-.71c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-.71.71c-.39.39-1.02.39-1.41 0-.39-.39-.39-1.02 0-1.41z"/></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="`" title="Inline code" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M8.7 15.9L4.8 12l3.9-3.9c.39-.39.39-1.01 0-1.4-.39-.39-1.01-.39-1.4 0l-4.59 4.59c-.39.39-.39 1.02 0 1.41l4.59 4.6c.39.39 1.01.39 1.4 0 .39-.39.39-1.01 0-1.4zm6.6 0l3.9-3.9-3.9-3.9c-.39-.39-.39-1.01 0-1.4.39-.39 1.01-.39 1.4 0l4.59 4.59c.39.39.39 1.02 0 1.41l-4.59 4.6c-.39.39-1.01.39-1.4 0-.39-.39-.39-1.01 0-1.4z"/></svg></button>
         <div style="width:1px; height:16px; background:var(--border-subtle); margin:0 4px; flex-shrink: 0;"></div>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="# " title="Heading" tabindex="0"><span class="material-symbols-rounded">title</span></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="- " title="List item" tabindex="0"><span class="material-symbols-rounded">format_list_bulleted</span></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="- [ ] " title="Task item" tabindex="0"><span class="material-symbols-rounded">check_box</span></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="---\n" title="Horizontal rule" tabindex="0"><span class="material-symbols-rounded">remove</span></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="```\n" title="Code block" tabindex="0"><span class="material-symbols-rounded">snippet_folder</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="# " title="Heading" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 5.5C5 6.33 5.67 7 6.5 7h4v10.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V7h4c.83 0 1.5-.67 1.5-1.5S18.33 4 17.5 4h-11C5.67 4 5 4.67 5 5.5z"/></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="- " title="List item" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.68-1.5 1.5s.68 1.5 1.5 1.5 1.5-.68 1.5-1.5-.67-1.5-1.5-1.5zM8 19h12c.55 0 1-.45 1-1s-.45-1-1-1H8c-.55 0-1 .45-1 1s.45 1 1 1zm0-6h12c.55 0 1-.45 1-1s-.45-1-1-1H8c-.55 0-1 .45-1 1s.45 1 1 1zM7 6c0 .55.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1H8c-.55 0-1 .45-1 1z"/></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="- [ ] " title="Task item" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8.29 13.29c-.39.39-1.02.39-1.41 0L5.71 12.7c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L10 14.17l6.88-6.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-7.58 7.59z"/></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="---\n" title="Horizontal rule" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M18 13H6c-.55 0-1-.45-1-1s.45-1 1-1h12c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="```\n" title="Code block" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect fill="none" height="24" width="24"/><path d="M15.88,10.5l1.62,1.62v3.38l-3,0v-5H15.88z M22,8v10c0,1.1-0.9,2-2,2H4c-1.1,0-2-0.9-2-2L2.01,6C2.01,4.9,2.9,4,4,4h5.17 c0.53,0,1.04,0.21,1.41,0.59L12,6h8C21.1,6,22,6.9,22,8z M19,11.91c0-0.27-0.11-0.52-0.29-0.71l-1.91-1.91 C16.61,9.11,16.35,9,16.09,9H14c-0.55,0-1,0.45-1,1v6c0,0.55,0.45,1,1,1l4,0c0.55,0,1-0.45,1-1V11.91z"/></g></svg></button>
         <div style="width:1px; height:16px; background:var(--border-subtle); margin:0 4px; flex-shrink: 0;"></div>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap-open="[" data-wrap-close="](url)" title="Link" tabindex="0"><span class="material-symbols-rounded">link</span></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap-open="![" data-wrap-close="](url)" title="Image" tabindex="0"><span class="material-symbols-rounded">image</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap-open="[" data-wrap-close="](url)" title="Link" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M17 7h-3c-.55 0-1 .45-1 1s.45 1 1 1h3c1.65 0 3 1.35 3 3s-1.35 3-3 3h-3c-.55 0-1 .45-1 1s.45 1 1 1h3c2.76 0 5-2.24 5-5s-2.24-5-5-5zm-9 5c0 .55.45 1 1 1h6c.55 0 1-.45 1-1s-.45-1-1-1H9c-.55 0-1 .45-1 1zm2 3H7c-1.65 0-3-1.35-3-3s1.35-3 3-3h3c.55 0 1-.45 1-1s-.45-1-1-1H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h3c.55 0 1-.45 1-1s-.45-1-1-1z"/></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap-open="![" data-wrap-close="](url)" title="Image" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.9 13.98l2.1 2.53 3.1-3.99c.2-.26.6-.26.8.01l3.51 4.68c.25.33.01.8-.4.8H6.02c-.42 0-.65-.48-.39-.81L8.12 14c.19-.26.57-.27.78-.02z"/></svg></button>
         <div style="width:1px; height:16px; background:var(--border-subtle); margin:0 4px; flex-shrink: 0;"></div>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="> [!NOTE]\n> " title="Callout" tabindex="0"><span class="material-symbols-rounded">format_quote</span></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="[info]\n" data-block-close="\n[/info]" title="Admonition" tabindex="0"><span class="material-symbols-rounded">info</span></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert-inline="[[Ctrl+K]]" title="Keyboard key" tabindex="0"><span class="material-symbols-rounded">keyboard</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="> [!NOTE]\n> " title="Callout" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M7.17 17c.51 0 .98-.29 1.2-.74l1.42-2.84c.14-.28.21-.58.21-.89V8c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1h2l-1.03 2.06c-.45.89.2 1.94 1.2 1.94zm10 0c.51 0 .98-.29 1.2-.74l1.42-2.84c.14-.28.21-.58.21-.89V8c0-.55-.45-1-1-1h-4c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1h2l-1.03 2.06c-.45.89.2 1.94 1.2 1.94z"/></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="[info]\n" data-block-close="\n[/info]" title="Admonition" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1zm1-8h-2V7h2v2z"/></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert-inline="[[Ctrl+K]]" title="Keyboard key" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm8 7H9c-.55 0-1-.45-1-1s.45-1 1-1h6c.55 0 1 .45 1 1s-.45 1-1 1zm1-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg></button>
       </div>
       <textarea id="editor" spellcheck="false" aria-label="Zolto source editor" placeholder="Start writing Zolto Markdown…" tabindex="0"></textarea>
       <div class="status">
-        <span id="s-errors" class="s-ok"><span class="material-symbols-rounded">check_circle</span> No errors</span>
+        <span id="s-errors" class="s-ok"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM9.29 16.29L5.7 12.7c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L10 14.17l6.88-6.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-7.59 7.59c-.38.39-1.02.39-1.41 0z"/></svg> No errors</span>
         <span>·</span>
         <span id="s-warn"></span>
         <span id="s-dot2" style="display:none">·</span>
@@ -551,7 +106,7 @@ body.exporting .card.spotlight { box-shadow: none !important; border: none !impo
 </div><!-- /app -->
 
 <!-- Toasts -->
-<div id="toast"><span class="material-symbols-rounded">info</span> <span id="toast-msg"></span></div>
+<div id="toast"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1zm1-8h-2V7h2v2z"/></svg> <span id="toast-msg"></span></div>
 <!-- Loading Overlay -->
 <div id="loading-overlay" style="position:fixed;inset:0;background:rgba(11,13,15,0.7);backdrop-filter:blur(4px);z-index:9998;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
   <div class="material-symbols-rounded" style="font-size:48px;color:var(--primary);animation:spin 1s linear infinite;">progress_activity</div>
@@ -564,8 +119,8 @@ body.exporting .card.spotlight { box-shadow: none !important; border: none !impo
 <div class="lx-modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-label="Test results">
   <div class="lx-modal-box">
     <div class="lx-modal-head">
-      <div class="lx-modal-title"><span class="material-symbols-rounded" style="color:var(--primary)">experiment</span> Test Suite</div>
-      <button class="btn btn-icon btn-ghost" id="btn-modal-close" title="Close" tabindex="0"><span class="material-symbols-rounded">close</span></button>
+      <div class="lx-modal-title"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect fill="none" height="24" width="24"/><rect fill="none" height="24" width="24"/></g><g><path d="M19.8,18.4L14,10.67V6.5l1.35-1.69C15.61,4.48,15.38,4,14.96,4H9.04C8.62,4,8.39,4.48,8.65,4.81L10,6.5v4.17L4.2,18.4 C3.71,19.06,4.18,20,5,20h14C19.82,20,20.29,19.06,19.8,18.4z"/></g></svg> Test Suite</div>
+      <button class="btn btn-icon btn-ghost" id="btn-modal-close" title="Close" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/></svg></button>
     </div>
     <div class="lx-modal-body">
       <div id="modal-summary" style="margin-bottom: var(--space-2); font-weight: 500;">Click <em>Tests</em> in the header to run the suite.</div>
@@ -617,10 +172,10 @@ function renderPreview() {
   sTime.textContent = `${ms} ms`;
 
   if (errors.length) {
-    sErrors.innerHTML = `<span class="material-symbols-rounded">close</span> ${errors.length} error${errors.length > 1 ? 's' : ''}`;
+    sErrors.innerHTML = `<svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/></svg> ${errors.length} error${errors.length > 1 ? 's' : ''}`;
     sErrors.className = 's-err';
   } else {
-    sErrors.innerHTML = '<span class="material-symbols-rounded">check_circle</span> No errors';
+    sErrors.innerHTML = '<svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM9.29 16.29L5.7 12.7c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L10 14.17l6.88-6.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-7.59 7.59c-.38.39-1.02.39-1.41 0z"/></svg> No errors';
     sErrors.className = 's-ok';
   }
   if (warnings.length) {

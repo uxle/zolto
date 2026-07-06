@@ -1,0 +1,62 @@
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  height: 40px;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: transform var(--dur-base) var(--ease-spring), box-shadow var(--dur-base) var(--ease-spring), background var(--dur-fast) var(--ease-soft), border-color var(--dur-fast) var(--ease-soft), color var(--dur-fast) var(--ease-soft);
+  white-space: nowrap;
+}
+.btn:active { transform: scale(0.96); }
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-primary:hover, .btn-primary:focus-visible {
+  background: var(--primary-dim);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--primary-glow);
+}
+
+.btn-secondary {
+  background: var(--bg-glass-soft);
+  border: 1px solid var(--border-base);
+  color: var(--text-primary);
+  backdrop-filter: blur(16px);
+}
+.btn-secondary:hover, .btn-secondary:focus-visible {
+  background: var(--bg-glass-hover);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  color: var(--text-secondary);
+}
+.btn-ghost:hover, .btn-ghost:focus-visible {
+  color: var(--text-primary);
+  background: var(--bg-glass-soft);
+}
+
+.btn-icon {
+  width: 40px;
+  padding: 0;
+  border-radius: var(--radius-pill);
+}
+
+.btn-sm {
+  height: 32px;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+}
+.btn-sm.btn-icon {
+  width: 32px;
+}
+
