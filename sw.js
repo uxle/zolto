@@ -3,9 +3,18 @@ const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/manifest.json',
-  '/css/',
-  '/js/',
-  '/assets/'
+  '/sw.js',
+  '/src/zolto.js',
+  '/src/ast.js',
+  '/src/diagnostics.js',
+  '/src/inline-parser.js',
+  '/src/lexer.js',
+  '/src/parser.js',
+  '/src/renderer.js',
+  '/src/tokenizer.js',
+  '/src/validator.js',
+  '/tests/tests.js',
+  '/assets/icons/logo/zolto-icon.svg'
 ];
 
 // Install event - cache assets
@@ -40,6 +49,11 @@ self.addEventListener('activate', (event) => {
 
 // Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', (event) => {
+  // Only handle GET requests
+  if (event.request.method !== 'GET') {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then((response) => {
       if (response) {
