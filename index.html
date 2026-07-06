@@ -12,7 +12,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 /* ═══ LEONUX DESIGN TOKENS ════════════════════════════════════════════════ */
 :root {
@@ -751,6 +750,17 @@ document.querySelectorAll('.view-switch .btn').forEach(b => b.addEventListener('
 
 // ── PDF export ─────────────────────────────────────────────────────────────────
 document.getElementById('btn-pdf').addEventListener('click', async () => {
+  // Load html2pdf dynamically on first use
+  if (typeof html2pdf === 'undefined') {
+    await new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+  
   const overlay = document.getElementById('loading-overlay');
   overlay.style.display = 'flex';
   
