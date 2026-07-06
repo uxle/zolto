@@ -11,7 +11,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
 /* ═══ LEONUX DESIGN TOKENS ════════════════════════════════════════════════ */
 :root {
@@ -469,21 +468,21 @@ body.exporting .card.spotlight { box-shadow: none !important; border: none !impo
   <!-- HEADER -->
   <header class="hdr">
     <div class="brand">
-      <div class="brand-icon"><i class="fa-solid fa-cube"></i></div>
+      <div class="brand-icon"><span class="material-symbols-rounded">deployed_code</span></div>
       <span class="brand-name">Zolto Studio</span>
       <span class="brand-badge lx-badge lx-badge-blue">LeonUX</span>
     </div>
     
     <div class="view-switch">
-      <button class="btn btn-sm btn-secondary active" data-view="edit" tabindex="0"><i class="fa-solid fa-pen-to-square"></i></button>
-      <button class="btn btn-sm btn-ghost" data-view="preview" tabindex="0"><i class="fa-solid fa-eye"></i></button>
+      <button class="btn btn-sm btn-secondary active" data-view="edit" tabindex="0"><span class="material-symbols-rounded">edit</span></button>
+      <button class="btn btn-sm btn-ghost" data-view="preview" tabindex="0"><span class="material-symbols-rounded">visibility</span></button>
     </div>
 
     <div class="controls">
-      <button class="btn btn-icon btn-ghost" id="btn-open" title="Open .zl file (Ctrl+O)" tabindex="0"><i class="fa-solid fa-folder-open"></i></button>
-      <button class="btn btn-icon btn-ghost" id="btn-save" title="Save source as .zl" tabindex="0"><i class="fa-solid fa-floppy-disk"></i></button>
-      <button class="btn btn-ghost" id="btn-tests" tabindex="0"><i class="fa-solid fa-flask"></i> <span>Tests</span></button>
-      <button class="btn btn-primary" id="btn-pdf" tabindex="0"><i class="fa-solid fa-file-pdf"></i> <span>Export PDF</span></button>
+      <button class="btn btn-icon btn-ghost" id="btn-open" title="Open .zl file (Ctrl+O)" tabindex="0"><span class="material-symbols-rounded">folder_open</span></button>
+      <button class="btn btn-icon btn-ghost" id="btn-save" title="Save source as .zl" tabindex="0"><span class="material-symbols-rounded">save</span></button>
+      <button class="btn btn-ghost" id="btn-tests" tabindex="0"><span class="material-symbols-rounded">experiment</span> <span>Tests</span></button>
+      <button class="btn btn-primary" id="btn-pdf" tabindex="0"><span class="material-symbols-rounded">picture_as_pdf</span> <span>Export PDF</span></button>
     </div>
   </header>
 
@@ -501,28 +500,28 @@ body.exporting .card.spotlight { box-shadow: none !important; border: none !impo
         </div>
       </div>
       <div class="toolbar" role="toolbar" aria-label="Formatting">
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="**" title="Bold (Ctrl+B)" tabindex="0"><i class="fa-solid fa-bold"></i></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="*" title="Italic (Ctrl+I)" tabindex="0"><i class="fa-solid fa-italic"></i></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="~~" title="Strikethrough" tabindex="0"><i class="fa-solid fa-strikethrough"></i></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="==" title="Highlight" tabindex="0"><i class="fa-solid fa-highlighter"></i></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="`" title="Inline code" tabindex="0"><i class="fa-solid fa-code"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="**" title="Bold (Ctrl+B)" tabindex="0"><span class="material-symbols-rounded">format_bold</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="*" title="Italic (Ctrl+I)" tabindex="0"><span class="material-symbols-rounded">format_italic</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="~~" title="Strikethrough" tabindex="0"><span class="material-symbols-rounded">format_strikethrough</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="==" title="Highlight" tabindex="0"><span class="material-symbols-rounded">highlight</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="`" title="Inline code" tabindex="0"><span class="material-symbols-rounded">code</span></button>
         <div style="width:1px; height:16px; background:var(--border-subtle); margin:0 4px; flex-shrink: 0;"></div>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="# " title="Heading" tabindex="0"><i class="fa-solid fa-heading"></i></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="- " title="List item" tabindex="0"><i class="fa-solid fa-list"></i></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="- [ ] " title="Task item" tabindex="0"><i class="fa-regular fa-square-check"></i></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="---\n" title="Horizontal rule" tabindex="0"><i class="fa-solid fa-minus"></i></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="```\n" title="Code block" tabindex="0"><i class="fa-solid fa-file-code"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="# " title="Heading" tabindex="0"><span class="material-symbols-rounded">title</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="- " title="List item" tabindex="0"><span class="material-symbols-rounded">format_list_bulleted</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="- [ ] " title="Task item" tabindex="0"><span class="material-symbols-rounded">check_box_outline_blank</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="---\n" title="Horizontal rule" tabindex="0"><span class="material-symbols-rounded">remove</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="```\n" title="Code block" tabindex="0"><span class="material-symbols-rounded">snippet_folder</span></button>
         <div style="width:1px; height:16px; background:var(--border-subtle); margin:0 4px; flex-shrink: 0;"></div>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap-open="[" data-wrap-close="](url)" title="Link" tabindex="0"><i class="fa-solid fa-link"></i></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap-open="![" data-wrap-close="](url)" title="Image" tabindex="0"><i class="fa-regular fa-image"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap-open="[" data-wrap-close="](url)" title="Link" tabindex="0"><span class="material-symbols-rounded">link</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap-open="![" data-wrap-close="](url)" title="Image" tabindex="0"><span class="material-symbols-rounded">image</span></button>
         <div style="width:1px; height:16px; background:var(--border-subtle); margin:0 4px; flex-shrink: 0;"></div>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="> [!NOTE]\n> " title="Callout" tabindex="0"><i class="fa-solid fa-quote-left"></i></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="[info]\n" data-block-close="\n[/info]" title="Admonition" tabindex="0"><i class="fa-solid fa-circle-info"></i></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert-inline="[[Ctrl+K]]" title="Keyboard key" tabindex="0"><i class="fa-solid fa-keyboard"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="> [!NOTE]\n> " title="Callout" tabindex="0"><span class="material-symbols-rounded">format_quote</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="[info]\n" data-block-close="\n[/info]" title="Admonition" tabindex="0"><span class="material-symbols-rounded">info</span></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert-inline="[[Ctrl+K]]" title="Keyboard key" tabindex="0"><span class="material-symbols-rounded">keyboard</span></button>
       </div>
       <textarea id="editor" spellcheck="false" aria-label="Zolto source editor" placeholder="Start writing Zolto Markdown…" tabindex="0"></textarea>
       <div class="status">
-        <span id="s-errors" class="s-ok"><i class="fa-solid fa-check"></i> No errors</span>
+        <span id="s-errors" class="s-ok"><span class="material-symbols-rounded">check_circle</span> No errors</span>
         <span>·</span>
         <span id="s-warn"></span>
         <span id="s-dot2" style="display:none">·</span>
@@ -565,8 +564,8 @@ body.exporting .card.spotlight { box-shadow: none !important; border: none !impo
 <div class="lx-modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-label="Test results">
   <div class="lx-modal-box">
     <div class="lx-modal-head">
-      <div class="lx-modal-title"><i class="fa-solid fa-flask" style="color:var(--primary)"></i> Test Suite</div>
-      <button class="btn btn-icon btn-ghost" id="btn-modal-close" title="Close" tabindex="0"><i class="fa-solid fa-xmark"></i></button>
+      <div class="lx-modal-title"><span class="material-symbols-rounded" style="color:var(--primary)">experiment</span> Test Suite</div>
+      <button class="btn btn-icon btn-ghost" id="btn-modal-close" title="Close" tabindex="0"><span class="material-symbols-rounded">close</span></button>
     </div>
     <div class="lx-modal-body">
       <div id="modal-summary" style="margin-bottom: var(--space-2); font-weight: 500;">Click <em>Tests</em> in the header to run the suite.</div>
@@ -618,10 +617,10 @@ function renderPreview() {
   sTime.textContent = `${ms} ms`;
 
   if (errors.length) {
-    sErrors.innerHTML = `<i class="fa-solid fa-xmark"></i> ${errors.length} error${errors.length > 1 ? 's' : ''}`;
+    sErrors.innerHTML = `<span class="material-symbols-rounded">close</span> ${errors.length} error${errors.length > 1 ? 's' : ''}`;
     sErrors.className = 's-err';
   } else {
-    sErrors.innerHTML = '<i class="fa-solid fa-check"></i> No errors';
+    sErrors.innerHTML = '<span class="material-symbols-rounded">check_circle</span> No errors';
     sErrors.className = 's-ok';
   }
   if (warnings.length) {
