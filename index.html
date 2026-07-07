@@ -8,9 +8,13 @@
   <link rel="manifest" href="/manifest.json">
   <link rel="apple-touch-icon" href="/assets/icons/logo/zolto-icon.svg">
   <title>Zolto Studio · LeonUX</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <link rel="stylesheet" href="css/core/variables.css">
   <link rel="stylesheet" href="css/core/reset.css">
   <link rel="stylesheet" href="css/layout/app.css">
@@ -24,7 +28,7 @@
   <!-- HEADER -->
   <header class="hdr">
     <div class="brand">
-      <div class="brand-icon"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M8.7 15.9L4.8 12l3.9-3.9c.39-.39.39-1.01 0-1.4-.39-.39-1.01-.39-1.4 0l-4.59 4.59c-.39.39-.39 1.02 0 1.41l4.59 4.6c.39.39 1.01.39 1.4 0 .39-.39.39-1.01 0-1.4zm6.6 0l3.9-3.9-3.9-3.9c-.39-.39-.39-1.01 0-1.4.39-.39 1.01-.39 1.4 0l4.59 4.59c.39.39.39 1.02 0 1.41l-4.59 4.6c-.39.39-1.01.39-1.4 0-.39-.39-.39-1.01 0-1.4z"/></svg></div>
+      <div class="brand-icon"><i class="fa-solid fa-feather-pointed"></i></div>
       <span class="brand-name">Zolto Studio</span>
     </div>
     
@@ -37,7 +41,7 @@
       <button class="btn btn-icon btn-ghost" id="btn-open" title="Open .zl file (Ctrl+O)" tabindex="0"><i class="fa-solid fa-upload"></i></button>
       <button class="btn btn-icon btn-ghost" id="btn-save" title="Save source as .zl" tabindex="0"><i class="fa-solid fa-download"></i></button>
       <button class="btn btn-ghost" id="btn-tests" tabindex="0"><i class="fa-solid fa-flask"></i><span>Tests</span></button>
-      <button class="btn btn-primary" id="btn-pdf" tabindex="0"><i class="fa-solid fa-download"></i> <span>Export PDF</span></button>
+      <button class="btn btn-primary" id="btn-pdf" tabindex="0"><i class="fa-solid fa-file-pdf"></i> <span>Export PDF</span></button>
     </div>
   </header>
 
@@ -55,28 +59,28 @@
         </div>
       </div>
       <div class="toolbar" role="toolbar" aria-label="Formatting">
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="**" title="Bold (Ctrl+B)" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H8c-.55 0-1 .45-1 1v12c0 .55.45 1 1 1h5.78c2.07 0 3.96-1.69 3.97-3.77.01-1.53-.85-2.84-2.15-3.44zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/></svg></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="*" title="Italic (Ctrl+I)" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M10 5.5c0 .83.67 1.5 1.5 1.5h.71l-3.42 8H7.5c-.83 0-1.5.67-1.5 1.5S6.67 18 7.5 18h5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5h-.71l3.42-8h1.29c.83 0 1.5-.67 1.5-1.5S17.33 4 16.5 4h-5c-.83 0-1.5.67-1.5 1.5z"/></svg></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="~~" title="Strikethrough" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 19c1.1 0 2-.9 2-2v-1h-4v1c0 1.1.9 2 2 2zM5 5.5C5 6.33 5.67 7 6.5 7H10v3h4V7h3.5c.83 0 1.5-.67 1.5-1.5S18.33 4 17.5 4h-11C5.67 4 5 4.67 5 5.5zM4 14h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1z"/></svg></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="==" title="Highlight" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0z" fill="none"/><path d="M6.29 14.29L9 17v4c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-4l2.71-2.71c.19-.19.29-.44.29-.71V10c0-.55-.45-1-1-1H7c-.55 0-1 .45-1 1v3.59c0 .26.11.52.29.7zM12 2c.55 0 1 .45 1 1v1c0 .55-.45 1-1 1s-1-.45-1-1V3c0-.55.45-1 1-1zM4.21 5.17c.39-.39 1.02-.39 1.42 0l.71.71c.39.39.39 1.02 0 1.41-.39.39-1.02.39-1.41 0l-.72-.71c-.39-.39-.39-1.02 0-1.41zm13.46.71l.71-.71c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-.71.71c-.39.39-1.02.39-1.41 0-.39-.39-.39-1.02 0-1.41z"/></svg></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="`" title="Inline code" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M8.7 15.9L4.8 12l3.9-3.9c.39-.39.39-1.01 0-1.4-.39-.39-1.01-.39-1.4 0l-4.59 4.59c-.39.39-.39 1.02 0 1.41l4.59 4.6c.39.39 1.01.39 1.4 0 .39-.39.39-1.01 0-1.4zm6.6 0l3.9-3.9-3.9-3.9c-.39-.39-.39-1.01 0-1.4.39-.39 1.01-.39 1.4 0l4.59 4.59c.39.39.39 1.02 0 1.41l-4.59 4.6c-.39.39-1.01.39-1.4 0-.39-.39-.39-1.01 0-1.4z"/></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="**" title="Bold (Ctrl+B)" tabindex="0"><i class="fa-solid fa-bold"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="*" title="Italic (Ctrl+I)" tabindex="0"><i class="fa-solid fa-italic"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="~~" title="Strikethrough" tabindex="0"><i class="fa-solid fa-strikethrough"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="==" title="Highlight" tabindex="0"><i class="fa-solid fa-highlighter"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap="`" title="Inline code" tabindex="0"><i class="fa-solid fa-terminal"></i></button>
         <div style="width:1px; height:16px; background:var(--border-subtle); margin:0 4px; flex-shrink: 0;"></div>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="# " title="Heading" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 5.5C5 6.33 5.67 7 6.5 7h4v10.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5V7h4c.83 0 1.5-.67 1.5-1.5S18.33 4 17.5 4h-11C5.67 4 5 4.67 5 5.5z"/></svg></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="- " title="List item" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.68-1.5 1.5s.68 1.5 1.5 1.5 1.5-.68 1.5-1.5-.67-1.5-1.5-1.5zM8 19h12c.55 0 1-.45 1-1s-.45-1-1-1H8c-.55 0-1 .45-1 1s.45 1 1 1zm0-6h12c.55 0 1-.45 1-1s-.45-1-1-1H8c-.55 0-1 .45-1 1s.45 1 1 1zM7 6c0 .55.45 1 1 1h12c.55 0 1-.45 1-1s-.45-1-1-1H8c-.55 0-1 .45-1 1z"/></svg></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="- [ ] " title="Task item" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8.29 13.29c-.39.39-1.02.39-1.41 0L5.71 12.7c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L10 14.17l6.88-6.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-7.58 7.59z"/></svg></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="---\n" title="Horizontal rule" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M18 13H6c-.55 0-1-.45-1-1s.45-1 1-1h12c.55 0 1 .45 1 1s-.45 1-1 1z"/></svg></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="```\n" title="Code block" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect fill="none" height="24" width="24"/><path d="M15.88,10.5l1.62,1.62v3.38l-3,0v-5H15.88z M22,8v10c0,1.1-0.9,2-2,2H4c-1.1,0-2-0.9-2-2L2.01,6C2.01,4.9,2.9,4,4,4h5.17 c0.53,0,1.04,0.21,1.41,0.59L12,6h8C21.1,6,22,6.9,22,8z M19,11.91c0-0.27-0.11-0.52-0.29-0.71l-1.91-1.91 C16.61,9.11,16.35,9,16.09,9H14c-0.55,0-1,0.45-1,1v6c0,0.55,0.45,1,1,1l4,0c0.55,0,1-0.45,1-1V11.91z"/></g></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="# " title="Heading" tabindex="0"><i class="fa-solid fa-heading"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="- " title="List item" tabindex="0"><i class="fa-solid fa-list-ul"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="- [ ] " title="Task item" tabindex="0"><i class="fa-solid fa-list-check"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert="---\n" title="Horizontal rule" tabindex="0"><i class="fa-solid fa-ruler-horizontal"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="```\n" title="Code block" tabindex="0"><i class="fa-solid fa-file-code"></i></button>
         <div style="width:1px; height:16px; background:var(--border-subtle); margin:0 4px; flex-shrink: 0;"></div>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap-open="[" data-wrap-close="](url)" title="Link" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M17 7h-3c-.55 0-1 .45-1 1s.45 1 1 1h3c1.65 0 3 1.35 3 3s-1.35 3-3 3h-3c-.55 0-1 .45-1 1s.45 1 1 1h3c2.76 0 5-2.24 5-5s-2.24-5-5-5zm-9 5c0 .55.45 1 1 1h6c.55 0 1-.45 1-1s-.45-1-1-1H9c-.55 0-1 .45-1 1zm2 3H7c-1.65 0-3-1.35-3-3s1.35-3 3-3h3c.55 0 1-.45 1-1s-.45-1-1-1H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h3c.55 0 1-.45 1-1s-.45-1-1-1z"/></svg></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap-open="![" data-wrap-close="](url)" title="Image" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.9 13.98l2.1 2.53 3.1-3.99c.2-.26.6-.26.8.01l3.51 4.68c.25.33.01.8-.4.8H6.02c-.42 0-.65-.48-.39-.81L8.12 14c.19-.26.57-.27.78-.02z"/></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap-open="[" data-wrap-close="](url)" title="Link" tabindex="0"><i class="fa-solid fa-link"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-wrap-open="![" data-wrap-close="](url)" title="Image" tabindex="0"><i class="fa-solid fa-image"></i></button>
         <div style="width:1px; height:16px; background:var(--border-subtle); margin:0 4px; flex-shrink: 0;"></div>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="> [!NOTE]\n> " title="Callout" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M7.17 17c.51 0 .98-.29 1.2-.74l1.42-2.84c.14-.28.21-.58.21-.89V8c0-.55-.45-1-1-1H5c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1h2l-1.03 2.06c-.45.89.2 1.94 1.2 1.94zm10 0c.51 0 .98-.29 1.2-.74l1.42-2.84c.14-.28.21-.58.21-.89V8c0-.55-.45-1-1-1h-4c-.55 0-1 .45-1 1v4c0 .55.45 1 1 1h2l-1.03 2.06c-.45.89.2 1.94 1.2 1.94z"/></svg></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="[info]\n" data-block-close="\n[/info]" title="Admonition" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1zm1-8h-2V7h2v2z"/></svg></button>
-        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert-inline="[[Ctrl+K]]" title="Keyboard key" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm8 7H9c-.55 0-1-.45-1-1s.45-1 1-1h6c.55 0 1 .45 1 1s-.45 1-1 1zm1-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z"/></svg></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="> [!NOTE]\n> " title="Callout" tabindex="0"><i class="fa-solid fa-quote-left"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-block="[info]\n" data-block-close="\n[/info]" title="Admonition" tabindex="0"><i class="fa-solid fa-circle-info"></i></button>
+        <button class="btn btn-sm btn-icon btn-ghost tb" data-insert-inline="[[Ctrl+K]]" title="Keyboard key" tabindex="0"><i class="fa-solid fa-keyboard"></i></button>
       </div>
       <textarea id="editor" spellcheck="false" aria-label="Zolto source editor" placeholder="Start writing Zolto Markdown…" tabindex="0"></textarea>
       <div class="status">
-        <span id="s-errors" class="s-ok"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM9.29 16.29L5.7 12.7c-.39-.39-.39-1.02 0-1.41.39-.39 1.02-.39 1.41 0L10 14.17l6.88-6.88c.39-.39 1.02-.39 1.41 0 .39.39.39 1.02 0 1.41l-7.59 7.59c-.38.39-1.02.39-1.41 0z"/></svg> No errors</span>
+        <span id="s-errors" class="s-ok"><i class="fa-solid fa-circle-check"></i> No errors</span>
         <span>·</span>
         <span id="s-warn"></span>
         <span id="s-dot2" style="display:none">·</span>
@@ -106,7 +110,7 @@
 </div><!-- /app -->
 
 <!-- Toasts -->
-<div id="toast"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 15c-.55 0-1-.45-1-1v-4c0-.55.45-1 1-1s1 .45 1 1v4c0 .55-.45 1-1 1zm1-8h-2V7h2v2z"/></svg> <span id="toast-msg"></span></div>
+<div id="toast"><i class="fa-solid fa-circle-info"></i> <span id="toast-msg"></span></div>
 <!-- Loading Overlay -->
 <div id="loading-overlay" style="position:fixed;inset:0;background:rgba(11,13,15,0.7);backdrop-filter:blur(4px);z-index:9998;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;">
   <div class="material-symbols-rounded" style="font-size:48px;color:var(--primary);animation:spin 1s linear infinite;">progress_activity</div>
@@ -119,8 +123,8 @@
 <div class="lx-modal-backdrop" id="modal" role="dialog" aria-modal="true" aria-label="Test results">
   <div class="lx-modal-box">
     <div class="lx-modal-head">
-      <div class="lx-modal-title"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24" viewBox="0 0 24 24" width="24"><g><rect fill="none" height="24" width="24"/><rect fill="none" height="24" width="24"/></g><g><path d="M19.8,18.4L14,10.67V6.5l1.35-1.69C15.61,4.48,15.38,4,14.96,4H9.04C8.62,4,8.39,4.48,8.65,4.81L10,6.5v4.17L4.2,18.4 C3.71,19.06,4.18,20,5,20h14C19.82,20,20.29,19.06,19.8,18.4z"/></g></svg> Test Suite</div>
-      <button class="btn btn-icon btn-ghost" id="btn-modal-close" title="Close" tabindex="0"><svg fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M18.3 5.71c-.39-.39-1.02-.39-1.41 0L12 10.59 7.11 5.7c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41L10.59 12 5.7 16.89c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0L12 13.41l4.89 4.89c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41L13.41 12l4.89-4.89c.38-.38.38-1.02 0-1.4z"/></svg></button>
+      <div class="lx-modal-title"><i class="fa-solid fa-clipboard-check"></i> Test Suite</div>
+      <button class="btn btn-icon btn-ghost" id="btn-modal-close" title="Close" tabindex="0"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="lx-modal-body">
       <div id="modal-summary" style="margin-bottom: var(--space-2); font-weight: 500;">Click <em>Tests</em> in the header to run the suite.</div>
