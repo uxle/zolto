@@ -13,6 +13,7 @@
  *   • table captions      — from lexer caption field
  */
 
+import { parseDirective } from './directives.js';
 import * as AST            from './ast.js';
 import { CALLOUT_TYPES }   from './ast.js';
 import { tokenize, T }     from './lexer.js';
@@ -75,6 +76,19 @@ function parseBlockToken(tok, ctx = {}) {
     case T.ADMONITION:      return parseAdmonition(tok, ctx);    // Phase 2
     case T.DEFINITION_LIST: return parseDefinitionList(tok);     // Phase 2
     case T.PARAGRAPH:       return parseParagraph(tok, ctx);
+    case 'directive': {
+      const repCtx = {
+        ...ctx,
+        reparse(src) {
+          if (!src || !src.trim()) return [];
+          const { tokens: inner } = tokenize(src);
+          return inner.filter(t => t.type !== T.BLANK)
+                      .map(t => parseBlockToken(t, repCtx))
+                      .filter(Boolean);
+        },
+      };
+      return parseDirective(tok, repCtx);
+    }
     default:                return null;
   }
 }

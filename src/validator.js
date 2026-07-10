@@ -104,6 +104,26 @@ function validateNode(node, ctx, d) {
     case 'figure':          validateImage(node, d);                        break; // Phase 2 info
     case 'heading':         validateHeading(node, ctx, d);                 break;
     case 'table':           validateTable(node, ctx, d);                   break;
+
+    case 'embed':
+      if (!node.src) d.warn('W011', 'embed: missing src attribute');
+      break;
+    case 'progress': {
+      const v = node.value ?? 0;
+      if (v < 0 || v > (node.max ?? 100))
+        d.warn('W012', `progress: value ${v} out of range [0, ${node.max ?? 100}]`);
+      break;
+    }
+    case 'tabs':
+      if (!node.tabs?.length) d.warn('W013', 'tabs: no tab children found');
+      for (const t of node.tabs ?? []) validateNode(t, ctx, d);
+      break;
+    case 'steps':
+      if (!node.children?.length) d.warn('W013', 'steps: no step children found');
+      break;
+    case 'timeline':
+      if (!node.children?.length) d.warn('W013', 'timeline: no event children found');
+      break;
     default: break;
   }
 

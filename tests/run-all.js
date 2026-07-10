@@ -1,5 +1,5 @@
 /**
- * Node.js CLI test runner for Zolto Phase 2.
+ * Node.js CLI test runner for Zolto Phase 3.
  * Usage:  node tests/run-all.js
  */
 import { runAllTests } from './tests.js';

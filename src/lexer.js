@@ -13,6 +13,8 @@
  *   Callouts detected in parser from BLOCKQUOTE content
  */
 
+import { KNOWN_DIRECTIVES, lexDirective } from './directive-lexer.js';
+
 // ─── Token type constants ─────────────────────────────────────────────────────
 export const T = Object.freeze({
   FRONTMATTER:    'frontmatter',
@@ -30,6 +32,7 @@ export const T = Object.freeze({
   ADMONITION:     'admonition',     // Phase 2
   REFERENCE_DEF:  'reference_def',  // Phase 2
   DEFINITION_LIST:'definition_list',// Phase 2
+  DIRECTIVE:      'directive',       // Phase 3
   BLANK:          'blank',
   PARAGRAPH:      'paragraph',
 });
@@ -156,6 +159,17 @@ export function tokenize(src) {
     // · @var ──────────────────────────────────────────────────────────────
     { const m = RE.VAR_DEF.exec(line);
       if (m) { tokens.push({ type: T.VARIABLE_DEF, raw: line, name: m[1], value: m[2].trim() }); i++; continue; } }
+
+
+    // · @directive blocks  (Phase 3) ------------------------------------------
+    { const dm = /^@([a-z][a-z0-9-]*)(.*)$/.exec(line);
+      if (dm && KNOWN_DIRECTIVES.has(dm[1])) {
+        const { tok, nextI } = lexDirective(lines, i, dm[1], dm[2].trim());
+        tokens.push(tok);
+        i = nextI;
+        continue;
+      }
+    }
 
     // · Admonition block  [info]…[/info]  (Phase 2) ───────────────────────
     { const m = RE.ADMON_OPEN.exec(line);

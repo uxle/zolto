@@ -14,6 +14,8 @@
  */
 
 import { escapeHtml, escapeAttr, slugify, uniqueSlug } from './tokenizer.js';
+import { renderDirective, PHASE3_CSS, hasP3Directives } from './directive-renderer.js';
+import { PHASE3_NODE_TYPES } from './ast.js';
 import { parseInline } from './inline-parser.js';
 
 // ─── Icon / title maps ────────────────────────────────────────────────────────
@@ -45,7 +47,9 @@ const LABEL = {
  */
 export function render(doc, opts = {}) {
   const ctx = buildContext(doc, opts);
-  const parts = doc.children.map(n => renderBlock(n, ctx)).filter(Boolean);
+  const parts = [];
+  if (hasP3Directives(doc.children)) parts.push('<style id="zl-p3-styles">' + PHASE3_CSS + '</style>');
+  parts.push(...doc.children.map(n => renderBlock(n, ctx)).filter(Boolean));
   if (opts.footnoteSection !== false) {
     const fn = renderFootnotes(ctx);
     if (fn) parts.push(fn);
@@ -104,6 +108,8 @@ const SKIP = new Set(['frontmatter','comment','import','variable_def','footnote_
 
 function renderBlock(node, ctx) {
   if (!node || SKIP.has(node.type)) return '';
+  // Phase 3 directive dispatch
+  if (PHASE3_NODE_TYPES.has(node.type)) return renderDirective(node, ctx, { renderBlock, renderInline });
   switch (node.type) {
     case 'heading':         return renderHeading(node, ctx);
     case 'paragraph':       return renderParagraph(node, ctx);

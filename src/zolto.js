@@ -19,8 +19,8 @@ import { validate }      from './validator.js';
 import { render as renderAst, renderInline, inlineToText } from './renderer.js';
 import { Diagnostics }   from './diagnostics.js';
 
-export const VERSION = '2.0.0';
-export const PHASE   = 2;
+export const VERSION = '3.0.0';
+export const PHASE   = 3;
 
 // ─── parse() ──────────────────────────────────────────────────────────────────
 
@@ -100,7 +100,7 @@ export { renderInline, inlineToText };
  * @returns {string}
  */
 export function about() {
-  return `Zolto v${VERSION} · Phase ${PHASE} · Extended Markdown engine\n` +
+  return `Zolto v${VERSION} · Phase ${PHASE} · Native Block Directives engine\n` +
          `  parse(src) → { ast, errors, warnings, diagnostics }\n` +
          `  render(ast, opts?) → html\n` +
          `  compile(src, opts?) → html`;
