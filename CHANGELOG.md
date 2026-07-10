@@ -6,6 +6,64 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [3.0.0] — Phase 3 — Native Block Directives
+
+### Added
+
+#### Universal Directive Syntax
+- `@name … @/name` block syntax — the single pattern behind all 14 new component types
+- Attribute parser supporting quoted strings, bare strings, numbers, booleans, and
+  positional first arguments (`@badge success` vs `@badge variant=success`)
+- Recursive Markdown parsing inside every directive body (bold, links, lists, code
+  blocks, footnotes, and even other directives all work inside directive content)
+- Depth-aware nesting — directives can contain directives to unlimited depth
+
+#### 14 New Directive Types
+- **`@embed`** — image, video, audio, youtube, vimeo, figma, codepen, codesandbox, iframe;
+  automatic YouTube/Vimeo ID extraction, lazy loading, captions, responsive `<figure>` wrapper
+- **`@collapse`** — `<details>/<summary>` disclosure widget with `open` state control
+- **`@tabs` / `@tab`** — accessible tab groups with ARIA roles, keyboard-navigable, unlimited tabs
+- **`@card` / `@card-group`** — variant-aware cards (default/primary/success/warning/danger/
+  outline/ghost) with icon, title, description, image, and href-as-link support; responsive grid groups
+- **`@steps` / `@step`** — numbered step lists with automatic numbering, optional icon override
+- **`@columns` / `@column`** — responsive flex columns with fixed or auto width
+- **`@badge`** — 7 variants × pill/outline modifiers, optional icon
+- **`@tag`** — coloured topic tags, optional icon and href-as-link
+- **`@alert`** — 6 alert types, optional title, optional dismiss button hook
+- **`@timeline` / `@event`** — vertical event timeline with dates and icons
+- **`@progress`** — linear progress bar with label, percent display, 4 color variants
+- **`@avatar`** — image, initials, or icon fallback; 5 sizes; 4 status indicator states
+- **`@icon`** — Material Symbols icon rendering with size, color, and accessible label
+
+#### Architecture
+- `src/directive-lexer.js` — attribute string parser (`parseAttrStr`), child directive
+  extractor (`extractChildren`), block lexer (`lexDirective`)
+- `src/directives.js` — converts directive tokens into typed AST nodes for all 14 types
+- `src/directive-renderer.js` — HTML output for all 14 types + embedded CSS, injected
+  once via `<style id="zl-p3-styles">` only when Phase 3 directives are present in the document
+- `PHASE3_NODE_TYPES` set added to `src/ast.js` for renderer dispatch and CSS-injection detection
+- Phase 3 validator checks: missing `embed` src, `progress` value out of range, empty
+  `tabs`/`steps`/`timeline` containers
+
+#### Tests
+- `tests/fixtures-p3.js` — 92 fixtures across embed, collapse, tabs, cards, steps, columns,
+  badge, tag, alert, timeline, progress, avatar, icon, nesting, and attribute-parsing groups
+- `tests/tests-p3.js` — unit tests for directive-lexer, directives→AST, directive-renderer
+  CSS injection, Phase 3 validator diagnostics, integration, and stress/performance
+- 147 new tests; 380 total across 54 suites (Phase 1 + 2 + 3 combined)
+
+### Changed
+- `VERSION` → `'3.0.0'`, `PHASE` → `3`
+- `tests/tests.js` is now a thin combined runner over `tests-p2.js` + `tests-p3.js`
+- CSS injection is conditional — documents with zero Phase 3 directives carry zero
+  extra bytes of Phase 3 CSS
+
+### Compatibility
+- 100% backward compatible — every Phase 1 and Phase 2 test (233 tests) still passes unchanged
+- No existing syntax was modified; directives are purely additive
+
+---
+
 ## [2.0.0] — Phase 2 — Extended Markdown
 
 ### Added

@@ -1,6 +1,6 @@
 {
   "name": "zolto",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Zolto — Extended Markdown document engine. Phase 2: production-quality Markdown superset.",
   "type": "module",
   "main": "src/zolto.js",
