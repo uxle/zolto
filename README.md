@@ -3,7 +3,7 @@
 > **Native Block Directives** — a production-quality document engine that is a strict
 > superset of standard Markdown. Every valid `.md` file is a valid `.zl` file.
 
-[![CI](https://github.com/zolto/zolto/actions/workflows/ci.yml/badge.svg)](https://github.com/zolto/zolto/actions/workflows/ci.yml)
+[![CI](https://github.com/zolto/zolto/actions/workflows/cd.yml/badge.svg)](https://github.com/zolto/zolto/actions/workflows/cd.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Phase](https://img.shields.io/badge/phase-3-indigo)](docs/development/roadmap.md)
 
