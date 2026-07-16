@@ -17,6 +17,7 @@
 
 import { Diagnostics, Code } from './diagnostics.js';
 import { ADMONITION_TYPES }  from './ast.js';
+import { validateMath }      from './math-validator.js';
 
 /**
  * @param {DocumentNode} doc
@@ -42,6 +43,9 @@ export function validate(doc) {
       if (!definedRefs.has(id)) definedRefs.set(id, val);
     }
   }
+
+  // ── Phase 4: equation labels / @ref() / parser diagnostics ───────────────
+  validateMath(doc, d);
 
   // ── Validate inline + block usage ────────────────────────────────────────
   for (const node of doc.children ?? []) {

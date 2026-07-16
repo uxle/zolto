@@ -22,6 +22,7 @@ export const PHASE3_NODE_TYPES = new Set([
   'steps','step','columns','column','badge','tag',
   'alert','timeline','timeline_event','progress','avatar','icon',
 ]);
+export const PHASE4_NODE_TYPES = new Set(['math_block', 'math_inline', 'math_ref']);
 
 // ═══ BLOCK NODES — Phase 1 ═══════════════════════════════════════════════════
 export function document(children=[],metadata={}){return{type:'document',children,metadata};}
@@ -121,6 +122,44 @@ export function icon(name='',opts={}){
   return{type:'icon',name,size:opts.size??null,color:opts.color??null,label:opts.label??null};
 }
 
+// ═══ BLOCK NODES — Phase 4 (Mathematics) ═════════════════════════════════════
+
+/**
+ * `@math name="…" label="…" env=… numbered=true … @/math`
+ * @param {string}      content     Raw math source (LaTeX-like)
+ * @param {object|null} mathAst     Parsed tree from math-parser.js (mEquation/mEquationGroup root)
+ */
+export function mathBlock(content = '', mathAst = null, opts = {}) {
+  return {
+    type:        'math_block',
+    content,
+    ast:         mathAst,
+    env:         opts.env ?? 'equation',
+    display:     'block',
+    numbered:    opts.numbered ?? true,
+    label:       opts.label ?? null,
+    number:      opts.number ?? 0,
+    title:       opts.title ?? null,
+    parseErrors: opts.parseErrors ?? [],
+  };
+}
+
+/** Inline `$…$` math span. */
+export function mathInline(content = '', mathAst = null, opts = {}) {
+  return {
+    type:        'math_inline',
+    content,
+    ast:         mathAst,
+    display:     'inline',
+    parseErrors: opts.parseErrors ?? [],
+  };
+}
+
+/** `@ref(eq:label)` cross-reference to a numbered equation. */
+export function mathRef(refId = '') {
+  return { type: 'math_ref', refId };
+}
+
 // ═══ INLINE NODES — Phase 1 ══════════════════════════════════════════════════
 export function text(value=''){return{type:'text',value};}
 export function bold(children=[]){return{type:'bold',children};}
@@ -142,4 +181,4 @@ export function kbd(value=''){return{type:'kbd',value};}
 export function htmlEntity(raw=''){return{type:'html_entity',raw};}
 export function refLink(id='',children=[]){return{type:'ref_link',id:id.toLowerCase(),children};}
 
-export const INLINE_TYPES=new Set(['text','bold','italic','inline_code','strikethrough','link','image','linebreak','softbreak','variable_ref','footnote_ref','superscript','subscript','highlight','kbd','html_entity','ref_link']);
+export const INLINE_TYPES=new Set(['text','bold','italic','inline_code','strikethrough','link','image','linebreak','softbreak','variable_ref','footnote_ref','superscript','subscript','highlight','kbd','html_entity','ref_link','math_inline','math_ref']);

@@ -1,5 +1,5 @@
 /**
- * Zolto Block Parser — Phase 2
+ * Zolto Block Parser — Phase 4
  *
  * Converts block tokens from the lexer into a Document AST.
  *
@@ -11,6 +11,14 @@
  *   • figure creation     — standalone image paragraphs
  *   • code block metadata — title, highlightLines, lineNumbers, diff
  *   • table captions      — from lexer caption field
+ *
+ * Phase 3 additions:
+ *   • directive parsing    — @block … @/block → typed AST nodes
+ *
+ * Phase 4 additions:
+ *   • @math block parsing  — label/title/env/numbered config, equation
+ *     numbering (shared counter via ctx.eqCounter), label registry
+ *     (ctx.labels) for @ref() cross-reference resolution at render time
  */
 
 import { parseDirective } from './directives.js';
@@ -19,6 +27,8 @@ import { CALLOUT_TYPES }   from './ast.js';
 import { tokenize, T }     from './lexer.js';
 import { parseInline }     from './inline-parser.js';
 import { parseSimpleYaml, parseCodeMeta } from './tokenizer.js';
+import { parseAttrStr }    from './directive-lexer.js';
+import { parseMath, parseMathRows } from './math-parser.js';
 
 // ─── Public API ───────────────────────────────────────────────────────────────
 
@@ -31,6 +41,8 @@ export function parseTokens(tokens) {
   const metadata   = {};
   const vars       = {};
   const references = new Map();  // Phase 2: reference link map
+  const eqCounter  = { value: 0 }; // Phase 4: shared, mutated across all @math blocks
+  const labels     = new Map();    // Phase 4: label -> equation number, for @ref()
 
   for (const tok of tokens) {
     if (tok.type === T.BLANK) continue;
@@ -42,7 +54,7 @@ export function parseTokens(tokens) {
       continue;
     }
 
-    const node = parseBlockToken(tok, { vars, refs: references });
+    const node = parseBlockToken(tok, { vars, refs: references, eqCounter, labels });
     if (!node) continue;
 
     if (node.type === 'frontmatter') Object.assign(metadata, node.data);
@@ -53,6 +65,7 @@ export function parseTokens(tokens) {
 
   if (Object.keys(vars).length) metadata.variables = vars;
   if (references.size)          metadata.references = references;
+  if (labels.size)               metadata.mathLabels = labels;
 
   return AST.document(blocks, metadata);
 }
@@ -75,6 +88,7 @@ function parseBlockToken(tok, ctx = {}) {
     case T.FOOTNOTE_DEF:    return parseFootnoteDef(tok, ctx);
     case T.ADMONITION:      return parseAdmonition(tok, ctx);    // Phase 2
     case T.DEFINITION_LIST: return parseDefinitionList(tok);     // Phase 2
+    case T.MATH_BLOCK:      return parseMathBlock(tok, ctx);     // Phase 4
     case T.PARAGRAPH:       return parseParagraph(tok, ctx);
     case 'directive': {
       const repCtx = {
@@ -192,6 +206,35 @@ function parseAdmonition(tok, ctx) {
     .map(t => parseBlockToken(t, ctx))
     .filter(Boolean);
   return AST.admonition(tok.admonType, children, { title: tok.title });
+}
+
+// ─── @math block  (Phase 4) ───────────────────────────────────────────────────
+
+const MULTI_LINE_ENVS = new Set(['align', 'gather']);
+
+function parseMathBlock(tok, ctx) {
+  const config    = parseAttrStr(tok.config);
+  const label     = config.label ? String(config.label) : null;
+  const title     = config.name ? String(config.name) : (config.title ? String(config.title) : null);
+  const env       = String(config.env || 'equation');
+  const numbered  = config.numbered !== false; // default true unless explicitly numbered=false
+
+  let mathAst, parseErrors;
+  if (MULTI_LINE_ENVS.has(env)) {
+    const { equations, errors } = parseMathRows(tok.content);
+    mathAst     = { type: 'EquationGroup', env, children: equations };
+    parseErrors = errors;
+  } else {
+    const { ast, errors } = parseMath(tok.content);
+    mathAst     = ast;
+    parseErrors = errors;
+  }
+
+  let number = 0;
+  if (numbered) { ctx.eqCounter.value++; number = ctx.eqCounter.value; }
+  if (label && ctx.labels) ctx.labels.set(label, number);
+
+  return AST.mathBlock(tok.content, mathAst, { env, numbered, label, number, title, parseErrors });
 }
 
 // ─── Definition list  (Phase 2) ───────────────────────────────────────────────

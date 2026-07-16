@@ -1,5 +1,5 @@
 /**
- * Zolto Inline Parser — Phase 2
+ * Zolto Inline Parser — Phase 4
  *
  * Phase 1: bold · italic · bold-italic · inline-code · strikethrough
  *           links · images · auto-links · backslash-escapes · hard/soft breaks
@@ -13,10 +13,18 @@
  *   &entity; / &#123;    → html_entity node (verbatim in output)
  *   ---  --  ...         → smart dashes / ellipsis (in text buffer)
  *   [text][id]  [id][]   → reference links (resolved via opts.refs)
+ *
+ * Phase 4 adds:
+ *   $expr$               → inline math (Pandoc-style currency-safe delimiter
+ *                           matching: a candidate closing $ is rejected if
+ *                           immediately followed by a digit, so "$10 or $20"
+ *                           never triggers math mode)
+ *   @ref(label)          → equation cross-reference
  */
 
 import * as AST          from './ast.js';
 import { Tokenizer, HTML_ENTITIES } from './tokenizer.js';
+import { parseMath }     from './math-parser.js';
 
 const ESCAPABLE = /[!"#$%&'()*+,\-./:;<=>?@[\\\]^_`{|}~]/;
 
@@ -132,6 +140,12 @@ class InlineParser {
 
     // Image  ![alt](src)
     if (c === '!' && this.ch(1) === '[') { if (this.tryImage()) return; }
+
+    // Inline math  $expr$  (Phase 4) — currency-safe delimiter matching
+    if (c === '$') { if (this.tryInlineMath()) return; }
+
+    // Equation cross-reference  @ref(label)  (Phase 4)
+    if (c === '@' && this.startsWith('@ref(')) { if (this.tryMathRef()) return; }
 
     // Link  [text](url)  or  [text][id]  or  [id][]
     if (c === '[') { if (this.tryLink()) return; }
@@ -324,6 +338,53 @@ class InlineParser {
     const id = this.src.slice(this.pos, ci).trim(); this.pos = ci + 1;
     if (id) { this.push(AST.footnoteRef(id, 0)); return true; }
     this.restore(saved); return false;
+  }
+
+  // ── Inline math  $expr$  (Phase 4) ──────────────────────────────────────
+  //
+  // Currency-safe delimiter matching (Pandoc's tex_math_dollars rule):
+  //   a) opening $ must NOT be followed by whitespace
+  //   b) the candidate closing $ must NOT be preceded by whitespace
+  //   c) the candidate closing $ must NOT be immediately followed by a digit
+  //      — this is what correctly rejects "It costs $10 or $20": the first
+  //      candidate closer (before "20") is followed by '2', so it's rejected,
+  //      and since no OTHER $ exists before the paragraph ends, the whole
+  //      span falls back to literal text.
+  //   d) the span must not cross a blank-line (paragraph) boundary
+
+  tryInlineMath() {
+    const saved = this.save();
+    this.advance(); // opening $
+    if (/\s/.test(this.ch())) { this.restore(saved); return false; }
+
+    let searchFrom = this.pos;
+    for (;;) {
+      const ci = this.src.indexOf('$', searchFrom);
+      if (ci === -1) { this.restore(saved); return false; }
+      const before = this.src[ci - 1];
+      const after  = this.src[ci + 1] ?? '';
+      const crossesBlankLine = this.src.slice(this.pos, ci).includes('\n\n');
+      if (crossesBlankLine) { this.restore(saved); return false; }
+      if (/\s/.test(before) || /[0-9]/.test(after)) { searchFrom = ci + 1; continue; }
+      // Valid closing delimiter found.
+      const content = this.src.slice(this.pos, ci);
+      this.pos = ci + 1;
+      const { ast, errors } = parseMath(content);
+      this.push(AST.mathInline(content, ast, { parseErrors: errors }));
+      return true;
+    }
+  }
+
+  // ── Equation cross-reference  @ref(label)  (Phase 4) ────────────────────
+
+  tryMathRef() {
+    const saved = this.save(); this.advance(5); // '@ref('
+    const ci = this.src.indexOf(')', this.pos);
+    if (ci === -1) { this.restore(saved); return false; }
+    const id = this.src.slice(this.pos, ci).trim(); this.pos = ci + 1;
+    if (!id) { this.restore(saved); return false; }
+    this.push(AST.mathRef(id));
+    return true;
   }
 
   // ── Image  ![alt](src "title") ────────────────────────────────────────

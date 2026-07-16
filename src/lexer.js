@@ -1,5 +1,5 @@
 /**
- * Zolto Block Lexer — Phase 2
+ * Zolto Block Lexer — Phase 4
  *
  * Phase 1: frontmatter · fenced_code · heading · hr · blockquote
  *           list · table · comment · html_block · import ·
@@ -11,6 +11,14 @@
  *   T.DEFINITION_LIST — term\n: definition
  *   table.caption     — Caption: text before a table
  *   Callouts detected in parser from BLOCKQUOTE content
+ *
+ * Phase 3 adds:
+ *   T.DIRECTIVE — @block … @/block universal directive syntax
+ *
+ * Phase 4 adds:
+ *   T.MATH_BLOCK — @math … @/math (raw capture, like fenced code — the
+ *   body is LaTeX-like math source, never Markdown, so it must NOT be
+ *   routed through the generic directive/child-Markdown parsing path)
  */
 
 import { KNOWN_DIRECTIVES, lexDirective } from './directive-lexer.js';
@@ -33,6 +41,7 @@ export const T = Object.freeze({
   REFERENCE_DEF:  'reference_def',  // Phase 2
   DEFINITION_LIST:'definition_list',// Phase 2
   DIRECTIVE:      'directive',       // Phase 3
+  MATH_BLOCK:     'math_block',      // Phase 4
   BLANK:          'blank',
   PARAGRAPH:      'paragraph',
 });
@@ -160,6 +169,30 @@ export function tokenize(src) {
     { const m = RE.VAR_DEF.exec(line);
       if (m) { tokens.push({ type: T.VARIABLE_DEF, raw: line, name: m[1], value: m[2].trim() }); i++; continue; } }
 
+
+    // · @math block  (Phase 4) — raw capture, body is LaTeX-like math,     ───
+    // · never Markdown, so this runs BEFORE the generic directive check ──────
+    { const mm = /^@math(?:\s+(.*))?\s*$/.exec(line);
+      if (mm) {
+        const configStr  = (mm[1] ?? '').trim();
+        const startLine  = i;
+        const bodyLines  = [];
+        let closed = false;
+        i++;
+        while (i < lines.length) {
+          if (/^@\/math\s*$/.test(lines[i])) { closed = true; i++; break; }
+          bodyLines.push(lines[i]); i++;
+        }
+        if (!closed) err('Unclosed @math block (missing @/math)');
+        tokens.push({
+          type:   T.MATH_BLOCK,
+          raw:    lines.slice(startLine, i).join('\n'),
+          config: configStr,
+          content: bodyLines.join('\n'),
+        });
+        continue;
+      }
+    }
 
     // · @directive blocks  (Phase 3) ------------------------------------------
     { const dm = /^@([a-z][a-z0-9-]*)(.*)$/.exec(line);
@@ -370,6 +403,12 @@ export function tokenize(src) {
         if (rawLines.length && (RE.UL_ITEM.test(l) || RE.OL_ITEM.test(l))) break;
         if (rawLines.length && RE.BLOCKQUOTE.test(l)) break;
         if (rawLines.length && RE.DEFLIST_ITEM.test(l)) break;
+        // @math and @directive blocks interrupt paragraphs (Phase 3/4 fix)
+        if (rawLines.length && /^@math(?:\s|$)/.test(l)) break;
+        if (rawLines.length) {
+          const dm = /^@([a-z][a-z0-9-]*)(?:\s|$)/.exec(l);
+          if (dm && KNOWN_DIRECTIVES.has(dm[1])) break;
+        }
         rawLines.push(l); i++;
       }
       if (rawLines.length) tokens.push({ type: T.PARAGRAPH, raw: rawLines.join('\n') });

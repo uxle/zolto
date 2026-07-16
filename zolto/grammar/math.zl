@@ -1,2 +1,25 @@
-# Math grammar — Phase 3
-# $inline$ and @math blocks.
+# Math grammar — Phase 4
+#
+# Inline:  $expr$                     (currency-safe delimiter matching)
+# Block:   @math [attrs] … @/math
+#
+# Block attributes:
+#   name="…"        title displayed above the equation
+#   label="…"        anchor id for @ref() cross-references
+#   numbered=false   suppress the (n) equation number (default: numbered)
+#   env=align        multi-line, &/\\-separated aligned equations
+#
+# Reference:  @ref(label)  →  linked (n) pointing at the labeled equation
+#
+# Expression syntax (subset of LaTeX):
+#   \frac{a}{b}  \sqrt{x}  \sqrt[n]{x}  x^n  x_i  x_i^n
+#   \sum_{lo}^{hi}  \prod_{lo}^{hi}  \int_{lo}^{hi}  \iint  \iiint  \oint
+#   \lim_{x \to a}  \max  \min  \sup  \inf
+#   \begin{matrix|pmatrix|bmatrix|vmatrix|Vmatrix|Bmatrix|cases} … \end{…}
+#   \left ( … \right )   (also bare "(x)", "[a,b]", "|x|" auto-pair)
+#   \vec{v}  \hat{x}  \dot{x}  \tilde{x}  \bar{x}
+#   \overline{x}  \underline{x}  \overbrace{x}  \underbrace{x}
+#   \mathbf{v}  \boldsymbol{v}  \mathbb{R}
+#   \sin \cos \tan \log \ln \exp \gcd \det … (25+ functions, upright)
+#   Greek letters, operators, relations, arrows, logic/set symbols
+#   (~150 named commands — see src/math-symbols.js)

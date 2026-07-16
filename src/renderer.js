@@ -1,5 +1,5 @@
 /**
- * Zolto HTML Renderer — Phase 2
+ * Zolto HTML Renderer — Phase 4
  *
  * Pure function: render(ast, opts) → HTML string
  * No DOM access. No mutable module-level state.
@@ -11,12 +11,24 @@
  *
  * Phase 2 inline additions:
  *   superscript · subscript · highlight · kbd · html_entity · ref_link
+ *
+ * Phase 3 additions:
+ *   Directive dispatch — see directive-renderer.js
+ *
+ * Phase 4 additions:
+ *   math_block  → visual HTML (math-renderer.js) + hidden semantic MathML
+ *                 (math-mathml.js) for screen readers, equation numbering,
+ *                 label anchors
+ *   math_inline → same combined HTML+MathML output, inline
+ *   math_ref    → @ref(label) cross-reference link
  */
 
 import { escapeHtml, escapeAttr, slugify, uniqueSlug } from './tokenizer.js';
 import { renderDirective, PHASE3_CSS, hasP3Directives } from './directive-renderer.js';
 import { PHASE3_NODE_TYPES } from './ast.js';
 import { parseInline } from './inline-parser.js';
+import { renderMathHTML, mathToPlainText, hasMathNodes, MATH_CSS } from './math-renderer.js';
+import { renderMathML } from './math-mathml.js';
 
 // ─── Icon / title maps ────────────────────────────────────────────────────────
 
@@ -49,6 +61,7 @@ export function render(doc, opts = {}) {
   const ctx = buildContext(doc, opts);
   const parts = [];
   if (hasP3Directives(doc.children)) parts.push('<style id="zl-p3-styles">' + PHASE3_CSS + '</style>');
+  if (hasMathNodes(doc.children))    parts.push('<style id="zl-math-styles">' + MATH_CSS + '</style>');
   parts.push(...doc.children.map(n => renderBlock(n, ctx)).filter(Boolean));
   if (opts.footnoteSection !== false) {
     const fn = renderFootnotes(ctx);
@@ -87,6 +100,9 @@ function buildContext(doc, opts) {
   const fnRefNums  = new Map();   // id → display number (assigned on first ref)
   let   fnRefCount = 0;
 
+  // Phase 4: label -> equation number, for @ref() resolution
+  const mathLabels = meta.mathLabels instanceof Map ? meta.mathLabels : new Map();
+
   return {
     variables,
     fnDefs,
@@ -96,6 +112,7 @@ function buildContext(doc, opts) {
       return fnRefNums.get(id);
     },
     references,  // Phase 2
+    mathLabels,  // Phase 4
     usedIds,
     xhtml:        !!opts.xhtml,
     voidClose() { return this.xhtml ? ' /' : ''; },
@@ -123,6 +140,7 @@ function renderBlock(node, ctx) {
     case 'html_block':      return node.value;
     case 'figure':          return renderFigure(node, ctx);      // Phase 2
     case 'definition_list': return renderDefinitionList(node, ctx); // Phase 2
+    case 'math_block':      return renderMathBlock(node, ctx);   // Phase 4
     default:                return '';
   }
 }
@@ -356,6 +374,9 @@ function renderInlineNode(node, ctx) {
     case 'kbd':          return `<kbd>${escapeHtml(node.value)}</kbd>`;
     case 'html_entity':  return renderEntity(node);
     case 'ref_link':     return renderRefLink(node, ctx);
+    // Phase 4 inline nodes
+    case 'math_inline':  return renderMathInlineNode(node, ctx);
+    case 'math_ref':     return renderMathRef(node, ctx);
     default:             return '';
   }
 }
@@ -400,6 +421,65 @@ function renderRefLink(node, ctx) {     // Phase 2
   const href  = escapeAttr(ref.href);
   const title = ref.title ? ` title="${escapeAttr(ref.title)}"` : '';
   return `<a href="${href}"${title}>${inner}</a>`;
+}
+
+// ─── Math  (Phase 4) ──────────────────────────────────────────────────────────
+//
+// Every equation renders BOTH a visual HTML/CSS representation (via
+// math-renderer.js) AND a visually-hidden semantic MathML annotation (via
+// math-mathml.js) — the same hybrid strategy KaTeX itself uses so screen
+// readers get correct native MathML accessibility without sacrificing the
+// hand-tuned visual layout. An aria-label plain-text fallback covers
+// browsers/assistive tech with neither MathML nor good ARIA support.
+
+function anchorIdFor(label, fallbackPrefix, ctx) {
+  const seed = label ? `eq-${label}` : `${fallbackPrefix}-equation`;
+  return uniqueSlug(seed, ctx.usedIds);
+}
+
+function renderMathBlock(node, ctx) {
+  if (!node.ast) {
+    return `<div class="zl-merror">Math parse error${node.parseErrors?.[0] ? ': ' + escapeHtml(node.parseErrors[0].message) : ''}</div>`;
+  }
+
+  const id       = anchorIdFor(node.label, 'mb', ctx);
+  const visual   = node.ast.type === 'EquationGroup'
+    ? node.ast.children.map(eq => renderMathHTML(eq)).join('<br>')
+    : renderMathHTML(node.ast);
+  const mathml   = renderMathML(node.ast, 'block');
+  const ariaText = mathToPlainText(node.ast);
+
+  const title  = node.title ? `<div class="zl-math-title">${escapeHtml(node.title)}</div>` : '';
+  const number = node.numbered
+    ? `<span class="zl-math-number">(${node.number})</span>`
+    : '';
+
+  return [
+    `<div class="zl-math-block-wrap" id="${escapeAttr(id)}"${node.label ? ` data-label="${escapeAttr(node.label)}"` : ''}>`,
+    title,
+    `<div class="zl-math zl-math-display" role="img" aria-label="${escapeAttr(ariaText)}">${visual}</div>`,
+    `<span class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">${mathml}</span>`,
+    number,
+    `</div>`,
+  ].filter(Boolean).join('\n');
+}
+
+function renderMathInlineNode(node, ctx) {
+  if (!node.ast) {
+    return `<span class="zl-merror" title="Math parse error">${escapeHtml(node.content)}</span>`;
+  }
+  const visual   = renderMathHTML(node.ast);
+  const mathml   = renderMathML(node.ast, 'inline');
+  const ariaText = mathToPlainText(node.ast);
+  return `<span class="zl-math zl-math-inline" role="img" aria-label="${escapeAttr(ariaText)}">${visual}<span class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">${mathml}</span></span>`;
+}
+
+function renderMathRef(node, ctx) {
+  const num = ctx.mathLabels?.get(node.refId);
+  if (num == null) {
+    return `<span class="zl-math-ref-broken" title="Undefined equation reference: ${escapeAttr(node.refId)}">(?)</span>`;
+  }
+  return `<a class="zl-math-ref" href="#${escapeAttr('eq-' + slugify(node.refId))}">(${num})</a>`;
 }
 
 // ─── Plain text extraction ────────────────────────────────────────────────────

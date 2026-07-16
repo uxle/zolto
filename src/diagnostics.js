@@ -37,6 +37,19 @@ export const Code = Object.freeze({
   INVALID_IMAGE_SRC:    'W009',
   BROKEN_REF_LINK:      'W010',
 
+  // Phase 3 directive warnings
+  MISSING_EMBED_SRC:    'W011',
+  PROGRESS_OUT_OF_RANGE:'W012',
+  EMPTY_DIRECTIVE_BODY: 'W013',
+
+  // Phase 4 math warnings/errors
+  UNKNOWN_MATH_COMMAND: 'M001',
+  UNCLOSED_MATH_ENV:    'M002',
+  MISMATCHED_MATH_ENV:  'M003',
+  DUPLICATE_EQ_LABEL:   'M004',
+  UNDEFINED_EQ_REF:     'M005',
+  MATH_PARSE_ERROR:     'M006',
+
   // Informational  (I-series)
   BARE_LINK:            'I001',
   EMPTY_ALT:            'I002',

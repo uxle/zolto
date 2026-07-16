@@ -1,20 +1,23 @@
 const CACHE_NAME = 'zolto-cache-v1';
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/sw.js',
-  '/src/zolto.js',
-  '/src/ast.js',
-  '/src/diagnostics.js',
-  '/src/inline-parser.js',
-  '/src/lexer.js',
-  '/src/parser.js',
-  '/src/renderer.js',
-  '/src/tokenizer.js',
-  '/src/validator.js',
-  '/tests/tests.js',
-  '/assets/icons/logo/zolto-icon.svg'
+  './',
+  'index.html',
+  'manifest.json',
+  'sw.js',
+  'src/zolto.js',
+  'src/ast.js',
+  'src/diagnostics.js',
+  'src/directive-lexer.js',
+  'src/directive-renderer.js',
+  'src/directives.js',
+  'src/inline-parser.js',
+  'src/lexer.js',
+  'src/parser.js',
+  'src/renderer.js',
+  'src/tokenizer.js',
+  'src/validator.js',
+  'tests/tests.js',
+  'assets/icons/logo/zolto-icon.svg'
 ];
 
 // Install event - cache assets
@@ -72,7 +75,7 @@ self.addEventListener('fetch', (event) => {
     }).catch(() => {
       // Offline fallback for navigation requests
       if (event.request.mode === 'navigate') {
-        return caches.match('/index.html');
+        return caches.match('index.html');
       }
     })
   );

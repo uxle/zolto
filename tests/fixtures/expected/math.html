@@ -1,1 +1,96 @@
-<!-- Math HTML output — generated when Phase 3 (KaTeX) is implemented -->
+<style id="zl-math-styles">.zl-math{display:inline-block;font-family:'Cambria Math','STIX Two Math','Latin Modern Math',serif;font-style:normal;line-height:1;vertical-align:middle}
+.zl-math-display{display:block;text-align:center;margin:1.2em 0;overflow-x:auto;overflow-y:hidden;padding:.2em 0}
+.zl-math-inline{display:inline-block}
+.zl-mrow{display:inline-flex;align-items:center;white-space:nowrap}
+.zl-mi{font-style:italic;padding:0 .02em}
+.zl-mi-upright{font-style:normal}
+.zl-mn{font-style:normal}
+.zl-mo{padding:0 .22em;font-style:normal}
+.zl-mo-tight{padding:0 .05em}
+.zl-msymbol{font-style:normal;padding:0 .08em}
+.zl-mtext{font-family:var(--font-sans, system-ui, sans-serif);font-style:normal;padding:0 .15em}
+.zl-mspace{display:inline-block}
+.zl-merror{color:#ef4444;border-bottom:1px dashed #ef4444;font-family:var(--font-mono, monospace);font-size:.85em;cursor:help}
+
+.zl-frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .15em;position:relative;top:.08em}
+.zl-frac-num,.zl-frac-den{display:flex;justify-content:center;padding:0 .15em;font-size:.92em}
+.zl-frac-num{border-bottom:.065em solid currentColor;padding-bottom:.15em}
+.zl-frac-den{padding-top:.15em}
+
+.zl-sqrt{display:inline-flex;align-items:flex-start;margin:0 .1em}
+.zl-sqrt-idx{font-size:.6em;position:relative;top:.3em;margin-right:-.4em;left:.2em}
+.zl-sqrt-sign{font-size:1.15em;padding-right:.05em;position:relative;top:-.02em}
+.zl-sqrt-body{border-top:.07em solid currentColor;padding:.08em .12em 0 .05em}
+
+.zl-pow-wrap,.zl-sub-wrap,.zl-subsup-wrap{display:inline-flex;align-items:center;position:relative}
+.zl-sup{font-size:.68em;vertical-align:super;position:relative;top:-.42em;margin-left:.03em}
+.zl-sub{font-size:.68em;vertical-align:sub;position:relative;bottom:-.28em;margin-left:.03em}
+.zl-subsup-stack{display:inline-flex;flex-direction:column;font-size:.68em;margin-left:.03em;line-height:1.15}
+.zl-subsup-stack .zl-subsup-sup{position:relative;left:0}
+.zl-subsup-stack .zl-subsup-sub{position:relative;left:0}
+
+.zl-delim{display:inline-flex;align-items:center}
+.zl-delim-open,.zl-delim-close{display:inline-block;padding:0 .04em;font-weight:400}
+.zl-delim-stretchy .zl-delim-open,.zl-delim-stretchy .zl-delim-close{transform:scaleY(1.15);display:inline-block}
+
+.zl-over,.zl-under{display:inline-flex;flex-direction:column;align-items:center;margin:0 .05em}
+.zl-over-mark{font-size:.85em;line-height:1}
+.zl-over-body{border-top:.06em solid currentColor;padding-top:.05em}
+.zl-under-body{border-bottom:.06em solid currentColor;padding-bottom:.05em}
+.zl-under-mark{font-size:.85em;line-height:1}
+.zl-overline-body{border-top:.055em solid currentColor;padding-top:.06em}
+.zl-underline-body{border-bottom:.055em solid currentColor;padding-bottom:.06em}
+
+.zl-bigop{display:inline-flex;flex-direction:column;align-items:center;margin:0 .12em;vertical-align:middle}
+.zl-bigop-sup,.zl-bigop-sub{font-size:.62em;line-height:1.1}
+.zl-bigop-glyph{font-size:1.5em;line-height:.9;padding:.03em 0}
+
+.zl-limit{display:inline-flex;flex-direction:column;align-items:center;margin:0 .12em;vertical-align:middle}
+.zl-limit-name{font-style:normal}
+.zl-limit-under{font-size:.62em;line-height:1.1}
+
+.zl-fn{font-style:normal;padding:0 .05em .0 0}
+
+.zl-matrix{display:inline-grid;gap:.25em .7em;vertical-align:middle;margin:0 .12em;padding:.15em 0}
+.zl-matrix-cell{display:flex;align-items:center;justify-content:center}
+.zl-matrix-cases .zl-matrix-cell{justify-content:flex-start}
+.zl-matrix-delim-open,.zl-matrix-delim-close{font-size:1.6em;display:inline-flex;align-items:center;vertical-align:middle;transform:scaleY(1.35)}
+
+.zl-vec{position:relative;display:inline-block;padding-top:.35em}
+.zl-vec::before{content:'\2192';position:absolute;top:-.05em;left:50%;transform:translateX(-50%) scaleX(1.3);font-size:.7em}
+.zl-accent{position:relative;display:inline-block}
+.zl-accent-mark{position:absolute;left:50%;transform:translateX(-50%);top:-.75em;font-size:.75em;line-height:1}
+
+.zl-bold{font-weight:700}
+.zl-blackboard{font-family:'STIX Two Math','Cambria Math',serif}
+
+.zl-eqgroup{display:inline-grid;gap:.4em 0;vertical-align:middle}
+.zl-eqgroup-row{display:flex;align-items:center;gap:.3em}
+
+.zl-math-number{color:var(--text-secondary,#9ca3af);font-family:var(--font-sans,system-ui,sans-serif);font-size:.85em;margin-left:.6em}
+.zl-math-label-anchor{position:relative}
+.zl-math-block-wrap{position:relative}
+.zl-math-title{font-size:.82em;color:var(--text-secondary,#9ca3af);text-align:center;margin-bottom:.3em;font-family:var(--font-sans,system-ui,sans-serif)}
+.zl-math-ref{color:var(--primary,#5b9dfa);text-decoration:none;font-variant-numeric:tabular-nums}
+.zl-math-ref:hover{text-decoration:underline}
+.zl-math-ref-broken{color:#ef4444;border-bottom:1px dashed #ef4444;cursor:help}
+
+@media (max-width: 640px){
+  .zl-math-display{font-size:.9em}
+}</style>
+<h1 id="math-syntax-fixture">Math Syntax Fixture</h1>
+<p>Native inline math: <span class="zl-math zl-math-inline" role="img" aria-label="E = m c to the power 2"><span class="zl-mrow"><span class="zl-mi">E</span><span class="zl-mo">=</span><span class="zl-mrow"><span class="zl-mi">m</span><span class="zl-pow-wrap"><span class="zl-mi">c</span><sup class="zl-sup"><span class="zl-mn">2</span></sup></span></span></span><span class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap"><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mrow><mi>E</mi><mo>=</mo><mrow><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mrow></mrow></mrow></math></span></span></p>
+<p>Display math with a label:</p>
+<div class="zl-math-block-wrap" id="eq-eqtest" data-label="eq:test">
+<div class="zl-math-title">Test Equation</div>
+<div class="zl-math zl-math-display" role="img" aria-label="integral from 0 to infty e to the power -x to the power 2 d x = square root of pi over 2"><span class="zl-mrow"><span class="zl-mrow"><span class="zl-mrow"><span class="zl-mrow"><span class="zl-mrow"><span class="zl-bigop" aria-label="Integral"><span class="zl-bigop-sup"><span class="zl-msymbol" data-cmd="infty">∞</span></span><span class="zl-bigop-glyph">∫</span><span class="zl-bigop-sub"><span class="zl-mn">0</span></span></span><span class="zl-pow-wrap"><span class="zl-mi">e</span><sup class="zl-sup"><span class="zl-mrow"><span class="zl-mo zl-mo-tight">-</span><span class="zl-pow-wrap"><span class="zl-mi">x</span><sup class="zl-sup"><span class="zl-mn">2</span></sup></span></span></sup></span></span><span class="zl-mspace" style="width:0.16em">&nbsp;</span></span><span class="zl-mi">d</span></span><span class="zl-mi">x</span></span><span class="zl-mo">=</span><span class="zl-frac"><span class="zl-frac-num"><span class="zl-sqrt"><span class="zl-sqrt-sign">√</span><span class="zl-sqrt-body"><span class="zl-mi" data-cmd="pi">π</span></span></span></span><span class="zl-frac-den"><span class="zl-mn">2</span></span></span></span></div>
+<span class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mrow><mrow><mrow><mrow><munderover><mo>∫</mo><mn>0</mn><mo>∞</mo></munderover><msup><mi>e</mi><mrow><mo>-</mo><msup><mi>x</mi><mn>2</mn></msup></mrow></msup></mrow><mspace width="0.16em"/></mrow><mi>d</mi></mrow><mi>x</mi></mrow><mo>=</mo><mfrac><msqrt><mi>π</mi></msqrt><mn>2</mn></mfrac></mrow></mrow></math></span>
+<span class="zl-math-number">(1)</span>
+</div>
+<p>Cross-reference: see <a class="zl-math-ref" href="#eq-eqtest">(1)</a> above.</p>
+<p>Multi-line derivation:</p>
+<div class="zl-math-block-wrap" id="mb-equation">
+<div class="zl-math zl-math-display" role="img" aria-label="F = m a W = F ⋅ d"><span class="zl-mi">F</span><span class="zl-mrow"><span class="zl-mrow"><span class="zl-mo">=</span><span class="zl-mi">m</span></span><span class="zl-mi">a</span></span><br><span class="zl-mi">W</span><span class="zl-mrow"><span class="zl-mrow"><span class="zl-mo">=</span><span class="zl-mi">F</span></span><span class="zl-mo">⋅</span><span class="zl-mi">d</span></span></div>
+<span class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mrow><mrow><mi>F</mi><mrow><mrow><mo>=</mo><mi>m</mi></mrow><mi>a</mi></mrow></mrow><mrow><mi>W</mi><mrow><mrow><mo>=</mo><mi>F</mi></mrow><mo>⋅</mo><mi>d</mi></mrow></mrow></mrow></math></span>
+<span class="zl-math-number">(2)</span>
+</div>

@@ -1,18 +1,22 @@
 ---
-title: Math Fixture (Phase 3 placeholder)
+title: Math Fixture — Phase 4
 ---
 
-# Math Syntax — Phase 3
+# Math Syntax Fixture
 
-> [!IMPORTANT]
-> Math rendering via KaTeX is implemented in Phase 3.
-> This fixture is a placeholder for future tests.
+Native inline math: $E = mc^2$
 
-The planned syntax:
+Display math with a label:
 
-Inline: $E = mc^2$
+@math name="Test Equation" label="eq:test"
+\int_0^\infty e^{-x^2}\,dx = \frac{\sqrt{\pi}}{2}
+@/math
 
-Block:
-$$
-\int_0^\infty e^{-x^2} dx = \frac{\sqrt{\pi}}{2}
-$$
+Cross-reference: see @ref(eq:test) above.
+
+Multi-line derivation:
+
+@math env=align
+F &= ma \\
+W &= F \cdot d
+@/math

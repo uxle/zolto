@@ -1,8 +1,89 @@
 ---
-title: Math-Heavy Document — Phase 3 Feature
+title: Math-Heavy Document — Phase 4 Showcase
 ---
 
-# Math-Heavy Document — Phase 3 Feature
+@var course = Calculus & Physics Reference
 
-> **Phase:** This example requires a future phase.
-> Open this file once that phase is complete.
+# {{course}}
+
+A demonstration of Zolto's native mathematics engine — every construct
+below compiles with zero external dependencies.
+
+## Inline Math
+
+The kinetic energy of a moving body is $KE = \frac{1}{2}mv^2$, while its
+momentum is simply $p = mv$. For small oscillations, $\sin\theta \approx \theta$.
+
+## Fundamental Equations
+
+@math name="Mass–Energy Equivalence" label="eq:einstein"
+E = mc^2
+@/math
+
+@math name="Newton's Second Law" label="eq:newton"
+F = ma
+@/math
+
+As shown in @ref(eq:einstein) and @ref(eq:newton), these two equations
+anchor classical and relativistic mechanics respectively.
+
+## The Quadratic Formula
+
+@math name="Quadratic Formula" label="eq:quadratic"
+x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+@/math
+
+## Calculus
+
+@math name="Gaussian Integral" label="eq:gaussian"
+\int_{0}^{\infty} e^{-x^2}\,dx = \frac{\sqrt{\pi}}{2}
+@/math
+
+@math name="Definition of a Limit"
+\lim_{x \to 0} \frac{\sin x}{x} = 1
+@/math
+
+@math name="A Convergent Series"
+\sum_{i=1}^{n} i = \frac{n(n+1)}{2}
+@/math
+
+## Linear Algebra
+
+A 2×2 matrix and its determinant-defining transformation:
+
+@math env=align label="eq:matrix-system"
+\begin{pmatrix} a & b \\ c & d \end{pmatrix}
+\begin{pmatrix} x \\ y \end{pmatrix}
+&=
+\begin{pmatrix} ax + by \\ cx + dy \end{pmatrix}
+@/math
+
+## Piecewise Functions
+
+@math name="Absolute Value, Defined Piecewise"
+f(x) = \begin{cases}
+  x & x \geq 0 \\
+  -x & x < 0
+\end{cases}
+@/math
+
+## Vectors & Set Theory
+
+Force as a vector quantity: $\vec{F} = m\vec{a}$, where mass $m \in \mathbb{R}^+$.
+
+For any two sets, $A \cup B$ and $A \cap B$ satisfy $|A \cup B| = |A| + |B| - |A \cap B|$.
+
+## Multi-Step Derivation
+
+@math env=align label="eq:power-derivation"
+F &= ma \\
+W &= F \cdot d \\
+P &= \frac{W}{t}
+@/math
+
+The full derivation in @ref(eq:power-derivation) connects force, work, and power.
+
+---
+
+*Every equation on this page rendered without KaTeX, MathJax, or any
+external library — Zolto's math engine is fully self-contained.*
