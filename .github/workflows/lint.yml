@@ -1,0 +1,17 @@
+name: Lint
+
+on:
+  push:
+    paths: [ 'src/**', 'tests/**', '*.js' ]
+  pull_request:
+    paths: [ 'src/**', 'tests/**', '*.js' ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: 'npm' }
+      - run: npm ci --ignore-scripts
+      - run: npx eslint src/ tests/ --ext .js

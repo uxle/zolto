@@ -1,0 +1,10 @@
+# Global owner — all files
+* @zolto-team
+
+# Engine source
+/src/ @zolto-core
+/tests/ @zolto-core
+
+# Docs
+/docs/ @zolto-docs
+/examples/ @zolto-docs
